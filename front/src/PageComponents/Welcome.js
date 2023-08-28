@@ -15,7 +15,7 @@ const AppContent = (props) => {
             }
         };
         fetchData();
-    }, [[props.project]]);
+    }, [props.project]);
 
     return (
         !error ?
