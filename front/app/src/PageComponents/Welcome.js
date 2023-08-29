@@ -48,7 +48,7 @@ const Welcome = () => {
         fetchData();
     }, []);
 
-    const next = ()=>{setIndex((index+1) % what)}
+    const next = () =>{setIndex((index+1) % what)}
     return (
 
             !error ? 

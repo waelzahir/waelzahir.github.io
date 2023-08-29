@@ -1,4 +1,4 @@
-import { Controller,Get, Param } from '@nestjs/common';
+import { Controller,Get, Param , Post } from '@nestjs/common';
 import { DataService } from './data.service';
 
 @Controller('data')
@@ -15,4 +15,10 @@ export class DataController {
     {
         return this.data.getData(id);
     }
+    @Post('new')
+    setData()
+    {
+        console.log("axios post")
+    }
+
 }
