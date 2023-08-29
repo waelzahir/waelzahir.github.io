@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  frontend:
+    build: front
+    networks:
+      app:
+        ipv4_adress: 10.10.10.2
+  backend:
+    build: back
+    networks:
+      app:
+        ipv4_adress: 10.10.10.3
+
+networks:
+  app:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "10.10.10.0/24"
+
+
+
