@@ -19,6 +19,17 @@ services:
         ipv4_address: 10.10.10.3
     volumes:
       - backvol:/back
+  database:
+    image: postgres:14
+    networks:
+      app:
+        ipv4_address: 10.10.10.4
+    environment:
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpassword
+    volumes: 
+      - appdb:/var/lib/postgresql/data
 
 networks:
   app:
@@ -40,6 +51,6 @@ volumes:
       type: none
       o: bind
       device: "$HOME/workspace/handsonjs/back/api"
-
+  appdb:
 
 

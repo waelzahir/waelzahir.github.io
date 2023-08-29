@@ -21,7 +21,7 @@ const AppContent = (props) => {
         !error ?
         (
         <div>
-            <h1>{props.project}</h1>
+            <h1>{props.project} 55</h1>
             <h2>{what}</h2>
         </div>
         )
