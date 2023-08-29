@@ -3,14 +3,22 @@ version: '3'
 services:
   frontend:
     build: front
+    ports:
+      - 3000:3000
     networks:
       app:
-        ipv4_adress: 10.10.10.2
+        ipv4_address: 10.10.10.2
+    volumes:
+      - frontvol:/front
   backend:
     build: back
+    ports:
+      - 3001:3001
     networks:
       app:
-        ipv4_adress: 10.10.10.3
+        ipv4_address: 10.10.10.3
+    volumes:
+      - backvol:/back
 
 networks:
   app:
@@ -18,6 +26,20 @@ networks:
     ipam:
       config:
         - subnet: "10.10.10.0/24"
+
+volumes:
+  frontvol:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "$HOME/workspace/handsonjs/front/app"
+  backvol:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "$HOME/workspace/handsonjs/back/api"
 
 
 
