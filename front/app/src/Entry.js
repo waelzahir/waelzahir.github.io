@@ -13,7 +13,6 @@ const Entry = () =>
         formData[name] = value;
     };
     const submit = async (e) => {
-        e.preventDefault();
         try {
             const response = await axios.post('http://localhost:3001/data/new', formData);
             console.log('Data sent to backend:', response.data);
