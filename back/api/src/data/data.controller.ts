@@ -1,4 +1,4 @@
-import { Controller,Get, Param , Post } from '@nestjs/common';
+import { Controller,Get, Param , Post, Body, Req } from '@nestjs/common';
 import { DataService } from './data.service';
 
 @Controller('data')
@@ -16,9 +16,9 @@ export class DataController {
         return this.data.getData(id);
     }
     @Post('new')
-    setData()
+    setData(@Body() data: any)
     {
-        console.log("axios post")
+        console.log("axios post" + JSON.stringify(data)  )
     }
 
 }
