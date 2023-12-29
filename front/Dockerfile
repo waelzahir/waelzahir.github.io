@@ -1,9 +1,12 @@
-from debian:buster
+FROM node:lts
 
-run apt  update && apt install -y curl bash 
-run curl -fsSL https://deb.nodesource.com/setup_20.x |  bash - &&  apt-get install -y nodejs
+run mkdir /code
+COPY package.json /code/package.json
+COPY --chmod=777 package-lock.json /code/package-lock.json
+workdir /code
+run npm ci
+run npm install -g @angular/cli
+COPY . /code
 
-copy dockerconf/script.sh /
 
-ENTRYPOINT ["bash", "script.sh"]
-CMD ["npm", "run", "start"]
+CMD [ "npm", "run", "start" ]
