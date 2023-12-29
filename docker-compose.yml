@@ -2,14 +2,15 @@ version: '3'
 
 services:
   frontend:
+    container_name: "fr"
     build: front
     ports:
       - 3000:3000
     networks:
       app:
-        ipv4_address: 10.10.10.2
+        ipv4_address: "10.10.10.2"
     volumes:
-      - frontvol:/front
+      - ./front/src:/code/src:ro
   backend:
     build: back
     ports:
@@ -18,7 +19,7 @@ services:
       app:
         ipv4_address: 10.10.10.3
     volumes:
-      - backvol:/back
+      - ./back/src:/code/src
   database:
     image: postgres:14
     networks:
@@ -39,18 +40,6 @@ networks:
         - subnet: "10.10.10.0/24"
 
 volumes:
-  frontvol:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: "$HOME/workspace/handsonjs/front/app"
-  backvol:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: "$HOME/workspace/handsonjs/back/api"
   appdb:
 
 
