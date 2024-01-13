@@ -13,6 +13,7 @@ class event implements events {
     delayed: Map<string, number>
     constructor()
     {
+        console.log("init at what cost")
         this.delayed = new Map()
         this.callbacks  = new Map()
     }
@@ -39,6 +40,7 @@ class event implements events {
                 }
                 else
                     this.delayed.set(name, 0);
+                console.log("delayed")
                 return ;
             }
         x(data);
