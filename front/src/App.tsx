@@ -1,34 +1,36 @@
 import {   useEffect, useState } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Legacy } from './components/legacy/Legacy'
-import { vector } from './types/Cordinates'
-import { Latest } from './components/latest/Latest'
-import { Overview } from './components/Overview/Overview'
-import { DialogBox } from './components/main/DialogBox'
-
+import { MainComp } from './MainComp/MainComp'
+import { FooterComp } from './FooterComp/FooteComp'
 
 function App() {
-  const [view, setview] = useState<vector>({ x: window.innerWidth, y :window.innerHeight})
-
-  useEffect(()=>{
-    addEventListener("resize", (event) => {
-        const newview: vector = {
-          x : window.innerWidth,
-          y : window.innerHeight
-        } 
-        setview(newview)
-    });
-
-  })
+   const [height, setheight] = useState(window.innerHeight  / 10)
+   useEffect(() => {
+      let APPclicked = false;
+      document.getElementById("mainresize")?.addEventListener("mousedown", () => APPclicked = true)
+      window.addEventListener("mouseup", () => APPclicked = false)
+      window.addEventListener("mousemove", (e) =>
+      {
+         if (APPclicked )
+            setheight( window.innerHeight - e.clientY ) 
+      })  
+      return () =>
+      {
+          document.getElementById("mainresize")?.removeEventListener("mousedown", () => APPclicked = true)
+          window.removeEventListener("mouseup", () => APPclicked = false)
+          window.removeEventListener("mousemove", (e) =>
+          {
+            if (APPclicked)
+            setheight( window.innerHeight - e.clientY ) 
+          })     
+          }
+  }, [])
   return (
-    <BrowserRouter>
-       <DialogBox />
-       <Routes>
-           <Route path="/"  element={<Overview/>} />
-          <Route path="/legacy"  element={<Legacy/>} />
-          <Route path="/latest"  element={<Latest/>} />
-       </Routes>
-      </BrowserRouter>
+      <div className='w-full h-screen flex flex-col'>
+         <MainComp />
+         <div id='mainresize' className='bg-white h-1 cursor-row-resize'>
+         </div>
+         <FooterComp pxHeight={height}/>
+      </div>  
   )
 }
 
