@@ -1,8 +1,8 @@
 
-export const FooterComp = ({height}: {height : number}) =>
+export const FooterComp = () =>
 {   
     return (
-        <div className="w-full h-full bg-black" style={{height: `${height}px`}}>
+        <div className="w-full h-[25%] bg-black">
         </div>
     )
 }

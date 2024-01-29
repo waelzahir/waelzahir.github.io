@@ -5,40 +5,19 @@ import { SideBar } from './MainComp/SideBar/SideBar'
 
 function App() {
   
-  const [width, setwidth] = useState(window.innerWidth  / 6)
-  useEffect(() => {
-          let mainclicked = false;
-          let prevw = window.innerWidth
-          document.getElementById("sdresize")?.addEventListener("mousedown", () => mainclicked = true)
-          window.addEventListener("mouseup", () => mainclicked = false)
-          window.addEventListener("resize", () => 
-          {
-            const scale =  window.innerWidth / prevw;
-            setwidth(scale*  width)
-            prevw = window.innerWidth
-          })
-          window.addEventListener("mousemove", (e) =>
-          {
-              if (mainclicked && e.clientX > window.innerWidth/ 10 && e.clientX < window.innerWidth  / 3 )
-                setwidth(e.clientX)
-          })  
-          return () =>
-          {
-              document.getElementById("sdresize")?.removeEventListener("mousedown", () => mainclicked = true)
-              window.removeEventListener("mouseup", () => mainclicked = false)
-              window.removeEventListener("mousemove", (e) =>
-              {
-                if (mainclicked && e.clientX > window.innerWidth/ 10 && e.clientX < window.innerWidth  / 3 )
-                setwidth(e.clientX)
-              })     
-              }
-      }, [])
+  
   return (
-      <div className='w-full h-screen flex flex-row'>
-         <SideBar  width={width}/>
-         <div id='sdresize' className="w-1 h-full cursor-col-resize bg-white"></div>
+    <div className='w-full h-screen flex flex-col'>
+       <div className='bg-black h-[2%]'> </div>
+      <div className='w-full h-full flex flex-row overflow-y-hidden' >
+        <div className='bg-gray-600 w-[2%]'></div>
+         <SideBar />
+         <div id='sdresize' className="w-1 h-full  bg-gray-600"></div>
          <MainComp />
       </div>  
+      <div className='bg-gray-600 h-[2%]'>
+      </div>
+    </div>
   )
 }
 
