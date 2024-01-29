@@ -1,8 +1,9 @@
 
-export const FooterComp = ({pxHeight}: {pxHeight : number}) =>
-{   console.log(pxHeight)
+export const FooterComp = ({height}: {height : number}) =>
+{   
     return (
-        <div className="w-full h-full bg-red-400" style={{height: `${pxHeight}px`}}>
+        <div className="w-full h-full bg-black" style={{height: `${height}px`}}>
         </div>
     )
 }
+
