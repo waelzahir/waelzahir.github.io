@@ -1,22 +1,16 @@
-import {   useEffect, useState } from 'react'
-import { MainComp } from './MainComp/MainComp'
-import { FooterComp } from './FooterComp/FooteComp'
-import { SideBar } from './MainComp/SideBar/SideBar'
+import { useState } from "react"
+import ContactMe from "./Componets/ContactMe"
+import Content from "./Componets/Content"
+import SideBar from "./Componets/Sidebar"
+
 
 function App() {
-  
-  
+  const [click, setClick] = useState(-1)
   return (
-    <div className='w-full h-screen flex flex-col'>
-       <div className='bg-black h-[2%]'> </div>
-      <div className='w-full h-full flex flex-row overflow-y-hidden' >
-        <div className='bg-gray-600 w-[2%]'></div>
-         <SideBar />
-         <div id='sdresize' className="w-1 h-full  bg-gray-600"></div>
-         <MainComp />
-      </div>  
-      <div className='bg-gray-600 h-[2%]'>
-      </div>
+    <div  className='h-screen w-full flex overflow-hidden md:flex-row flex-col gap-6 items-center '>  
+      <SideBar choiceset={setClick}/>
+      <Content choice={click}/>
+      <ContactMe/>
     </div>
   )
 }
