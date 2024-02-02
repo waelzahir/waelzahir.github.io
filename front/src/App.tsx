@@ -7,7 +7,7 @@ import SideBar from "./Componets/Sidebar"
 function App() {
   const [click, setClick] = useState(-1)
   return (
-    <div  className='h-screen w-full flex overflow-hidden md:flex-row flex-col gap-6 items-center '>  
+    <div  className='h-screen w-full flex overflow-hidden md:flex-row flex-col gap-6 items-center pt-4 md:pt-0'>  
       <SideBar choiceset={setClick}/>
       <Content choice={click}/>
       <ContactMe/>

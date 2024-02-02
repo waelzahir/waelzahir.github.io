@@ -32,7 +32,7 @@ const Content = ({choice}:{choice:number}) => {
 
    
     return (
-        <div className=" border-2 border-BarsColor  w-full  h-full  overflow-y-auto md:h-[94vh]">
+        <div className="  w-full  h-full  overflow-y-auto md:h-[94vh]">
             {Con(choice)}
         </div>
     )
