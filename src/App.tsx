@@ -8,10 +8,10 @@ export const App = () => {
   )
 }
 
-export const Backgrond = () =>{
+export const Background = () =>{
 
   return (
-      <div>
+      <div className="h-sc">
       
       </div>
       )
