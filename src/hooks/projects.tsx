@@ -1,6 +1,7 @@
 import { useEffect } from "react"
+import { ProjectInfo } from "../Components/types/ProjectInfo"
 
-export const useGetProjects = (setterprojects: any) => {
+export const useGetProjects = (setterprojects: any, allprojects: Map<string, ProjectInfo>) => {
     useEffect(() => {
         fetch("https://api.github.com/users/waelzahir/repos", {
             headers:{
@@ -10,7 +11,11 @@ export const useGetProjects = (setterprojects: any) => {
         .then((data) => 
         {
             if(data)
-                setterprojects(data)
+                data.map((element:any) => {
+                    console.log(data)
+                    if (allprojects.has(element.name))
+                        allprojects.set(element.name, element)
+                })
         })
     }, [])
 

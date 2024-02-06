@@ -13,7 +13,7 @@ const Clock = () => {
 
 const Header = () => {
     return (
-        <div className="level1 flex flex-row w-full  md:h-14 h-10 border-border border-opacity-20 border-solid border-[3px] ">
+        <div className="level1 flex flex-row w-full  md:h-14 h-10 border-border border-opacity-20 border-solid border-[3px] bg-[#020805] bg-opacity-50">
             <div className="w-full h-full flex justify-center items-center">
                     <h1 className="w-full text-center font-pixelify text-text text-3xl">
                         OUAIL ZAHIR
