@@ -5,6 +5,7 @@ import PHP from "../../assets/PHP.svg"
 import TypeScript from "../../assets/typescript.svg"
 import C from "../../assets/c.svg"
 import HTML from "../../assets/html.svg"
+import Python from "../../assets/python.svg"
 import CPP from "../../assets/cpp.svg"
 import close from "../../assets/close.svg"
 import Clonebutton from "./Projecttutils/clonebutton"
@@ -13,6 +14,7 @@ import Descritpion from "./Projecttutils/description"
 import Visitbutton from "./Projecttutils/visitbutton"
 import ProjectName from "./Projecttutils/ProjectName"
 import ProjectLanguage from "./Projecttutils/ProjectLanguage"
+
 
 
 const imgfilter  = (language: string) => 
@@ -29,6 +31,8 @@ const imgfilter  = (language: string) =>
             return PHP;
         case "C++":
                 return CPP;
+        case  "Python":
+                return Python
         default :
             return null;
     }

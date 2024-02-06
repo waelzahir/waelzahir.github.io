@@ -4,18 +4,19 @@ const AllProjects: Map<string, ProjectInfo> = new Map()
 
 
  const ListProjects = [
-    'Libft-42' ,
-    "Pipex" ,
-    "ft_printf",
-    "gnl" ,
     "Transcendance",
+    "waelzahir.github.io",
     "IRC-Server" ,
     "inception" ,
-    "cub3d" ,
     "42_minishell" ,
     "philosophers" ,
+    "Python101",
+    "cub3d" ,
+    "Pipex" ,
     "push_swap" ,
-    "waelzahir.github.io",
+    "ft_printf",
+    "GetNextLine" ,
+    'Libft-42' ,
 ]
 const Padding: ProjectInfo ={
     clone_url:"",
