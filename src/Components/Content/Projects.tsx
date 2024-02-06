@@ -43,11 +43,11 @@ const ProjectItem = ({item, itemsetter}: {item:ProjectInfo, itemsetter: any}) =>
         return null
     return (
         <div onClick={()=>itemsetter(item)} className=" w-full h-full   flex flex-col justify-center items-center  border-border border-opacity-50 border-2 cursor-pointer">
-                <div className=" w-full h-full flex justify-center items-center ">
+                <div className=" w-full h-full flex justify-center items-center pt-9">
                     <img className="w-20 h-20" src={imgfilter(item.language)} alt="" />
                 </div>
-                <div className="w-[full] h-full flex justify-center items-center overflow-hidden">
-                    <h1 className="text-text  lg:text-2xl ">
+                <div className="w-full h-full flex justify-center items-center overflow-hidden">
+                    <h1 className="text-text  lg:text-2xl truncate">
                     {item.name}
                     </h1>
                 </div>
