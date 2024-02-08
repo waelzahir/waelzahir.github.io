@@ -7,11 +7,15 @@ export default {
   theme: {
     extend: {
       colors:{
-        "border": "#bbc7cb",
-        "text": "#8eaca7"
+        "Darkbg": "#000000",
+        "Darkndbg": "#141414",
+        "DarkText": "#fcfcfc",
+        "Lightbg": "#FFFFFF",
+        "Lightndbg": "#F9F9F9",
+        "LightText": "#2D2D2D"
       },
-      fontFamily: {
-        'pixelify': ['Pixelify Sans', 'sans-serif']
+      fontFamily:{
+        'egoist': ['Cabin', 'sans-serif']
       }
     },
   },
