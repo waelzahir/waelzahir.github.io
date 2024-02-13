@@ -1,7 +1,7 @@
 
 const Enter = ({color}: {color: string}) => {
     return (
-        <svg className="h-full w-4" version="1.0" xmlns="http://www.w3.org/2000/svg"
+        <svg className="h-full w-4 " version="1.0" xmlns="http://www.w3.org/2000/svg"
          width="1280.000000pt" height="1280.000000pt" viewBox="0 0 1280.000000 1280.000000"
          preserveAspectRatio="xMidYMid meet">
        

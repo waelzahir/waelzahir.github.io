@@ -1,60 +1,54 @@
 import { useEffect, useState } from 'react'
-import test from "./assets/test.jpeg"
+import chopper from "./assets/chopper.webp"
 import Enter from './assets/enter'
 import Github from './assets/github'
 import Twitter from './assets/twitter'
 import Linkedin from './assets/Linkedin'
+import Navigation from './Components/Navigation'
+import ThemeSwitch from './Components/darktoggle'
+import Socials from './Components/Socials'
+import Info from './Components/Info'
+import About from './Components/content/About'
+import Skills from './Components/content/Skills'
+import Projects from './Components/content/Projects'
+import Contact from './Components/content/Contact'
+import Resume from './Components/Resume'
 
 function App() {
-  const [dark, setdark] = useState(true)
-  const [navigation, setNavigation] = useState(0)
+  const [dark, setdark] = useState(false)
+  const [navigation, setNavigation] = useState(-1)
+  useEffect(()=> {
+    window.addEventListener("scroll", () => {
+        if ( Math.floor(scrollY / window.innerHeight) != navigation)
+          setNavigation(Math.floor(scrollY / window.innerHeight))
+    })
+    return () => {
+      window.removeEventListener("scroll", () => {
+        if ( Math.floor(scrollY / window.innerHeight) != navigation)
+          setNavigation(Math.floor(scrollY / window.innerHeight))
+    })
+    }
+  }, [])
 
   return (    
-    <div className={`min-h-screen h-screen w-full ${dark ? "bg-Darkbg text-DarkText" : "bg-Lightbg text-LightText"} flex md:flex-row flex-col`}>
-      <div className='h-full w-full md:w-[35rem] flex flex-col justify-start items-center px-10 gap-y-4'>
-        <div className='flex  justify-center pt-16'>
-          <img className="w-44 h-44 border-2" src={test} alt="" />
-        </div>
-        <div className='w-full flex  justify-center'>
-          <h1 className='font-egoist text-2xl'>Ouail Zahir</h1>
-        </div>
-        <div className='w-full flex  justify-center'>
-          <h1 className='font-egoist text-xl '>LOREM IPSUM</h1>
-        </div>
-        <div className='gap-y-2 pl-4 '>
-                  <div onClick={() => setNavigation(0)} className='flex h-8 justify-start items-center gap-x-2 cursor-pointer'>
-                    <Enter color={navigation === 0 ? dark ? "#fcfcfc" : "#2D2D2D" : "#E0E0E0" }/>
-                    <h1 className={`${navigation !== 0 ? "text-gray-300": "" } font-egoist font-bold text-sm`}>About</h1>
-                  </div>
-                  <div onClick={() => setNavigation(1)}  className='flex h-8 justify-start items-center gap-x-2 cursor-pointer'>
-                    <Enter color={navigation === 1 ? dark ? "#fcfcfc" : "#2D2D2D" : "#E0E0E0" }/>
-                    <h1 className={`${navigation !== 1 ? "text-gray-300": "" } font-egoist font-bold text-sm`}>Skills</h1>
-                  </div>
-                  <div  onClick={() => setNavigation(2)} className='flex h-8 justify-start items-center gap-x-2 cursor-pointer'>
-                  <Enter color={navigation === 2 ? dark ? "#fcfcfc" : "#2D2D2D" : "#E0E0E0" }/>
-                    <h1 className={`${navigation !== 2 ? "text-gray-300": "" } font-egoist font-bold text-sm`}>Projects</h1>
-                  </div>
-                  <div  onClick={() => setNavigation(3)} className='flex h-8 justify-start items-center gap-x-2 cursor-pointer'>
-                    <Enter color={navigation === 3 ? dark ? "#fcfcfc" : "#2D2D2D" : "#E0E0E0" }/>
-                    <h1 className={`${navigation !== 3 ? "text-gray-300": "" } font-egoist font-bold text-sm`}>Contact</h1>
-                  </div>
-        </div>
-        <div className=''>
-          <div className='flex h-8 justify-start items-center gap-x-2'>
-                      <Github color={dark ? "#fcfcfc" : "#2D2D2D"}/>
-                      <h1 className='font-egoist font-bold text-sm'><a className='font-mono'>@</a>waelzahir</h1>
-          </div>
-          <div className='flex h-8 justify-start items-center gap-x-2'>
-                      <Twitter color={dark ? "#fcfcfc" : "#2D2D2D"}/>
-                      <h1 className='font-egoist font-bold text-sm'><a className='font-mono'>@</a>__OUAIL__</h1>
-          </div>
-          <div className='flex h-8 justify-start items-center gap-x-2'>
-                      <Linkedin color={dark ? "#fcfcfc" : "#2D2D2D"}/>
-                      <h1 className='font-egoist font-bold text-sm'><a className='font-mono'>@</a>waelzahir</h1>
+    <div className={`min-h-screen h-full w-full ${dark ? "bg-Darkbg text-DarkText" : "bg-Lightbg text-LightText"} flex md:flex-row flex-col transition ease-in-out delay-150 overflow-hidden`}>
+      <div className='h-20 w-full flex  justify-end items-center pr-4 fixed'>
+        <ThemeSwitch mode={dark} setswitch={setdark} />
+      </div>
+      <div className='h-screen w-full md:w-[35rem] '>
+        <div className='w-full h-full   '>
+          <div className='md:fixed flex flex-col justify-start items-center px-10 gap-y-4'>
+            <Info />
+            <Navigation dark={dark} Navigation={navigation}  />
+            <Socials dark={dark}/>
+            <Resume dark={dark}/>
           </div>
         </div>
       </div>
-      <div className='h-full w-full border-2'>
+      <div className='w-full'>
+          <Projects dark={dark}/>
+          <Skills dark={dark}/>
+          <Contact dark={dark}/>
       </div>
     </div>
   )
