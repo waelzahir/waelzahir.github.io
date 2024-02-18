@@ -85,11 +85,7 @@ export const Selection = (props:any) => {
 
 
 const Contactform = () => {
-    const form = fetch("https://docs.google.com/forms/d/e/1FAIpQLScU2qceJ9Xqtdphxv6shHhRv4JBciGkPI0zLBXZGvyKjZGhCA/viewform?embedded=true")
-    .then(async (red) => {
-        if (red.ok)
-            console.log(await red.json())
-    })
+    
     return (
         <div className="w-full h-full flex justify-center items-center">
             <div className="w-full h-[50%] flex flex-col  justify-between  items-center md:items-end">
