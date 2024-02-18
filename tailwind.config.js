@@ -7,12 +7,11 @@ export default {
   theme: {
     extend: {
       colors:{
-        "Darkbg": "#000000",
-        "Darkndbg": "#141414",
-        "DarkText": "#fcfcfc",
-        "Lightbg": "#FFFFFF",
-        "Lightndbg": "#F9F9F9",
-        "LightText": "#2D2D2D"
+        "background": "#EAE7DC",
+        "ndbackground": "#D8C3A5",
+        "integrator": "#8E8D8A",
+        "SecondaryText": "#E98074",
+        "PrimaryText": "#E85A4F"
       },
       fontFamily:{
         'egoist': ['Cabin', 'sans-serif']
