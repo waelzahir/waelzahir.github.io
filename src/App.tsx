@@ -10,10 +10,12 @@ function App() {
   useGetProjects(setupdate, AllProjects);
   console.log(AllProjects)
   return ( 
-    <div className="select-none max-w-full w-full h-screen flex justify-center items-center overflow-hidden">
-      <div className="w-[95%] h-[95%] flex flex-row overflow-hidden">
-        <Navbar active={active} setActive={setActive}/>
-        <Selection active={active}/>
+    <div className="select-none max-w-full w-full h-screen flex justify-center items-center overflow-hidden bg-ndbackground">
+      <div className="w-[95%] h-[95%] flex items-center justify-center bg-background">
+        <div className="w-[95%] h-[95%] flex flex-col md:flex-row overflow-hidden ">
+          <Navbar active={active} setActive={setActive}/>
+          <Selection active={active}/>
+        </div>
       </div>
     </div>
   )
