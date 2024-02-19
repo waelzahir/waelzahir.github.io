@@ -10,6 +10,7 @@ import text from "../../assets/text.png"
 
 import { file, filetype, icon, state } from "../../types/ProgramType"
 import { statedef } from "../../Metadata/projects"
+import { highestid } from "../../App"
 
 
 
@@ -35,6 +36,11 @@ const ContextMenuSortMenu= ({activated}: {activated: boolean}) =>{
             <div className="w-full  flex justify-center items-center h-8 hover:bg-ContextSelection">
                 <h1 id="filename" className="w-[90%]">
                     Name
+                </h1>
+            </div>
+            <div className="w-full  flex justify-center items-center h-8 hover:bg-ContextSelection">
+                <h1 id="filenamerev" className="w-[90%]">
+                    Name Reverse
                 </h1>
             </div>
             <div className="w-full flex justify-center items-center h-8  hover:bg-ContextSelection">
@@ -148,8 +154,9 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
                 ViewMenu.style.top = `${element.getBoundingClientRect().top}px`
                 break;
         case "NewFile":
+            highestid.id++
             const text: file = {
-                id:4,
+                id:highestid.id,
                 name: "untitled text",
                 content: "",
                 description: "untitled text",
@@ -175,6 +182,15 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
                     setters.setContextMenuSort(false)
                     setters.ContextMenu(false)
             break;
+            case "filenamerev":
+                setters.SetFileSystem((fileSystem: file[]) => {
+                    const newfiles = fileSystem.sort((a:file, b:file) => b.name.localeCompare(a.name))
+                    localStorage.setItem("files", JSON.stringify(newfiles))
+                     return newfiles.slice()
+                    })
+                    setters.setContextMenuSort(false)
+                    setters.ContextMenu(false)
+            break;
             case "filetype":
                 setters.SetFileSystem((fileSystem: file[]) => {
                     const newfiles = fileSystem.sort((a:file, b:file) => a.type.localeCompare(b.type))
@@ -185,8 +201,10 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
                     setters.ContextMenu(false)
             break;
             case "NewFolder":
+                highestid.id++;
+
                 const file: file = {
-                    id:4,
+                    id:highestid.id,
                     name: "new Folder",
                     content: new Array(),
                     description: "empty Folder",

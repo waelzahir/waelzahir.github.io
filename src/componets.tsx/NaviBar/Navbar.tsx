@@ -25,7 +25,9 @@ const NaviBar = () =>
             <div className="h-full w-full">
 
             </div>
-            <div className="h-full w-64 flex justify-center items-center border-t-[3px] border-gray-700 bg-StateBar">
+            <div className="h-full w-64 flex justify-around items-center border-t-[3px] border-gray-700 bg-StateBar">
+            
+                <div className="pr-2 w-0 h-0  border-t-[5px] border-t-transparent border-r-[5px] border-r-white border-b-[5px] border-b-transparent"></div>
                 <Clock/>
             </div>
         </div>

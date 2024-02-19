@@ -4,6 +4,7 @@ import NaviBar from "./componets.tsx/NaviBar/Navbar";
 import Window from "./componets.tsx/Window/Window";
 import { file } from "./types/ProgramType";
 import { Desktop } from "./Metadata/projects";
+export var highestid = { id :0} 
 
 
 function App() {
@@ -14,13 +15,16 @@ function App() {
       {
         SetFileSystem(Desktop)
         localStorage.setItem("files", JSON.stringify(Desktop))
-        console.log("Default")
-
+        highestid.id = Math.max(...Desktop.map(obj => obj.id));
+        highestid.id++;
       }
       else
       {
-        const existing = JSON.parse(files)
+        const existing: file[] = JSON.parse(files)
         SetFileSystem(existing) 
+        highestid.id = Math.max(...existing.map(obj => obj.id));
+        highestid.id++;
+
       }
       
   }, [])
