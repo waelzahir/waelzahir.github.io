@@ -29,6 +29,38 @@ const ContextMenuNewMenu= ({activated}: {activated: boolean}) =>{
         </div>
     )
 }
+const ContextMenuSortMenu= ({activated}: {activated: boolean}) =>{
+    return (
+        <div id="SortOption" className={`${activated ? "": "hidden"} absolute  bg-contextMenu w-44  flex flex-col items-center border-[1px] border-Contextborder font-tahoma`}>
+            <div className="w-full  flex justify-center items-center h-8 hover:bg-ContextSelection">
+                <h1 id="filename" className="w-[90%]">
+                    Name
+                </h1>
+            </div>
+            <div className="w-full flex justify-center items-center h-8  hover:bg-ContextSelection">
+                <h1 id="filetype" className="w-[90%]">
+                    type
+                </h1>
+            </div>
+        </div>
+    )
+}
+const ContextMenuViewMenu= ({activated}: {activated: boolean}) =>{
+    return (
+        <div id="ViewOption" className={`${activated ? "": "hidden"} absolute  bg-contextMenu w-44  flex flex-col items-center border-[1px] border-Contextborder font-tahoma`}>
+            <div className="w-full  flex justify-center items-center h-8 hover:bg-ContextSelection">
+                <h1 id="NewFolder" className="w-[90%]">
+                    Folder
+                </h1>
+            </div>
+            <div className="w-full flex justify-center items-center h-8  hover:bg-ContextSelection">
+                <h1 id="NewFile" className="w-[90%]">
+                    Text File
+                </h1>
+            </div>
+        </div>
+    )
+}
 const ContextMenu = ({activated}: {activated: boolean}) => {
   
     return (
@@ -38,7 +70,7 @@ const ContextMenu = ({activated}: {activated: boolean}) => {
                         <h1 className="pl-4">View</h1>
                         <div className="pr-2 w-0 h-0  border-t-[5px] border-t-transparent border-l-[5px] border-l-black border-b-[5px] border-b-transparent"></div>
                     </div>
-                    <div className="w-[99%] h-8 flex flex-row justify-between items-center  hover:bg-ContextSelection">
+                    <div id="ContextMenuSortButton" className="w-[99%] h-8 flex flex-row justify-between items-center  hover:bg-ContextSelection">
                         <h1 className="pl-4">Sort By</h1>
                         <div className="pr-2 w-0 h-0  border-t-[5px] border-t-transparent border-l-[5px] border-l-black border-b-[5px] border-b-transparent"></div>
                     </div>
@@ -73,6 +105,7 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
             if (!ContextMenu)
                 break ;
             setters.NewMenu(false)
+            setters.setContextMenuSort(false)
             setters.ContextMenu(false)
             ContextMenu.style.left = `${e.clientX + ContextMenu.offsetWidth < element?.offsetWidth ? e.clientX :  element?.offsetWidth - ContextMenu.offsetWidth}px`
             ContextMenu.style.top = `${e.clientY + ContextMenu.offsetHeight < element?.offsetHeight ? e.clientY :  element?.offsetHeight - ContextMenu.offsetHeight}px`        
@@ -80,12 +113,22 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
             break;
         case "ContextMenuNewButton":
             setters.NewMenu(true)
+            setters.setContextMenuSort(false)
             const NewMenu = document.getElementById("NewOption");
             if (!NewMenu)
                 break ;
             NewMenu.style.left = `${element.getBoundingClientRect().left + element.offsetWidth + NewMenu.offsetWidth < window.innerWidth ? element.getBoundingClientRect().left + element.offsetWidth  - 5: element.getBoundingClientRect().left - NewMenu.offsetWidth + 5}px`
             NewMenu.style.top = `${element.getBoundingClientRect().top}px`
             break;
+        case "ContextMenuSortButton":
+                setters.setContextMenuSort(true)
+                setters.NewMenu(false)
+                const SortMenu = document.getElementById("SortOption");
+                if (!SortMenu)
+                    break ;
+                SortMenu.style.left = `${element.getBoundingClientRect().left + element.offsetWidth + SortMenu.offsetWidth < window.innerWidth ? element.getBoundingClientRect().left + element.offsetWidth  - 5: element.getBoundingClientRect().left - SortMenu.offsetWidth + 5}px`
+                SortMenu.style.top = `${element.getBoundingClientRect().top}px`
+                break;
         case "NewFile":
             const text: file = {
                 id:4,
@@ -105,7 +148,25 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
             setters.NewMenu(false)
             setters.ContextMenu(false)
             break;
-        case "NewFolder":
+        case "filename":
+                setters.SetFileSystem((fileSystem: file[]) => {
+                    const newfiles = fileSystem.sort((a:file, b:file) => a.name.localeCompare(b.name))
+                    localStorage.setItem("files", JSON.stringify(newfiles))
+                     return newfiles.slice()
+                    })
+                    setters.setContextMenuSort(false)
+                    setters.ContextMenu(false)
+            break;
+            case "filetype":
+                setters.SetFileSystem((fileSystem: file[]) => {
+                    const newfiles = fileSystem.sort((a:file, b:file) => a.type.localeCompare(b.type))
+                    localStorage.setItem("files", JSON.stringify(newfiles))
+                     return newfiles.slice()
+                    })
+                    setters.setContextMenuSort(false)
+                    setters.ContextMenu(false)
+            break;
+            case "NewFolder":
                 const file: file = {
                     id:4,
                     name: "new Folder",
@@ -140,11 +201,13 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
 {
     const [contextMenu, setContextMenu] = useState(false)
     const [contextMenuNew, setContextMenuNew] = useState(false)
+    const [contextMenuSort, setContextMenuSort] = useState(false)
+
     useEffect(() => {
-        window.addEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem}))
+        window.addEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem ,setContextMenuSort: setContextMenuSort}))
         return () =>
         {
-          window.removeEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem}))
+          window.removeEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem,setContextMenuSort: setContextMenuSort}))
         }
     },[])
       
@@ -156,6 +219,9 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
             }
             <ContextMenu activated={contextMenu}/>
             <ContextMenuNewMenu activated={contextMenuNew}/>
+            <ContextMenuSortMenu activated={contextMenuSort}/>
+            {/* <ContextMenuViewMenu activated={contextMenuNew}/> */}
+
       
         </div>
     )
