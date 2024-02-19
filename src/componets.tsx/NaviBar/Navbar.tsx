@@ -14,7 +14,7 @@ const NaviBar = () =>
 {
     return (
         <div  id="navibar" className="h-12 w-full flex flex-row justify-between items-center">
-            <div className="h-full bg-StartButton border-t-[3px] border-gray-700 w-52  flex flex-row items-center justify-center hover:bg-green-700">
+            <div className="h-full bg-StartButton border-t-[3px] border-gray-700 w-52  flex flex-row items-center justify-center hover:bg-green-700 rounded-r-[20px] border-r-[2px] border-r-gray-700 ">
                 <div className="flex flex-row justify-around items-center h-full w-[60%]">
                     <img className="h-8" src={Start}/>
                     <h1 className="font-tahoma font-bold text-2xl text-white">

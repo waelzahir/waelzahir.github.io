@@ -230,6 +230,9 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
             case "Large":
                 setters.setsize(3)
                 break;
+            case "icon":
+                console.log(e.targer)
+                break;
         default:
             return 
     }
@@ -238,7 +241,10 @@ const GlobalDesktopEvents = (e:any, setters:any) =>
 {
   e.stopPropagation()
   e.preventDefault()
-  const element = document.getElementById(e.target.id)
+  if (!e.target.id.length)
+    return
+  const element = document.getElementById(e.target.id)    
+  console.log(e.target.id)
   Apply(e, element, setters)
 
 }
@@ -264,9 +270,9 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
     return (
         <div  id="Desktop" className="w-full h-full overflow-hidden ">
             <div className="h-full  w-0 flex flex-col flex-wrap ">
-            {
-                FileSystem.map((element: file, index:number) => generateEntries(element, index , size))
-            }
+            {FileSystem.map((element: file, index: number) => (
+                    <GenerateEntries key={element.id} entries={element} index={index} size={size} />
+                ))}
             <ContextMenu activated={contextMenu}/>
             <ContextMenuNewMenu activated={contextMenuNew}/>
             <ContextMenuSortMenu activated={contextMenuSort}/>
@@ -280,31 +286,44 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
 
 const SmallRightClick =  (e: Event) => {
     e.stopPropagation()
-    e.preventDefault()
     alert("file click")
 } 
-const generateEntries = (entries: file, index:number, size:number) => {
-  
-    const icon = getIcon(entries.icon)
-    const fited = size==1 ? 56 : size ==2 ? 70 : 90 
-    return (
-        <div key={entries.id} className="relative overflow-hidden w-20 h-20 flex flex-col items-center  hover:bg-blue-200 rounded" style={{ height: `${ 80 + size *10 }px`}}>
-            <div className="w-full   flex justify-center items-center">
-                <img style={{height: `${fited}px`}}src={icon}/>
-            </div>
-                <h1 className=" text-start font-tahoma text-xs font-bold text-black" >{entries.name}</h1>
-        </div>
-    )
-    
-}
+const FileHandle = (e:MouseEvent) =>
+{
+    e.preventDefault()
+    e.stopPropagation()
 
+}
+const GenerateEntries = ({ entries, index, size }: { entries: file, index: number, size: number }) => {
+    const refer = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        refer.current?.addEventListener("click", (e) => FileHandle(e))
+        return () =>
+        {
+            refer.current?.removeEventListener("click", (e) => FileHandle(e))
+        }
+        }, []);
+    const icon = getIcon(entries.icon);
+    const fited = size === 1 ? 56 : size === 2 ? 70 : 90;
+
+    return (
+        <div ref={refer} className="relative overflow-hidden w-20 h-20 flex flex-col items-center  hover:bg-blue-200 rounded z-50" style={{ height: `${80 + size * 10}px` }}>
+            <div className="w-full   flex justify-center items-center">
+                <img style={{ height: `${fited}px` }} src={icon} alt={entries.name} />
+            </div>
+            <div>
+                <h1 className="text-start font-tahoma text-xs font-bold text-black">{entries.name}</h1>
+            </div>
+        </div>
+    );
+};
 const getIcon  = (ico: icon) => {
     switch (ico)
     {
         case icon.Folder:
-                return closedIcon;
+            return closedIcon;
         case icon.Internet:
-                return Internet;
+            return Internet;
         case icon.Explorer:
             return Explorer
         case icon.Text:
