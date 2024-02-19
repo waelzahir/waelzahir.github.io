@@ -7,14 +7,15 @@ export default {
   theme: {
     extend: {
       colors:{
-        "background": "#EAE7DC",
-        "ndbackground": "#D8C3A5",
-        "integrator": "#8E8D8A",
-        "SecondaryText": "#E98074",
+        "XpBar": "#81C046",
+        "contextMenu": "#F4F4F4",
+        "Contextborder": "#8E8D8A",
+        "ContextSelection": "#3997d4",
         "PrimaryText": "#E85A4F"
       },
       fontFamily:{
-        'egoist': ['Cabin', 'sans-serif']
+        'egoist': ['Cabin', 'sans-serif'],
+        'tahoma': ['Tahoma', 'sans-serif'],
       }
     },
   },
