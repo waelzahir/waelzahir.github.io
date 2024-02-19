@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react"
-import ReactDOM from 'react-dom/client'
-import * as tt from 'react-dom'
 
 
 import closedIcon from "../../assets/FolderClosed.png"
 import Internet from "../../assets/Internet.png"
 import Explorer from "../../assets/Expolorer.png"
+import text from "../../assets/text.png"
 
 
-import { Desktop } from "../../Metadata/projects"
-import { file, icon } from "../../types/ProgramType"
+
+import { file, filetype, icon, state } from "../../types/ProgramType"
+import { statedef } from "../../Metadata/projects"
 
 
 
@@ -17,12 +17,12 @@ const ContextMenuNewMenu= ({activated}: {activated: boolean}) =>{
     return (
         <div id="NewOption" className={`${activated ? "": "hidden"} absolute  bg-contextMenu w-44  flex flex-col items-center border-[1px] border-Contextborder font-tahoma`}>
             <div className="w-full  flex justify-center items-center h-8 hover:bg-ContextSelection">
-                <h1 className="w-[90%]">
+                <h1 id="NewFolder" className="w-[90%]">
                     Folder
                 </h1>
             </div>
             <div className="w-full flex justify-center items-center h-8  hover:bg-ContextSelection">
-                <h1 className="w-[90%]">
+                <h1 id="NewFile" className="w-[90%]">
                     Text File
                 </h1>
             </div>
@@ -64,6 +64,7 @@ const ContextMenu = ({activated}: {activated: boolean}) => {
     )
 }
 const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
+    console.log("here", element, e)
     if (!element)
         return 
     switch (e.target.id){
@@ -82,10 +83,46 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
             const NewMenu = document.getElementById("NewOption");
             if (!NewMenu)
                 break ;
-            console.log(element.offsetWidth + element.getBoundingClientRect().left)
             NewMenu.style.left = `${element.getBoundingClientRect().left + element.offsetWidth + NewMenu.offsetWidth < window.innerWidth ? element.getBoundingClientRect().left + element.offsetWidth  - 5: element.getBoundingClientRect().left - NewMenu.offsetWidth + 5}px`
             NewMenu.style.top = `${element.getBoundingClientRect().top}px`
-            console.log(NewMenu)
+            break;
+        case "NewFile":
+            const text: file = {
+                id:4,
+                name: "untitled text",
+                content: "",
+                description: "untitled text",
+                icon: icon.Text,
+                type: filetype.Text,
+                visibilityindex: -1,
+                windowState: statedef
+            }
+            setters.SetFileSystem((fileSystem: file[]) => {
+                fileSystem.push(text)
+                localStorage.setItem("files", JSON.stringify(fileSystem))
+                 return fileSystem.slice()
+                })
+            setters.NewMenu(false)
+            setters.ContextMenu(false)
+            break;
+        case "NewFolder":
+                const file: file = {
+                    id:4,
+                    name: "new Folder",
+                    content: new Array(),
+                    description: "empty Folder",
+                    icon: icon.Folder,
+                    type: filetype.Folder,
+                    visibilityindex: -1,
+                    windowState: statedef
+                }
+                setters.SetFileSystem((fileSystem: file[]) => {
+                    fileSystem.push(file)
+                    localStorage.setItem("files", JSON.stringify(fileSystem))
+                     return fileSystem.slice()
+                    })
+            setters.NewMenu(false)
+            setters.ContextMenu(false)
             break;
         default:
             return 
@@ -99,15 +136,15 @@ const GlobalDesktopEvents = (e:any, setters:any) =>
   Apply(e, element, setters)
 
 }
-const Window  = () =>
+const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSystem:any}) =>
 {
     const [contextMenu, setContextMenu] = useState(false)
     const [contextMenuNew, setContextMenuNew] = useState(false)
     useEffect(() => {
-        window.addEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew}))
+        window.addEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem}))
         return () =>
         {
-          window.removeEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew}))
+          window.removeEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem}))
         }
     },[])
       
@@ -115,7 +152,7 @@ const Window  = () =>
     return (
         <div  id="Desktop" className="w-full bg-red-400 flex flex-1">
             {
-                Desktop.map((element: file, index:number) => generateEntries(element, index))
+                FileSystem.map((element: file, index:number) => generateEntries(element, index))
             }
             <ContextMenu activated={contextMenu}/>
             <ContextMenuNewMenu activated={contextMenuNew}/>
@@ -132,19 +169,10 @@ const SmallRightClick =  (e: Event) => {
     alert("file click")
 } 
 const generateEntries = (entries: file, index:number) => {
-    const element = useRef<HTMLDivElement>(null)
-    const [left, setLeft] = useState(20);
-    const [top, setTop] = useState( index*100 +20 )
-    useEffect(() => {
-        element.current?.addEventListener("contextmenu", SmallRightClick )
-        return () => {
-            element.current?.removeEventListener("contextmenu", SmallRightClick )
-
-        }
-    })
+  
     const icon = getIcon(entries.icon)
     return (
-        <div ref={element} className="absolute w-20 h-20 flex flex-col items-center justify-between hover:bg-blue-200 rounded" style={{top: `${top}px`, left: `${left}px`}}>
+        <div key={entries.id} className="absolute w-20 h-20 flex flex-col items-center justify-between hover:bg-blue-200 rounded" style={{top: `${index*100 +20}px`, left: `${20}px`}}>
             <div className="w-full   flex justify-center items-center">
                 <img className="  h-14 " src={icon}/>
             </div>
@@ -163,6 +191,8 @@ const getIcon  = (ico: icon) => {
                 return Internet;
         case icon.Explorer:
             return Explorer
+        case icon.Text:
+                return text
         default :
             return null;
     }

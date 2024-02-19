@@ -1,6 +1,6 @@
 import { file, filetype, icon, state } from "../types/ProgramType";
 
-const statedef :state = {
+export const statedef :state = {
     opened:false,
     height:0,
     width:0,
@@ -9,6 +9,7 @@ const statedef :state = {
 }
 export const Desktop: file [] = [
     {
+        id:1,
         icon: icon.Folder,
         windowState:statedef,
         visibilityindex: -1,
@@ -19,6 +20,7 @@ export const Desktop: file [] = [
     }
     ,
     {
+        id:2,
         icon: icon.Folder,
         windowState:statedef,
         visibilityindex: -1,
@@ -30,6 +32,7 @@ export const Desktop: file [] = [
     }
     ,
     {
+        id:3,
         icon: icon.Internet,
         windowState:statedef,
         visibilityindex: -1,

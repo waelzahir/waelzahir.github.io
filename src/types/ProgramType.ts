@@ -1,13 +1,14 @@
 export enum filetype {
     Folder = "folder",
     Exec = "exec",
-    Project = "Project"
+    Project = "Project",
+    Text= "Text"
 }
 export enum icon  {
     Folder,
     Explorer,
     Internet,
-
+    Text
 }
 export type state ={
     opened: boolean,
@@ -17,6 +18,7 @@ export type state ={
     y:number
 }
 export type file = {
+    id:number
     icon:icon,
     windowState :state,
     visibilityindex: number
