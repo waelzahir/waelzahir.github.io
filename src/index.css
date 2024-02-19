@@ -14,3 +14,8 @@
     background-repeat: no-repeat; /* Do not repeat the background image */
     background-position: center; 
 }
+
+#navibar {
+    background-image: url(assets/takcolor.png);
+    background-size: cover;
+}

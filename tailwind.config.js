@@ -7,11 +7,12 @@ export default {
   theme: {
     extend: {
       colors:{
-        "XpBar": "#81C046",
+        "XpBar": "#0167C5",
+        "StateBar": "#0b9bf3",
+        "StartButton" : "#1b8c18",
         "contextMenu": "#F4F4F4",
         "Contextborder": "#8E8D8A",
-        "ContextSelection": "#3997d4",
-        "PrimaryText": "#E85A4F"
+        "ContextSelection": "#3997d4"
       },
       fontFamily:{
         'egoist': ['Cabin', 'sans-serif'],

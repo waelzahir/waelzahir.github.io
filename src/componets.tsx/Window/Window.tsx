@@ -203,6 +203,15 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
             setters.NewMenu(false)
             setters.ContextMenu(false)
             break;
+            case "Small":
+                setters.setsize(1)
+                break;
+            case "Medium":
+                setters.setsize(2)
+                break;
+            case "Large":
+                setters.setsize(3)
+                break;
         default:
             return 
     }
@@ -217,6 +226,7 @@ const GlobalDesktopEvents = (e:any, setters:any) =>
 }
 const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSystem:any}) =>
 {
+    const [size, setsize] = useState(1)
     const [contextMenu, setContextMenu] = useState(false)
     const [contextMenuNew, setContextMenuNew] = useState(false)
     const [contextMenuSort, setContextMenuSort] = useState(false)
@@ -224,10 +234,10 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
 
 
     useEffect(() => {
-        window.addEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem ,setContextMenuSort: setContextMenuSort, setcontextMenuView:setcontextMenuView}))
+        window.addEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem ,setContextMenuSort: setContextMenuSort, setcontextMenuView:setcontextMenuView, setsize}))
         return () =>
         {
-          window.removeEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem,setContextMenuSort: setContextMenuSort, setcontextMenuView:setcontextMenuView}))
+          window.removeEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem,setContextMenuSort: setContextMenuSort, setcontextMenuView:setcontextMenuView, setsize}))
         }
     },[])
       
@@ -235,7 +245,7 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
     return (
         <div  id="Desktop" className="w-full bg-red-400 flex flex-1">
             {
-                FileSystem.map((element: file, index:number) => generateEntries(element, index))
+                FileSystem.map((element: file, index:number) => generateEntries(element, index , size))
             }
             <ContextMenu activated={contextMenu}/>
             <ContextMenuNewMenu activated={contextMenuNew}/>
@@ -254,13 +264,14 @@ const SmallRightClick =  (e: Event) => {
     e.preventDefault()
     alert("file click")
 } 
-const generateEntries = (entries: file, index:number) => {
+const generateEntries = (entries: file, index:number, size:number) => {
   
     const icon = getIcon(entries.icon)
+    const fited = size==1 ? 56 : size ==2 ? 70 : 90 
     return (
-        <div key={entries.id} className="absolute w-20 h-20 flex flex-col items-center justify-between hover:bg-blue-200 rounded" style={{top: `${index*100 +20}px`, left: `${20}px`}}>
+        <div key={entries.id} className="absolute w-20 h-20 flex flex-col items-center justify-between hover:bg-blue-200 rounded" style={{top: `${index*100 +20 }px`, left: `${20 }px` }}>
             <div className="w-full   flex justify-center items-center">
-                <img className="  h-14 " src={icon}/>
+                <img style={{height: `${fited}px`}}src={icon}/>
             </div>
                 <h1 className=" text-start font-tahoma text-xs font-bold text-black" >{entries.name}</h1>
         </div>
