@@ -249,6 +249,7 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
     const [contextMenuNew, setContextMenuNew] = useState(false)
     const [contextMenuSort, setContextMenuSort] = useState(false)
     const [contextMenuView, setcontextMenuView] = useState(false)
+    
 
 
     useEffect(() => {
@@ -261,7 +262,8 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
       
     
     return (
-        <div  id="Desktop" className="w-full bg-red-400 flex flex-1">
+        <div  id="Desktop" className="w-full h-full overflow-hidden ">
+            <div className="h-full  w-0 flex flex-col flex-wrap ">
             {
                 FileSystem.map((element: file, index:number) => generateEntries(element, index , size))
             }
@@ -269,8 +271,7 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
             <ContextMenuNewMenu activated={contextMenuNew}/>
             <ContextMenuSortMenu activated={contextMenuSort}/>
             <ContextMenuViewMenu activated={contextMenuView}/>
-
-      
+            </div>
         </div>
     )
 }
@@ -287,7 +288,7 @@ const generateEntries = (entries: file, index:number, size:number) => {
     const icon = getIcon(entries.icon)
     const fited = size==1 ? 56 : size ==2 ? 70 : 90 
     return (
-        <div key={entries.id} className="absolute w-20 h-20 flex flex-col items-center justify-between hover:bg-blue-200 rounded" style={{top: `${index*100 +20 }px`, left: `${20 }px` }}>
+        <div key={entries.id} className="relative overflow-hidden w-20 h-20 flex flex-col items-center  hover:bg-blue-200 rounded" style={{ height: `${ 80 + size *10 }px`}}>
             <div className="w-full   flex justify-center items-center">
                 <img style={{height: `${fited}px`}}src={icon}/>
             </div>
