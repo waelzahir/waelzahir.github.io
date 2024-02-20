@@ -63,4 +63,22 @@ export const Desktop: file [] = [
         description: "Surf the web",
         content: null
     }
+    ,
+    {
+        id:4,
+        parent:0,
+        icon: icon.Trash,
+        windowState:{
+            opened:false,
+            top: 330,
+            left: 10,
+            bottom:0,
+            right:0,
+        },
+        visibilityindex: -1,
+        name: "Trash",
+        type: filetype.Trash,
+        description: "Trashcan",
+        content: new Array<file>()
+    }
 ]

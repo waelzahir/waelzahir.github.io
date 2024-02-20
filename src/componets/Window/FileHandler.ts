@@ -12,22 +12,9 @@ export class FileHandler {
         this.element.addEventListener("click",(e)=> this.handleclick(e))
         this.element.addEventListener("contextmenu",(e)=> this.handlecontext(e))
         this.element.addEventListener('mousemove', (e) => this.dragelement(e))
-        console.log(element.getBoundingClientRect())
         this.setElementpos()
-        
-        console.log(this.file.windowState)
-        
-
     }
-    storeinitpos()
-    {
-        const init = this.element.getBoundingClientRect()
-        this.file.windowState.left = init.left
-        this.file.windowState.right = init.right
-        this.file.windowState.top = init.top
-        this.file.windowState.bottom = init.bottom
-
-    }
+  
     setElementpos()
     {
         this.element.style.left = this.file.windowState.left.toString() + "px"

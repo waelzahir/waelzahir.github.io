@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
-import NaviBar from "./componets.tsx/NaviBar/Navbar";
-import Window from "./componets.tsx/Window/Window";
+import NaviBar from "./componets/NaviBar/Navbar";
+import Window from "./componets/Window/Window";
 import { file } from "./types/ProgramType";
 import { Desktop } from "./Metadata/projects";
 export var highestid = { id :0} 
@@ -11,7 +11,7 @@ function App() {
   const [FileSystem, SetFileSystem] = useState<file []>(new Array())
   const Metadata = useState(0) 
   useEffect( () => {
-    if (!localStorage.length)
+    if (!localStorage.getItem("Metadata"))
         localStorage.setItem("Metadata", JSON.stringify(Metadata[0]))
     if (localStorage.length < 2)
     {

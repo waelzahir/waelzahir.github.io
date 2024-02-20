@@ -2,13 +2,15 @@ export enum filetype {
     Folder = "folder",
     Exec = "exec",
     Project = "Project",
-    Text= "Text"
+    Text= "Text",
+    Trash= "Trash"
 }
 export enum icon  {
     Folder,
     Explorer,
     Internet,
-    Text
+    Text,
+    Trash
 }
 export type state ={
     opened: boolean,
