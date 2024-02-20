@@ -8,12 +8,15 @@ const ContextMenu = () => {
 
         const desktop = document.getElementById("Desktop");
         const ContextMenu = document.getElementById("ContextMenu");
-        if (!ContextMenu || !desktop)
+        const menu = document.getElementById("filecontex") ;
+
+        if (!ContextMenu || !desktop )
             return ;
         ContextMenu.style.left = `${contextx + ContextMenu.offsetWidth < desktop?.offsetWidth ? contextx :  desktop?.offsetWidth - ContextMenu.offsetWidth}px`
         ContextMenu.style.top = `${contexty + ContextMenu.offsetHeight < desktop?.offsetHeight ? contexty :  desktop?.offsetHeight - ContextMenu.offsetHeight}px`
         ContextMenu.classList.remove("hidden")
 
+      
         const elem = document.getElementById("ContextMenuNewButton")
         const elem2 = document.getElementById("ContextMenuViewButton")
         const ViewMenu = document.getElementById("ViewOption");

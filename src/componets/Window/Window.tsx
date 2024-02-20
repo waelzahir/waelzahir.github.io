@@ -12,6 +12,7 @@ import { FileHandler } from "./FileHandler"
 import ContextMenu from "./contextmenu/ConextMenu"
 import ContextMenuNewMenu from "./contextmenu/contextMenuNew"
 import ContextMenuViewMenu from "./contextmenu/contextMenuView"
+import FileContextMenu from "./FilecontextMenu/FileContextMenu"
 export var contextx = 0
 export var contexty = 0
 
@@ -21,11 +22,14 @@ const HandleContext = ( e:any, settcoxtmenu:any) =>
     e.preventDefault()
     contextx = e.clientX 
     contexty = e.clientY
-    console.log(contextx, contexty , "desktop")
     settcoxtmenu(false)
     setTimeout(() => {
         settcoxtmenu(true)
     }, 0)
+    const menu = document.getElementById("filecontex") ;
+
+    if (menu && !menu.classList.contains("hidden"))
+        menu.classList.add("hidden")
 }
 const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSystem:any}) =>
 {
@@ -36,7 +40,13 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
     useEffect(() => {
         if (!winref.current)
             return ;
-        winref.current.addEventListener("click", (e) => setContextMenu(false))
+        winref.current.addEventListener("click", (e) => {
+            setContextMenu(false);
+            const menu = document.getElementById("filecontex") ;
+ 
+            if (menu && !menu.classList.contains("hidden"))
+                menu.classList.add("hidden")
+    })
         winref.current.addEventListener("contextmenu", (e) => HandleContext( e,  setContextMenu))
 
         return () =>
@@ -51,36 +61,35 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
     
     return (
         <div ref={winref} id="Desktop" className="w-full h-full overflow-hidden  flex items-center">
+            <div className="w-full h-full overflow-hidden">
+
             {FileSystem.map((element: file, index: number) => (
-                    <GenerateEntries key={element.id} entries={element} index={index} size={size} />
+                <GenerateEntries menu={setContextMenu} key={element.id} entries={element} SetFileSystem={SetFileSystem} size={size} />
                 ))}
             {
                 contextMenu ? <>
-                    <ContextMenuNewMenu  setters={{    setters: setContextMenu, SetFileSystem:SetFileSystem}}/>
+                    <ContextMenuNewMenu  setters={{ContextMenu: setContextMenu, SetFileSystem:SetFileSystem}}/>
                     <ContextMenuViewMenu  setter={setsize}/>
                     <ContextMenu  />
                 </>
                 :null
             }
+            <FileContextMenu />
+            </div>
         </div>
     )
 }
 
 
 
-const SmallRightClick =  (e: Event) => {
-    e.stopPropagation()
-    alert("file click")
-} 
 
-const GenerateEntries = ({ entries, index, size }: { entries: file, index: number, size: number }) => {
+const GenerateEntries = ({menu, entries, size, SetFileSystem }: {menu:any, entries: file, size: number, SetFileSystem: any }) => {
     const refer = useRef<HTMLDivElement>(null);
-    const click = useState<boolean>(false)
 
     useEffect(() => {
         if (!refer.current)
             return
-        const handler = new FileHandler(refer.current, entries, {})
+        const handler = new FileHandler(refer.current, entries, SetFileSystem, menu)
         return () =>
         {
             handler.removerLisners()
@@ -100,6 +109,8 @@ const GenerateEntries = ({ entries, index, size }: { entries: file, index: numbe
         </div>
     );
 };
+
+
 const getIcon  = (ico: icon) => {
     switch (ico)
     {
