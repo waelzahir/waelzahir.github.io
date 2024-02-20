@@ -9,23 +9,37 @@ export var highestid = { id :0}
 
 function App() {
   const [FileSystem, SetFileSystem] = useState<file []>(new Array())
+  const Metadata = useState(0) 
   useEffect( () => {
-    const files = localStorage.getItem("files") 
-      if (files == null)
-      {
-        SetFileSystem(Desktop)
-        localStorage.setItem("files", JSON.stringify(Desktop))
-        highestid.id = Math.max(...Desktop.map(obj => obj.id));
-        highestid.id++;
-      }
-      else
-      {
-        const existing: file[] = JSON.parse(files)
-        SetFileSystem(existing) 
-        highestid.id = Math.max(...existing.map(obj => obj.id));
-        highestid.id++;
+    if (!localStorage.length)
+        localStorage.setItem("Metadata", JSON.stringify(Metadata[0]))
+    if (localStorage.length < 2)
+    {
+      SetFileSystem(Desktop)
+      Desktop.map((file:file) => localStorage.setItem(file.id.toString(), JSON.stringify(file)))
+      highestid.id = Math.max(...Desktop.map(obj => obj.id));
+      highestid.id++;
 
-      }
+    }
+    else
+    {
+      const objects : file[] = []
+      Object.keys(localStorage).map((key:string)=> {
+        let file: string | null = "";
+        if (Number.isInteger(+key))
+          file = localStorage.getItem(key)
+        if ( typeof file === "string" && file.length)
+          objects.push(JSON.parse(file))
+        return ""
+      })
+      SetFileSystem(objects)
+      highestid.id = Math.max(...objects.map(obj => obj.id));
+      highestid.id++;
+
+    }
+ 
+
+
       
   }, [])
 

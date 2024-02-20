@@ -11,9 +11,11 @@ import text from "../../assets/text.png"
 import { file, filetype, icon, state } from "../../types/ProgramType"
 import { statedef } from "../../Metadata/projects"
 import { highestid } from "../../App"
+import { FileHandler } from "./FileHandler"
 
 
-
+var contextx = 0
+var contexty = 0
 const ContextMenuNewMenu= ({activated}: {activated: boolean}) =>{
     return (
         <div id="NewOption" className={`${activated ? "": "hidden"} absolute  bg-contextMenu w-44  flex flex-col items-center border-[1px] border-Contextborder font-tahoma`}>
@@ -76,13 +78,9 @@ const ContextMenu = ({activated}: {activated: boolean}) => {
   
     return (
         <div id="ContextMenu" className={`${activated ? "" : "hidden"} w-64  bg-contextMenu absolute border-[1px] border-Contextborder flex flex-col items-center font-tahoma`}>
-                <div className="w-full flex flex-col justify-around h-28 items-center">
+                <div className="w-full flex flex-col justify-around h-20 items-center">
                     <div id="ContextMenuViewButton" className="w-[99%] h-8 flex flex-row justify-between items-center hover:bg-ContextSelection">
                         <h1 className="pl-4">View</h1>
-                        <div className="pr-2 w-0 h-0  border-t-[5px] border-t-transparent border-l-[5px] border-l-black border-b-[5px] border-b-transparent"></div>
-                    </div>
-                    <div id="ContextMenuSortButton" className="w-[99%] h-8 flex flex-row justify-between items-center  hover:bg-ContextSelection">
-                        <h1 className="pl-4">Sort By</h1>
                         <div className="pr-2 w-0 h-0  border-t-[5px] border-t-transparent border-l-[5px] border-l-black border-b-[5px] border-b-transparent"></div>
                     </div>
                     <h1 className="w-full h-8 pl-4 text-gray-500">Refresh</h1>
@@ -107,16 +105,16 @@ const ContextMenu = ({activated}: {activated: boolean}) => {
     )
 }
 const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
-    console.log("here", element, e)
     if (!element)
         return 
     switch (e.target.id){
         case "Desktop":
+            contextx = e.clientX 
+            contexty = e.clientY
             const ContextMenu = document.getElementById("ContextMenu");
             if (!ContextMenu)
                 break ;
             setters.NewMenu(false)
-            setters.setContextMenuSort(false)
             setters.ContextMenu(false)
             setters.setcontextMenuView(false)
             ContextMenu.style.left = `${e.clientX + ContextMenu.offsetWidth < element?.offsetWidth ? e.clientX :  element?.offsetWidth - ContextMenu.offsetWidth}px`
@@ -125,7 +123,6 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
             break;
         case "ContextMenuNewButton":
             setters.NewMenu(true)
-            setters.setContextMenuSort(false)
             setters.setcontextMenuView(false)
             const NewMenu = document.getElementById("NewOption");
             if (!NewMenu)
@@ -133,19 +130,8 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
             NewMenu.style.left = `${element.getBoundingClientRect().left + element.offsetWidth + NewMenu.offsetWidth < window.innerWidth ? element.getBoundingClientRect().left + element.offsetWidth  - 5: element.getBoundingClientRect().left - NewMenu.offsetWidth + 5}px`
             NewMenu.style.top = `${element.getBoundingClientRect().top}px`
             break;
-        case "ContextMenuSortButton":
-                setters.setContextMenuSort(true)
-                setters.setcontextMenuView(false)
-                setters.NewMenu(false)
-                const SortMenu = document.getElementById("SortOption");
-                if (!SortMenu)
-                    break ;
-                SortMenu.style.left = `${element.getBoundingClientRect().left + element.offsetWidth + SortMenu.offsetWidth < window.innerWidth ? element.getBoundingClientRect().left + element.offsetWidth  - 5: element.getBoundingClientRect().left - SortMenu.offsetWidth + 5}px`
-                SortMenu.style.top = `${element.getBoundingClientRect().top}px`
-                break;
         case "ContextMenuViewButton":
             setters.setcontextMenuView(true)
-            setters.setContextMenuSort(false)
             setters.NewMenu(false)
             const ViewMenu = document.getElementById("ViewOption");
             if (!ViewMenu)
@@ -154,9 +140,9 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
                 ViewMenu.style.top = `${element.getBoundingClientRect().top}px`
                 break;
         case "NewFile":
-            highestid.id++
             const text: file = {
                 id:highestid.id,
+                parent:0,
                 name: "untitled text",
                 content: "",
                 description: "untitled text",
@@ -165,78 +151,48 @@ const Apply = (e:any, element: HTMLElement | null, setters:any) =>{
                 visibilityindex: -1,
                 windowState: statedef
             }
-            setters.SetFileSystem((fileSystem: file[]) => {
-                fileSystem.push(text)
-                localStorage.setItem("files", JSON.stringify(fileSystem))
-                 return fileSystem.slice()
-                })
+            text.windowState.left = contextx
+            text.windowState.top= contexty
+            localStorage.setItem(text.id.toString(), JSON.stringify(text))
+            setters.SetFileSystem((fileSystem: file[]) => {fileSystem.push(text);return fileSystem.slice()})
             setters.NewMenu(false)
             setters.ContextMenu(false)
-            break;
-        case "filename":
-                setters.SetFileSystem((fileSystem: file[]) => {
-                    const newfiles = fileSystem.sort((a:file, b:file) => a.name.localeCompare(b.name))
-                    localStorage.setItem("files", JSON.stringify(newfiles))
-                     return newfiles.slice()
-                    })
-                    setters.setContextMenuSort(false)
-                    setters.ContextMenu(false)
-            break;
-            case "filenamerev":
-                setters.SetFileSystem((fileSystem: file[]) => {
-                    const newfiles = fileSystem.sort((a:file, b:file) => b.name.localeCompare(a.name))
-                    localStorage.setItem("files", JSON.stringify(newfiles))
-                     return newfiles.slice()
-                    })
-                    setters.setContextMenuSort(false)
-                    setters.ContextMenu(false)
-            break;
-            case "filetype":
-                setters.SetFileSystem((fileSystem: file[]) => {
-                    const newfiles = fileSystem.sort((a:file, b:file) => a.type.localeCompare(b.type))
-                    localStorage.setItem("files", JSON.stringify(newfiles))
-                     return newfiles.slice()
-                    })
-                    setters.setContextMenuSort(false)
-                    setters.ContextMenu(false)
-            break;
-            case "NewFolder":
-                highestid.id++;
-
-                const file: file = {
-                    id:highestid.id,
-                    name: "new Folder",
-                    content: new Array(),
-                    description: "empty Folder",
-                    icon: icon.Folder,
-                    type: filetype.Folder,
-                    visibilityindex: -1,
-                    windowState: statedef
-                }
-                setters.SetFileSystem((fileSystem: file[]) => {
-                    fileSystem.push(file)
-                    localStorage.setItem("files", JSON.stringify(fileSystem))
-                     return fileSystem.slice()
-                    })
+            highestid.id++
+                break;
+        case "NewFolder":
+            const file: file = {
+                parent:0,
+                id:highestid.id,
+                name: "new Folder",
+                content: new Array(),
+                description: "empty Folder",
+                icon: icon.Folder,
+                type: filetype.Folder,
+                visibilityindex: -1,
+                windowState: statedef
+            }
+            file.windowState.left = contextx
+            file.windowState.top= contexty
+            localStorage.setItem(file.id.toString(), JSON.stringify(file))
+            setters.SetFileSystem((fileSystem: file[]) => {fileSystem.push(file);return fileSystem.slice()})
+            highestid.id++;
             setters.NewMenu(false)
             setters.ContextMenu(false)
-            break;
-            case "Small":
-                setters.setsize(1)
                 break;
-            case "Medium":
-                setters.setsize(2)
+        case "Small":
+            setters.setsize(1)
                 break;
-            case "Large":
-                setters.setsize(3)
+        case "Medium":
+            setters.setsize(2)
                 break;
-            case "icon":
-                console.log(e.targer)
+        case "Large":
+            setters.setsize(3)
                 break;
         default:
             return 
     }
 }
+
 const GlobalDesktopEvents = (e:any, setters:any) =>
 {
   e.stopPropagation()
@@ -245,7 +201,13 @@ const GlobalDesktopEvents = (e:any, setters:any) =>
     return
   const element = document.getElementById(e.target.id)    
   console.log(e.target.id)
+  if (e.target.id === "Desktop")
+  {
+      contextx = 0;
+      contexty = 0;
+  }
   Apply(e, element, setters)
+  
 
 }
 const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSystem:any}) =>
@@ -253,31 +215,28 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
     const [size, setsize] = useState(1)
     const [contextMenu, setContextMenu] = useState(false)
     const [contextMenuNew, setContextMenuNew] = useState(false)
-    const [contextMenuSort, setContextMenuSort] = useState(false)
     const [contextMenuView, setcontextMenuView] = useState(false)
     
 
 
     useEffect(() => {
-        window.addEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem ,setContextMenuSort: setContextMenuSort, setcontextMenuView:setcontextMenuView, setsize}))
+        window.addEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem , setcontextMenuView:setcontextMenuView, setsize}))
+
         return () =>
         {
-          window.removeEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem,setContextMenuSort: setContextMenuSort, setcontextMenuView:setcontextMenuView, setsize}))
+          window.removeEventListener("click", (e) => GlobalDesktopEvents(e, {ContextMenu: setContextMenu, NewMenu: setContextMenuNew, SetFileSystem:SetFileSystem, setcontextMenuView:setcontextMenuView, setsize}))
         }
     },[])
       
     
     return (
-        <div  id="Desktop" className="w-full h-full overflow-hidden ">
-            <div className="h-full  w-0 flex flex-col flex-wrap ">
+        <div  id="Desktop" className="w-full h-full overflow-hidden  flex items-center">
             {FileSystem.map((element: file, index: number) => (
                     <GenerateEntries key={element.id} entries={element} index={index} size={size} />
                 ))}
             <ContextMenu activated={contextMenu}/>
             <ContextMenuNewMenu activated={contextMenuNew}/>
-            <ContextMenuSortMenu activated={contextMenuSort}/>
             <ContextMenuViewMenu activated={contextMenuView}/>
-            </div>
         </div>
     )
 }
@@ -288,26 +247,25 @@ const SmallRightClick =  (e: Event) => {
     e.stopPropagation()
     alert("file click")
 } 
-const FileHandle = (e:MouseEvent) =>
-{
-    e.preventDefault()
-    e.stopPropagation()
 
-}
 const GenerateEntries = ({ entries, index, size }: { entries: file, index: number, size: number }) => {
     const refer = useRef<HTMLDivElement>(null);
+    const click = useState<boolean>(false)
+
     useEffect(() => {
-        refer.current?.addEventListener("click", (e) => FileHandle(e))
+        if (!refer.current)
+            return
+        const handler = new FileHandler(refer.current, entries, {})
         return () =>
         {
-            refer.current?.removeEventListener("click", (e) => FileHandle(e))
+            handler.removerLisners()
         }
         }, []);
     const icon = getIcon(entries.icon);
     const fited = size === 1 ? 56 : size === 2 ? 70 : 90;
 
     return (
-        <div ref={refer} className="relative overflow-hidden w-20 h-20 flex flex-col items-center  hover:bg-blue-200 rounded z-50" style={{ height: `${80 + size * 10}px` }}>
+        <div ref={refer} className="absolute overflow-hidden w-20 h-20 flex flex-col items-center  hover:bg-blue-200 rounded z-50" style={{ height: `${80 + size * 10}px` }}>
             <div className="w-full   flex justify-center items-center">
                 <img style={{ height: `${fited}px` }} src={icon} alt={entries.name} />
             </div>

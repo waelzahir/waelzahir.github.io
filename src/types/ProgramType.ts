@@ -12,13 +12,14 @@ export enum icon  {
 }
 export type state ={
     opened: boolean,
-    width: number,
-    height: number,
-    x:number,
-    y:number
+    top:number,
+    left:number
+    bottom:number,
+    right:number,
 }
 export type file = {
     id:number
+    parent:number
     icon:icon,
     windowState :state,
     visibilityindex: number

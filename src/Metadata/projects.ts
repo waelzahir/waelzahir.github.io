@@ -2,16 +2,23 @@ import { file, filetype, icon, state } from "../types/ProgramType";
 
 export const statedef :state = {
     opened:false,
-    height:0,
-    width:0,
-    x:0,
-    y:0
+    top: 0,
+    left: 0,
+    bottom:0,
+    right:0,
 }
 export const Desktop: file [] = [
     {
         id:1,
+        parent:0,
         icon: icon.Folder,
-        windowState:statedef,
+        windowState:{
+            opened:false,
+            top: 10,
+            left: 10,
+            bottom:0,
+            right:0,
+        },
         visibilityindex: -1,
         name: "Projects",
         type: filetype.Folder,
@@ -21,8 +28,15 @@ export const Desktop: file [] = [
     ,
     {
         id:2,
+        parent:0,
         icon: icon.Folder,
-        windowState:statedef,
+        windowState:{
+            opened:false,
+            top: 110,
+            left: 10,
+            bottom:0,
+            right:0,
+        },
         visibilityindex: -1,
         name: "tools",
         type: filetype.Folder,
@@ -33,8 +47,16 @@ export const Desktop: file [] = [
     ,
     {
         id:3,
+        parent:0,
+
         icon: icon.Internet,
-        windowState:statedef,
+        windowState:{
+            opened:false,
+            top: 220,
+            left: 10,
+            bottom:0,
+            right:0,
+        },
         visibilityindex: -1,
         name: "Internet",
         type: filetype.Exec,
