@@ -49,7 +49,7 @@ const ProgramIcon = ({menu, entries, size, SetFileSystem }: {menu:any, entries: 
                 <img style={{ height: `${fited}px` }} src={icon} alt={entries.name} />
             </div>
             <div>
-                <h1 className="text-start font-tahoma text-xs font-bold text-black">{entries.name}</h1>
+                <h1 className="text-start font-tahoma text-xs font-bold text-black truncate">{entries.name}</h1>
             </div>
         </div>
     );

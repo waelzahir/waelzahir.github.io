@@ -48,7 +48,30 @@ const DeleteFile = (e:MouseEvent, Memory:any, setClipboard :any, SetFileSystem:a
             }
         return state.slice()})
 }
+const RenameFile  = (e:MouseEvent, Memory:any, setClipboard :any, SetFileSystem:any) => {
+    e.preventDefault()
+    e.stopPropagation()
 
+    const el = document.getElementById("FileRename")
+    setTimeout(() => {
+        if (el && el.classList.contains("hidden"))
+            el.classList.remove("hidden")
+
+    }, 0)
+    if (el && !el.classList.contains("hidden"))
+       {
+           el.style.left = `${e.clientX  - (el?.offsetWidth / 2)}px`
+           el.style.top = `${e.clientY  - (el?.offsetHeight / 2)}px`
+           el.classList.add("hidden")
+
+       }
+
+    // Memory[1]((file: file[]) => {
+
+    //     // const newState()
+    // })
+
+}
 const FileContextMenu =({setClipboard, SetFileSystem}:{setClipboard:any, SetFileSystem :any}) =>
 {
     const Memory = useContext(MemProviderContext)
@@ -63,7 +86,7 @@ const FileContextMenu =({setClipboard, SetFileSystem}:{setClipboard:any, SetFile
         open.addEventListener("click", (e) => openfile(e,Memory))
         cut.addEventListener("click", (e) => addtoclipboard(e, Memory, setClipboard))
         Delete.addEventListener("click", (e) => DeleteFile(e, Memory, setClipboard, SetFileSystem))
-        // Rename.addEventListener
+        Rename.addEventListener("click", (e) => RenameFile(e, Memory, setClipboard, SetFileSystem))
         // Properites.addEventListener
         return () =>{
             if (!open || !cut || !Delete || !Rename || !Properites)

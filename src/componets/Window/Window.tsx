@@ -9,6 +9,7 @@ import ContextMenuNewMenu from "./contextmenu/contextMenuNew"
 import ContextMenuViewMenu from "./contextmenu/contextMenuView"
 import FileContextMenu from "./FilecontextMenu/FileContextMenu"
 import ProgramIcon from "./Files/file"
+import RenameFile from "./FilecontextMenu/RenameFile"
 export var contextx = 0
 export var contexty = 0
 
@@ -29,11 +30,11 @@ const HandleContext = ( e:any, settcoxtmenu:any) =>
 }
 const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSystem:any}) =>
 {
+    
     const winref = useRef<HTMLDivElement>(null)
     const [size, setsize] = useState(1)
     const [contextMenu, setContextMenu] = useState(false)
     const [clipboard, setClipboard] = useState<file  | null>(null)
-    console.log(clipboard)
 
     useEffect(() => {
         if (!winref.current)
@@ -73,6 +74,7 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
                 :null
             }
             <FileContextMenu SetFileSystem={SetFileSystem} setClipboard={setClipboard} />
+            <RenameFile SetFileSystem={SetFileSystem} />
             </div>
         </div>
     )
