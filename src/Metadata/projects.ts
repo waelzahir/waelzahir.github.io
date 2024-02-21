@@ -11,6 +11,8 @@ export const Desktop: file [] = [
     {
         id:1,
         parent:0,
+        level: 0,
+
         icon: icon.Folder,
         windowState:{
             opened:false,
@@ -29,6 +31,8 @@ export const Desktop: file [] = [
     {
         id:2,
         parent:0,
+        level: 0,
+
         icon: icon.Folder,
         windowState:{
             opened:false,
@@ -48,6 +52,7 @@ export const Desktop: file [] = [
     {
         id:3,
         parent:0,
+        level: 0,
 
         icon: icon.Internet,
         windowState:{
@@ -65,7 +70,8 @@ export const Desktop: file [] = [
     }
     ,
     {
-        id:4,
+        id:-1,
+        level: 0,
         parent:0,
         icon: icon.Trash,
         windowState:{

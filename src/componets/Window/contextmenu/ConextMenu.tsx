@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import ContextMenuNewMenu from "./contextMenuNew";
-import ContextMenuViewMenu from "./contextMenuView";
+import { useEffect,  } from "react";
+
 import { contextx, contexty } from "../Window";
 
 const ContextMenu = () => {  

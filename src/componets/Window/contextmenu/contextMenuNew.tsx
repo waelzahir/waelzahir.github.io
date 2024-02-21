@@ -8,6 +8,8 @@ import { contextx, contexty } from "../Window"
 const newFolder = (setters:any) => {
     const file: file = {
         parent:0,
+        level:0,
+
         id:highestid.id,
         name: "new Folder",
         content: new Array(),
@@ -29,6 +31,7 @@ const newFile = (setters:any) =>
     const text: file = {
         id:highestid.id,
         parent:0,
+        level:0,
         name: "untitled text",
         content: "",
         description: "untitled text",

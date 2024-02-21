@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Start from "../../assets/start.png"
+import MemProviderContext from "../../Context/MemContext";
+import { ProgramState } from "../../types/ProgramState";
 const Clock = () => {
 	const [time, setTime] = useState(new Date().toLocaleTimeString());
 	useEffect(() => {
@@ -10,8 +12,16 @@ const Clock = () => {
 	}, []);
 	return <p className={`text-white font-tahoma text-xl select-none`}>{time}</p>;
 }
+const Tab = ({state}: {state : ProgramState}) => {
+    return (
+        <div>
+
+        </div>
+    )
+}
 const NaviBar = () =>
 {
+    const Memory = useContext(MemProviderContext)
     return (
         <div  id="navibar" className="h-12 w-full flex flex-row justify-between items-center">
             <div className="h-full bg-StartButton border-t-[3px] border-gray-700 w-52  flex flex-row items-center justify-center hover:bg-green-700 rounded-r-[20px] border-r-[2px] border-r-gray-700 ">
@@ -23,7 +33,8 @@ const NaviBar = () =>
                 </div>
             </div>
             <div className="h-full w-full">
-
+                
+                {Memory && Array.isArray(Memory[0]) ? Memory[0].map((state:ProgramState) => <Tab state={state}/>) : null}
             </div>
             <div className="h-full w-64 flex justify-around items-center border-t-[3px] border-gray-700 bg-StateBar">
             

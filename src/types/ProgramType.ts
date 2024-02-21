@@ -21,7 +21,8 @@ export type state ={
 }
 export type file = {
     id:number
-    parent:number
+    parent:number,
+    level:number
     icon:icon,
     windowState :state,
     visibilityindex: number
