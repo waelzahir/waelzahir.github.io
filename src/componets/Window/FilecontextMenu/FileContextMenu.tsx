@@ -28,6 +28,10 @@ const openfile = (e:MouseEvent , operand:file| null , Memory:any, setOperand : a
         state.push(execfile(operand))
     return state.slice()})
     setOperand(null)
+    const menu = document.getElementById("filecontex") ;
+
+    if (menu && !menu.classList.contains("hidden"))
+            menu.classList.add("hidden")
 }
 const addtoclipboard = (e:MouseEvent ,setoperand:any, setClipboard:any) =>
 {
@@ -38,11 +42,18 @@ const addtoclipboard = (e:MouseEvent ,setoperand:any, setClipboard:any) =>
             setClipboard(f)
         return null
     })
+    const menu = document.getElementById("filecontex") ;
+
+    if (menu && !menu.classList.contains("hidden"))
+            menu.classList.add("hidden")
 }
 const DeleteFile = (e:MouseEvent, setClipboard :any, SetFileSystem:any ,operand :file | null, setoperand: any) =>{
     e.preventDefault()
     e.stopPropagation()
-    console.log(operand , "operand is")
+    const menu = document.getElementById("filecontex") ;
+
+    if (menu && !menu.classList.contains("hidden"))
+            menu.classList.add("hidden")
     if (!operand || operand.id === -1)
         return 
     setClipboard((file:file) => file && file.id == operand.id ? null : file)

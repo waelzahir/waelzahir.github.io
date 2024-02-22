@@ -65,7 +65,8 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
         }
     },[])
       
-    console.log(operand , "operand is")
+    console.log("Operand", operand )
+    console.log("clipboard", clipboard)
     return (
         <div ref={winref} id="Desktop" className="w-full h-full overflow-hidden  flex items-center">
             <div className="w-full h-full overflow-hidden">

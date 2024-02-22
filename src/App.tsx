@@ -47,7 +47,9 @@ function App() {
     
   }, [])
 
-  console.log(Memory[0])
+  console.log("memory",Memory[0])
+  console.log("file system", FileSystem)
+
 
   return ( 
     <div className="select-none max-w-full w-full h-screen flex flex-col overflow-hidden">

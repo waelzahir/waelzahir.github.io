@@ -73,7 +73,6 @@ export class FileHandler {
         this.menu.style.top = `${e.clientY +  this.menu.offsetHeight < desktop?.offsetHeight ? e.clientY :  desktop?.offsetHeight -  this.menu.offsetHeight}px`
         this.menu.classList.remove("hidden")
         this.setoperand(this.file )
-        console.log("sett foe context", this.file)
        
     }
     getinitState() : ProgramState
