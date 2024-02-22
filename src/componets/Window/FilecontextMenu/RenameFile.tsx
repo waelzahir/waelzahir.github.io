@@ -7,6 +7,35 @@ const   RenameFile =  ({SetFileSystem,  operand, setoperand}:{ SetFileSystem: an
     let  name = file ? file.name: ""
     useEffect(()=>{
         setname(name)
+        const renmen = document.getElementById("FileRename")
+        if (renmen)
+            renmen.addEventListener("click", (e) => {
+                e.stopPropagation()
+            e.preventDefault()
+            })
+        const rerem = document.getElementById("renremove")
+            if (rerem)
+            rerem.addEventListener("click", (e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                document.getElementById("FileRename")?.classList.add("hidden")
+                setname("")
+                })
+        return () =>{
+            if (renmen)
+            renmen.removeEventListener("click", (e) => {
+                e.stopPropagation()
+            e.preventDefault()
+            })
+            const rerem = document.getElementById("renremove")
+            if (rerem)
+            rerem.removeEventListener("click", (e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                document.getElementById("FileRename")?.classList.add("hidden")
+                setname("")
+                })
+        }
         
     },[name])
     const changeName = (e:any) =>{
@@ -24,19 +53,14 @@ const   RenameFile =  ({SetFileSystem,  operand, setoperand}:{ SetFileSystem: an
         setoperand(null)
 
     }
-    const remove = (e:any) =>
-    {
-        document.getElementById("FileRename")?.classList.add("hidden")
-        setname("")
-    
-    }
+   
     return (
         <div id="FileRename" className=" hidden w-48 flex absolute  flex-col justify-around items-center h-24 bg-contextMenu rounded-xl">
             <div className="flex flex-row justify-around items-center w-full">
             <h1 className="font-tahoma font-bold text-lg">
                 Rename File
             </h1>
-            <h1 onClick={(e) => remove(e) } className=" cursor-pointer text-center bg-red-600 border-white w-6 hover:font-bold"> X </h1>
+            <h1 id="renremove" className=" cursor-pointer text-center bg-red-600 border-white w-6 hover:font-bold"> X </h1>
             </div>
             <input onKeyDown={(e)=> changeName(e)} onChange={(e) => setname(e.target.value)} className="w-36 border-2 font-tahoma font-bold" value={sname} type="text" />
         </div>

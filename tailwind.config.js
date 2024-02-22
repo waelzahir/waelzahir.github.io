@@ -7,7 +7,9 @@ export default {
   theme: {
     extend: {
       colors:{
-        "XpBar": "#0167C5",
+        "xpBarborder" : "#3c79e4",
+        "XpBar": "#245edb",
+        "openTab": "#3d7ff7",
         "StateBar": "#0b9bf3",
         "StartButton" : "#1b8c18",
         "contextMenu": "#F4F4F4",

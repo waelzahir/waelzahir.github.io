@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import Start from "../../assets/start.png"
 import MemProviderContext from "../../Context/MemContext";
 import { ProgramState } from "../../types/ProgramState";
+import { getIcon } from "../Window/Files/file";
 const Clock = () => {
 	const [time, setTime] = useState(new Date().toLocaleTimeString());
 	useEffect(() => {
@@ -14,8 +15,12 @@ const Clock = () => {
 }
 const Tab = ({state}: {state : ProgramState}) => {
     return (
-        <div>
-
+        <div className="h-[95%] min-w-8 w-52 bg-openTab border-[1px] border-XpBar rounded flex flex-row items-center justify-around cursor-pointer hover:bg-black  hover:bg-opacity-10" >
+              
+            <img className="h-[90%]" src={getIcon(state.file.icon)} alt="" />
+            <h1 className=" w-36 font-tahoma text-white font-medium truncate cursor-pointer">
+                {state.file.name}
+            </h1>
         </div>
     )
 }
@@ -23,20 +28,20 @@ const NaviBar = () =>
 {
     const Memory = useContext(MemProviderContext)
     return (
-        <div  id="navibar" className="h-12 w-full flex flex-row justify-between items-center">
-            <div className="h-full bg-StartButton border-t-[3px] border-gray-700 w-52  flex flex-row items-center justify-center hover:bg-green-700 rounded-r-[20px] border-r-[2px] border-r-gray-700 ">
-                <div className="flex flex-row justify-around items-center h-full w-[60%]">
+        <div  id="navibar" className="h-12 w-full flex flex-row justify-between items-center bg-XpBar border-t-4 border-xpBarborder cursor-pointer">
+            <div className="h-full bg-StartButton  w-52  flex flex-row items-center justify-start hover:bg-green-700 rounded-r-[15px] ">
+                <div className="flex flex-row justify-around items-center h-full w-[80%]">
                     <img className="h-8" src={Start}/>
                     <h1 className="font-tahoma font-bold text-2xl text-white">
                         Start
                     </h1>
                 </div>
             </div>
-            <div className="h-full w-full">
+            <div className="mx-6 h-full w-full flex flex-row items-center gap-x-2 overflow-x-scroll">
                 
                 {Memory && Array.isArray(Memory[0]) ? Memory[0].map((state:ProgramState) => <Tab state={state}/>) : null}
             </div>
-            <div className="h-full w-64 flex justify-around items-center border-t-[3px] border-gray-700 bg-StateBar">
+            <div className="h-full w-64 flex justify-around items-center  bg-StateBar">
             
                 <div className="pr-2 w-0 h-0  border-t-[5px] border-t-transparent border-r-[5px] border-r-white border-b-[5px] border-b-transparent"></div>
                 <Clock/>

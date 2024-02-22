@@ -9,7 +9,7 @@ import { FileHandler } from "./FileHandler";
 import MemProviderContext from "../../../Context/MemContext";
 
 
-const getIcon  = (ico: icon) => {
+export const getIcon  = (ico: icon) => {
     switch (ico)
     {
         case icon.Folder:
