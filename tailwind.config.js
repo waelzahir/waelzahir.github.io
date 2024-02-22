@@ -6,6 +6,7 @@ export default {
   ],
   theme: {
     extend: {
+    
       colors:{
         "xpBarborder" : "#3c79e4",
         "XpBar": "#245edb",

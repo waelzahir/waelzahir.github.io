@@ -4,12 +4,15 @@ import Internet from "../../../assets/Internet.png"
 import Explorer from "../../../assets/Expolorer.png"
 import text from "../../../assets/text.png"
 import Trash from "../../../assets/trash.png"
+import fullTrash from "../../../assets/TrashFull.png"
+
 import { useContext, useEffect, useRef, useState } from "react";
 import { FileHandler } from "./FileHandler";
 import MemProviderContext from "../../../Context/MemContext";
 
 
 export const getIcon  = (ico: icon) => {
+    
     switch (ico)
     {
         case icon.Folder:
@@ -41,7 +44,7 @@ const ProgramIcon = ({menu, entries, size,operand, setoperand }: {menu:any, entr
             handler.removerLisners()
         }
         }, []);
-    const icon = getIcon(entries.icon);
+    const icon =  entries.id === -1 && entries.content.length ?fullTrash :getIcon(entries.icon);
     const fited = size === 1 ? 56 : size === 2 ? 70 : 90;
 
     return (

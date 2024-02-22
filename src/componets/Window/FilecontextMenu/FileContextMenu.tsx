@@ -10,7 +10,7 @@ const execfile = (file:file)  : ProgramState =>
         height: 500,
         width:500,
         x:0,
-        y: 0
+        y: 0,
     }
     return {
        file: file,

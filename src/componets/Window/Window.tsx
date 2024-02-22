@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 
 
 
@@ -10,6 +10,9 @@ import ContextMenuViewMenu from "./contextmenu/contextMenuView"
 import FileContextMenu from "./FilecontextMenu/FileContextMenu"
 import ProgramIcon from "./Files/file"
 import RenameFile from "./FilecontextMenu/RenameFile"
+import MemProviderContext from "../../Context/MemContext"
+import { ProgramState } from "../../types/ProgramState"
+import Windows from "./Windows/Windows"
 export var contextx = 0
 export var contexty = 0
 
@@ -33,6 +36,7 @@ const HandleContext = ( e:any, settcoxtmenu:any) =>
 }
 const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSystem:any}) =>
 {
+    const Memory = useContext(MemProviderContext)
     
     const winref = useRef<HTMLDivElement>(null)
     const [size, setsize] = useState(1)
@@ -71,6 +75,9 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
         <div ref={winref} id="Desktop" className="w-full h-full overflow-hidden  flex items-center">
             <div className="w-full h-full overflow-hidden">
 
+            {
+                Memory && Memory[0].length ? Memory[0].map((state: ProgramState) => <Windows  state={state}/>) : null
+            }
             {FileSystem.map((element: file) => (
                 <ProgramIcon menu={setContextMenu} key={element.id} entries={element} operand={operand} setoperand={setoperand} size={size} />
                 ))}

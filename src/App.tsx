@@ -6,7 +6,7 @@ import { file } from "./types/ProgramType";
 import { Desktop } from "./Metadata/projects";
 import { ProgramState } from "./types/ProgramState";
 import MemProviderContext from "./Context/MemContext";
-export var highestid = { id :0} 
+export var highestid = { id :0, zindex: 100} 
 
 
 function App() {
