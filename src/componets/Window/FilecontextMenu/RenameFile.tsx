@@ -1,15 +1,13 @@
-import { useContext, useEffect, useState } from "react"
-import MemProviderContext from "../../../Context/MemContext"
+import {  useEffect, useState } from "react"
 import { file } from "../../../types/ProgramType"
-import { ExecutionState, ProgramState } from "../../../types/ProgramState"
 
-const   RenameFile =  ({SetFileSystem}:{ SetFileSystem: any}) =>  {
-    const Meemory = useContext(MemProviderContext)
+const   RenameFile =  ({SetFileSystem,  operand, setoperand}:{ SetFileSystem: any , operand:file|null, setoperand: any}) =>  {
     const [sname , setname] = useState("")
-    const file = Meemory && Meemory[0].length ? Meemory[0][Meemory[0].length - 1].file: null
+    const file = operand  ? operand : null
     let  name = file ? file.name: ""
     useEffect(()=>{
         setname(name)
+        
     },[name])
     const changeName = (e:any) =>{
         if (!file || e.which != 13)
@@ -23,14 +21,8 @@ const   RenameFile =  ({SetFileSystem}:{ SetFileSystem: any}) =>  {
             return newStr
         })
         document.getElementById("FileRename")?.classList.add("hidden")
+        setoperand(null)
 
-        if (Meemory)
-        Meemory[1]((state: ProgramState[]) => {
-        const memup = state.slice()
-        if (memup[memup.length - 1].state === ExecutionState.staged)
-            memup.pop()
-        return memup
-        } )
     }
     const remove = (e:any) =>
     {
@@ -39,7 +31,7 @@ const   RenameFile =  ({SetFileSystem}:{ SetFileSystem: any}) =>  {
     
     }
     return (
-        <div id="FileRename" className=" hidden w-48 flex  flex-col justify-around items-center h-24 bg-contextMenu rounded-xl">
+        <div id="FileRename" className=" hidden w-48 flex absolute  flex-col justify-around items-center h-24 bg-contextMenu rounded-xl">
             <div className="flex flex-row justify-around items-center w-full">
             <h1 className="font-tahoma font-bold text-lg">
                 Rename File

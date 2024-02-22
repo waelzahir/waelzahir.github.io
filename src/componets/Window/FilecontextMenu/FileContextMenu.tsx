@@ -1,78 +1,84 @@
 import { useContext, useEffect, useState } from "react"
 import MemProviderContext from "../../../Context/MemContext";
-import { ExecutionState, ProgramState } from "../../../types/ProgramState";
+import { ExecutionState, ProgramState, screen } from "../../../types/ProgramState";
 import { file } from "../../../types/ProgramType";
 import { moveFile, recFindIndex, removeFileRecord } from "../../../utils/Recursivefordel";
-const openfile = (e:MouseEvent ,Memory:any) => {
-    e.preventDefault()
-    e.stopPropagation()
-    Memory[1]((state: ProgramState[]) => {
-        if(state[state.length - 1] && state[state.length - 1].state === ExecutionState.staged)
-        state[state.length - 1].state = ExecutionState.opened;
-    return state.slice()})
-}
-const addtoclipboard = (e:MouseEvent ,Memory:any, setClipboard:any) =>
+
+const execfile = (file:file)  : ProgramState =>
 {
-    Memory[1]((state: ProgramState[]) => {
-        if( state.length && state[state.length - 1].state === ExecutionState.staged)
-            {
-                setClipboard(state[state.length -1].file)
-                state.pop()
-            }
-        return state.slice()})
+    const screen :screen = {
+        height: 500,
+        width:500,
+        x:0,
+        y: 0
+    }
+    return {
+       file: file,
+       state: ExecutionState.opened,
+       screen : screen
+    }
 }
-const DeleteFile = (e:MouseEvent, Memory:any, setClipboard :any, SetFileSystem:any) =>{
-    Memory[1]((state: ProgramState[]) => {
-        
-        
-        if( state.length && state[state.length - 1].state === ExecutionState.staged)
-            {
-                const filem = state[state.length-1].file;
-                if (filem.id === -1)
-                    return state;
 
-                setClipboard((file:file) => file && file.id == filem.id ? null : filem)
-                state.pop()
-                SetFileSystem((files: file []) => {
-                    let newstructor :file [] = files.slice()
-                    const indexes : number[] = new Array()
-                    const exist = recFindIndex(newstructor, filem, 0, indexes) 
-                    if (exist)
-                    {
-                        newstructor = removeFileRecord(newstructor, indexes)
-                        newstructor = moveFile( newstructor , -1, filem)
-                    }
-
-                    return newstructor
-                })
-            }
-        return state.slice()})
-}
-const RenameFile  = (e:MouseEvent, Memory:any, setClipboard :any, SetFileSystem:any) => {
+const openfile = (e:MouseEvent , operand:file| null , Memory:any, setOperand : any) => {
     e.preventDefault()
     e.stopPropagation()
-
-    const el = document.getElementById("FileRename")
-    setTimeout(() => {
-        if (el && el.classList.contains("hidden"))
-            el.classList.remove("hidden")
-
-    }, 0)
-    if (el && !el.classList.contains("hidden"))
-       {
-           el.style.left = `${e.clientX  - (el?.offsetWidth / 2)}px`
-           el.style.top = `${e.clientY  - (el?.offsetHeight / 2)}px`
-           el.classList.add("hidden")
-
-       }
-
-    // Memory[1]((file: file[]) => {
-
-    //     // const newState()
-    // })
-
+    if (!operand)
+        return ;
+    Memory[1]((state: ProgramState[]) => {
+        state.push(execfile(operand))
+    return state.slice()})
+    setOperand(null)
 }
-const FileContextMenu =({setClipboard, SetFileSystem}:{setClipboard:any, SetFileSystem :any}) =>
+const addtoclipboard = (e:MouseEvent ,setoperand:any, setClipboard:any) =>
+{
+    e.preventDefault()
+    e.stopPropagation()
+    setoperand((f :file | null) => {
+        if (f)
+            setClipboard(f)
+        return null
+    })
+}
+const DeleteFile = (e:MouseEvent, setClipboard :any, SetFileSystem:any ,operand :file | null, setoperand: any) =>{
+    e.preventDefault()
+    e.stopPropagation()
+    console.log(operand , "operand is")
+    if (!operand || operand.id === -1)
+        return 
+    setClipboard((file:file) => file && file.id == operand.id ? null : file)
+    SetFileSystem((files: file []) => {
+        let newstructor :file [] = files.slice()
+        const indexes : number[] = new Array()
+        const exist = recFindIndex(newstructor, operand, 0, indexes) 
+        if (exist)
+        {
+            newstructor = removeFileRecord(newstructor, indexes)
+            newstructor = moveFile(newstructor , -1, operand)
+        }
+        return newstructor
+    })        
+    setoperand(null)
+}
+const RenameFile  = (e:MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const el = document.getElementById("FileRename")    
+    if (!el)
+        return
+    const menu = document.getElementById("filecontex") ;
+
+    if (menu && !menu.classList.contains("hidden"))
+            menu.classList.add("hidden")
+    setTimeout(() => {
+        if (el.classList.contains("hidden"))
+            el.classList.remove("hidden")
+    }, 0)
+    if (!el.classList.contains("hidden"))
+           el.classList.add("hidden")
+    el.style.left = `${window.innerWidth / 2 - 96}px`
+    el.style.top = `${window.innerHeight / 2 - 48 }px`
+}
+const FileContextMenu =({setClipboard, SetFileSystem, operand,setoperand}:{setClipboard:any, SetFileSystem :any, operand:file|null, setoperand : any}) =>
 {
     const Memory = useContext(MemProviderContext)
     useEffect(() => {
@@ -83,16 +89,20 @@ const FileContextMenu =({setClipboard, SetFileSystem}:{setClipboard:any, SetFile
         const Properites = document.getElementById("Prop");
         if (!open || !cut || !Delete || !Rename || !Properites || !Memory )
             return ;
-        open.addEventListener("click", (e) => openfile(e,Memory))
-        cut.addEventListener("click", (e) => addtoclipboard(e, Memory, setClipboard))
-        Delete.addEventListener("click", (e) => DeleteFile(e, Memory, setClipboard, SetFileSystem))
-        Rename.addEventListener("click", (e) => RenameFile(e, Memory, setClipboard, SetFileSystem))
+        open.addEventListener("click", (e) => openfile(e,operand ,Memory, setoperand))
+        cut.addEventListener("click", (e) => addtoclipboard(e, setoperand, setClipboard))
+        Delete.addEventListener("click", (e) => DeleteFile(e, setClipboard, SetFileSystem ,operand,  setoperand))
+        Rename.addEventListener("click", (e) => RenameFile(e ))
         // Properites.addEventListener
         return () =>{
             if (!open || !cut || !Delete || !Rename || !Properites)
                 return ;
+                open.removeEventListener("click", (e) => openfile(e,operand ,Memory, setoperand))
+                cut.removeEventListener("click", (e) => addtoclipboard(e, setoperand, setClipboard))
+                Delete.removeEventListener("click", (e) => DeleteFile(e, setClipboard, SetFileSystem ,operand,  setoperand))
+                Rename.removeEventListener("click", (e) => RenameFile(e ))
         }
-    }, [])
+    }, [operand])
     return (
         <div id="filecontex" className="hidden absolute w-40 bg-contextMenu font-tahoma flex flex-col items-center z-[50] border-[1px] border-Contextborder">
             <div className="w-[80%] h-8 flex flex-col items-center justify-around">

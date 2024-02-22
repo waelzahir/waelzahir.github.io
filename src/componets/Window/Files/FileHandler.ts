@@ -8,7 +8,8 @@ export class FileHandler {
     file:file
     menuset:any
     MemAccess :any
-    constructor(element: HTMLDivElement, file: file, filessetter:any, menuset:any , MemAccess: any)
+    setoperand: any
+    constructor(element: HTMLDivElement, file: file, setoperand:any, menuset:any , MemAccess: any)
     {
         this.file = file
         this.element = element
@@ -18,8 +19,9 @@ export class FileHandler {
         this.menu = document.getElementById("filecontex") as HTMLDivElement;
         this.menuset = menuset
         this.MemAccess = MemAccess
-        
+        this.setoperand = setoperand
         this.setElementpos()
+
         
     }
   
@@ -35,9 +37,19 @@ export class FileHandler {
         this.menuset(false)
         e.stopPropagation()
         e.preventDefault()
+        const rename = document.getElementById("FileRename") ;
+            if (rename && !rename.classList.contains("hidden"))
+                rename.classList.add("hidden")
         if (this.menu && !this.menu.classList.contains("hidden"))
                 this.menu.classList.add("hidden")
-
+        this.setoperand((f:file | null) => {
+            if (f && f.id === this.file.id)
+            {
+                this.MemAccess[1]((state: ProgramState []) => {state.push(this.getinitState()) ; return state.slice()})
+                return null
+            }
+            return this.file
+            })
     }
     dragelement(e:any)
     {
@@ -50,19 +62,18 @@ export class FileHandler {
         this.menuset(false)
         e.stopPropagation()
         e.preventDefault()
+        
+        const rename = document.getElementById("FileRename") ;
+            if (rename && !rename.classList.contains("hidden"))
+                rename.classList.add("hidden")
         const desktop = document.getElementById("Desktop");
- 
-            if (!desktop || !this.menu)
-                return ;
-                this.menu.style.left = `${e.clientX +  this.menu.offsetWidth < desktop?.offsetWidth ? e.clientX :  desktop?.offsetWidth -  this.menu.offsetWidth}px`
-                this.menu.style.top = `${e.clientY +  this.menu.offsetHeight < desktop?.offsetHeight ? e.clientY :  desktop?.offsetHeight -  this.menu.offsetHeight}px`
-                this.menu.classList.remove("hidden")
-                console.log("hna")
-                if(this.MemAccess)
-                    this.MemAccess[1]((state: ProgramState []) => {
-                    state.push(this.getinitState())
-                    return state.slice()
-                })
+        if (!desktop || !this.menu)
+            return ;
+        this.menu.style.left = `${e.clientX +  this.menu.offsetWidth < desktop?.offsetWidth ? e.clientX :  desktop?.offsetWidth -  this.menu.offsetWidth}px`
+        this.menu.style.top = `${e.clientY +  this.menu.offsetHeight < desktop?.offsetHeight ? e.clientY :  desktop?.offsetHeight -  this.menu.offsetHeight}px`
+        this.menu.classList.remove("hidden")
+        this.setoperand(this.file )
+        console.log("sett foe context", this.file)
        
     }
     getinitState() : ProgramState
@@ -75,7 +86,7 @@ export class FileHandler {
         }
         return {
            file: this.file,
-           state: ExecutionState.staged,
+           state: ExecutionState.opened,
            screen : screen
         }
     }

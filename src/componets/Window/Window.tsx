@@ -27,6 +27,9 @@ const HandleContext = ( e:any, settcoxtmenu:any) =>
 
     if (menu && !menu.classList.contains("hidden"))
         menu.classList.add("hidden")
+    const rename = document.getElementById("FileRename") ;
+        if (rename && !rename.classList.contains("hidden"))
+            rename.classList.add("hidden")
 }
 const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSystem:any}) =>
 {
@@ -34,6 +37,7 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
     const winref = useRef<HTMLDivElement>(null)
     const [size, setsize] = useState(1)
     const [contextMenu, setContextMenu] = useState(false)
+    const [operand, setoperand] = useState<file  | null>(null) 
     const [clipboard, setClipboard] = useState<file  | null>(null)
 
     useEffect(() => {
@@ -42,9 +46,13 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
         winref.current.addEventListener("click", () => {
             setContextMenu(false);
             const menu = document.getElementById("filecontex") ;
- 
+            
             if (menu && !menu.classList.contains("hidden"))
-                menu.classList.add("hidden")
+            menu.classList.add("hidden")
+            const rename = document.getElementById("FileRename") ;
+            if (rename && !rename.classList.contains("hidden"))
+                rename.classList.add("hidden")
+            setoperand(null)
     })
         winref.current.addEventListener("contextmenu", (e) => HandleContext( e,  setContextMenu))
 
@@ -57,24 +65,24 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
         }
     },[])
       
-    
+    console.log(operand , "operand is")
     return (
         <div ref={winref} id="Desktop" className="w-full h-full overflow-hidden  flex items-center">
             <div className="w-full h-full overflow-hidden">
 
             {FileSystem.map((element: file) => (
-                <ProgramIcon menu={setContextMenu} key={element.id} entries={element} SetFileSystem={SetFileSystem} size={size} />
+                <ProgramIcon menu={setContextMenu} key={element.id} entries={element} operand={operand} setoperand={setoperand} size={size} />
                 ))}
             {
                 contextMenu ? <>
-                    <ContextMenuNewMenu  setters={{ContextMenu: setContextMenu, SetFileSystem:SetFileSystem}}/>
+                    <ContextMenuNewMenu   setters={{ContextMenu: setContextMenu, SetFileSystem:SetFileSystem}}/>
                     <ContextMenuViewMenu  setter={setsize}/>
                     <ContextMenu  />
                 </>
                 :null
             }
-            <FileContextMenu SetFileSystem={SetFileSystem} setClipboard={setClipboard} />
-            <RenameFile SetFileSystem={SetFileSystem} />
+            <FileContextMenu SetFileSystem={SetFileSystem} setClipboard={setClipboard} operand={operand}  setoperand={setoperand}/>
+            <RenameFile SetFileSystem={SetFileSystem} operand={operand} setoperand={setoperand} />
             </div>
         </div>
     )

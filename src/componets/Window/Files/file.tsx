@@ -4,7 +4,7 @@ import Internet from "../../../assets/Internet.png"
 import Explorer from "../../../assets/Expolorer.png"
 import text from "../../../assets/text.png"
 import Trash from "../../../assets/trash.png"
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { FileHandler } from "./FileHandler";
 import MemProviderContext from "../../../Context/MemContext";
 
@@ -27,14 +27,15 @@ const getIcon  = (ico: icon) => {
     }
 }
 
-const ProgramIcon = ({menu, entries, size, SetFileSystem }: {menu:any, entries: file, size: number, SetFileSystem: any }) => {
+const ProgramIcon = ({menu, entries, size,operand, setoperand }: {menu:any, entries: file, size: number,operand:file|null, setoperand: any }) => {
     const refer = useRef<HTMLDivElement>(null);
     const Memory = useContext(MemProviderContext)
+    
 
     useEffect(() => {
         if (!refer.current)
             return
-        const handler = new FileHandler(refer.current, entries, SetFileSystem, menu, Memory)
+        const handler = new FileHandler(refer.current, entries, setoperand, menu, Memory )
         return () =>
         {
             handler.removerLisners()
@@ -44,12 +45,12 @@ const ProgramIcon = ({menu, entries, size, SetFileSystem }: {menu:any, entries: 
     const fited = size === 1 ? 56 : size === 2 ? 70 : 90;
 
     return (
-        <div ref={refer} className="absolute overflow-hidden w-20 h-20 flex flex-col items-center  hover:bg-blue-200 rounded z-50" style={{ height: `${80 + size * 10}px` }}>
+        <div ref={refer} className={`${operand && operand.id === entries.id ? "bg-ContextSelection" : "hover:bg-blue-200"} absolute overflow-hidden w-20 h-20 flex flex-col justify-around items-center   rounded z-50`} style={{ height: `${80 + size * 10}px` }}>
             <div className="w-full   flex justify-center items-center">
                 <img style={{ height: `${fited}px` }} src={icon} alt={entries.name} />
             </div>
             <div>
-                <h1 className="text-start font-tahoma text-xs font-bold text-black truncate">{entries.name}</h1>
+                <h1  className="text-start font-tahoma text-xs font-bold text-black truncate">{entries.name}</h1>
             </div>
         </div>
     );
