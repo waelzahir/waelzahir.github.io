@@ -66,8 +66,12 @@ export class FileHandler {
             this.handleclick()
         console.log(this.drag)
         this.drag = false
-        y1 =  0
+        y1 = 0
         x1 = 0
+        this.file.windowState.left = this.element.offsetLeft
+        this.file.windowState.top = this.element.offsetTop
+        localStorage.setItem(this.file.id.toString(), JSON.stringify(this.file))
+
     }
   
     
