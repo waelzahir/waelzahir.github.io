@@ -1,3 +1,4 @@
+import { highestid } from "../../../App";
 import { ExecutionState, ProgramState, screen } from "../../../types/ProgramState";
 import { file, state } from "../../../types/ProgramType";
 import { contextx, contexty } from "../Window";
@@ -9,21 +10,55 @@ export class FileHandler {
     menuset:any
     MemAccess :any
     setoperand: any
+    drag:boolean
     constructor(element: HTMLDivElement, file: file, setoperand:any, menuset:any , MemAccess: any)
     {
         this.file = file
         this.element = element
-        this.element.addEventListener("click",(e)=> this.handleclick(e))
         this.element.addEventListener("contextmenu",(e)=> this.handlecontext(e))
-        // this.element.addEventListener('mousemove', (e) => this.dragelement(e))
         this.menu = document.getElementById("filecontex") as HTMLDivElement;
         this.menuset = menuset
         this.MemAccess = MemAccess
         this.setoperand = setoperand
+        this.element.onmousedown = this.dragMouseDown.bind(this)
         this.setElementpos()
-
+        this.drag = false
+        
         
     }
+
+    dragMouseDown(e:any) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        console.log("moudedown" , e.target.classList)
+        window.onmousemove = this.movemouse.bind(this)
+        window.onmouseup = this.mouseup.bind(this)
+    }
+    movemouse(e:any)
+    {
+        e.preventDefault();
+        console.log("mouve")
+        console.log(e.clientX, e.clientY)
+        this.element.style.top = (e.clientY) + "px";
+        this.element.style.left = (e.clientX) + "px";
+        this.drag = true
+    
+    }
+    mouseup(e:any){
+        e.preventDefault();
+        e.stopPropagation()
+
+        console.log("mouse up")
+        window.onmousemove = null 
+        window.onmouseup = null
+        if (this.drag == false)
+            this.handleclick()
+        console.log(this.drag)
+        this.drag = false
+    }
+  
+    
   
     setElementpos()
     {
@@ -32,31 +67,32 @@ export class FileHandler {
         this.element.style.top = this.file.windowState.top.toString() + "px"
         this.element.style.bottom = this.file.windowState.bottom.toString() + "px"
     }
-    handleclick(e:any)
+
+    handleclick()
     {
         this.menuset(false)
-        e.stopPropagation()
-        e.preventDefault()
+        console.log("click inclick")
         const rename = document.getElementById("FileRename") ;
             if (rename && !rename.classList.contains("hidden"))
                 rename.classList.add("hidden")
         if (this.menu && !this.menu.classList.contains("hidden"))
                 this.menu.classList.add("hidden")
+        
         this.setoperand((f:file | null) => {
+            console.log("operand is" , f)
             if (f && f.id === this.file.id)
             {
+                console.log(null, "nulled")
                 this.MemAccess[1]((state: ProgramState []) => {state.push(this.getinitState()) ; return state.slice()})
+                console.log(this.MemAccess[0], "memory")
+
                 return null
             }
+            console.log(this.file, "passed")
             return this.file
             })
     }
-    dragelement(e:any)
-    {
-        this.menuset(false)
-        e.stopPropagation()
-        e.preventDefault()
-    }
+ 
     handlecontext(e:any)
     {
         this.menuset(false)
@@ -90,8 +126,6 @@ export class FileHandler {
         }
     }
     removerLisners() {
-        this.element.removeEventListener("click",(e)=> this.handleclick(e))
         this.element.removeEventListener("contextmenu",(e)=> this.handlecontext(e))
-        this.element.removeEventListener('mousemove', (e) => this.dragelement(e))
     }
 }

@@ -6,8 +6,12 @@ import { file } from "./types/ProgramType";
 import { Desktop } from "./Metadata/projects";
 import { ProgramState } from "./types/ProgramState";
 import MemProviderContext from "./Context/MemContext";
-export var highestid = { id :0, zindex: 100} 
-
+type highes = {
+  id:number
+  zindex:number,
+  elem :null | HTMLDivElement
+}
+export var highestid :highes = { id :0, zindex: 100, elem :null} 
 
 function App() {
   const Memory = useState<ProgramState []>(new Array)

@@ -38,9 +38,9 @@ const NaviBar = () =>
                 
                 {Memory && Array.isArray(Memory[0]) ? Memory[0].map((state:ProgramState) => <Tab state={state}/>) : null}
             </div>
-            <div className="h-full w-44 flex justify-around items-center  bg-StateBar">
+            <div id="tastkbarclock" className="h-full w-44 flex justify-around items-center  bg-[#47b2ea] ">
             
-                <div className="pr-2 w-0 h-0  border-t-[5px] border-t-transparent border-r-[5px] border-r-white border-b-[5px] border-b-transparent"></div>
+                <div className=" pr-2 w-0 h-0  border-t-[5px] border-t-transparent border-r-[5px] border-r-white border-b-[5px] border-b-transparent"></div>
                 <Clock/>
             </div>
         </div>

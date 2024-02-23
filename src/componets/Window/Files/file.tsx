@@ -48,11 +48,11 @@ const ProgramIcon = ({menu, entries, size,operand, setoperand }: {menu:any, entr
     const fited = size === 1 ? 56 : size === 2 ? 70 : 90;
 
     return (
-        <div ref={refer} className={`${operand && operand.id === entries.id ? "bg-ContextSelection" : "hover:bg-blue-200"} absolute overflow-hidden w-20 h-20 flex flex-col justify-around items-center   rounded z-50`} style={{ height: `${80 + size * 10}px` }}>
-            <div className="w-full   flex justify-center items-center">
+        <div ref={refer}  className={`${operand && operand.id === entries.id ? "bg-ContextSelection" : "hover:bg-blue-200"} absolute overflow-hidden w-20 h-20 flex flex-col justify-around items-center   rounded z-50`} style={{ height: `${80 + size * 10}px` }}>
+            <div  className="w-full   flex justify-center items-center">
                 <img style={{ height: `${fited}px` }} src={icon} alt={entries.name} />
             </div>
-            <div>
+            <div >
                 <h1  className="text-start font-tahoma text-xs font-bold text-black truncate">{entries.name}</h1>
             </div>
         </div>

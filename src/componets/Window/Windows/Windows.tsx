@@ -7,10 +7,41 @@ import Minimize from "../../../assets/Minimize.png"
 import { getIcon } from "../Files/file"
 
 
+const movewindow =  (e:any, windo:HTMLDivElement | null, bar : HTMLDivElement | null) => {
+    var x1 = e.clientX, y1 = e.clientY, x2 = 0, y2 = 0;
+
+    if (!windo || !bar)
+        return 
+        const move = (e:any) =>
+        { 
+            x2 =  x1 - e.clientX
+            y2 = y1 - e.clientY 
+            y1 =  e.clientY
+            x1 = e.clientX
+            e.preventDefault()
+            console.log("move")
+
+            windo.style.top = (windo.offsetTop -  y2) + "px";
+            windo.style.left = (windo.offsetLeft - x2) + "px";
+        }
+        const stop = (e:any) =>
+        {
+            e.preventDefault()
+
+            console.log("stop")
+            window.onmousemove = null
+            window.onmouseup = null
+        }
+        window.onmousemove = move
+        window.onmouseup = stop
+}
 const Windows = ({state}:{state :ProgramState}) =>
 {
     const winref = useRef<HTMLDivElement>(null)
+    const barref = useRef<HTMLDivElement>(null)
+
     useEffect(() => {
+            barref.current?.addEventListener("mousedown", (e) => movewindow(e, winref.current , barref.current))
             if (!winref.current)
                 return 
             state.screen.x = ((window.innerWidth / 2) - 250 )
@@ -26,7 +57,7 @@ const Windows = ({state}:{state :ProgramState}) =>
     })
     return (
         <div ref={winref}  className={` absolute h-4  rounded border-[1px] border-xpBarborder flex flex-col`}>
-            <div className=" w-full h-10 bg-XpBar rounded-t-md flex flex-row items-center justify-between">
+            <div ref={barref} id="progBar" className=" w-full h-10 bg-XpBar rounded-t-md flex flex-row items-center justify-between">
                 <div className="w-full flex justify-center items-center ">
                 <div className=" w-[90%] flex flex-row items-center gap-4">
 

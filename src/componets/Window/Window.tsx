@@ -47,7 +47,7 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
     useEffect(() => {
         if (!winref.current)
             return ;
-        winref.current.addEventListener("click", () => {
+        winref.current.addEventListener("click", (e:any) => {
             setContextMenu(false);
             const menu = document.getElementById("filecontex") ;
             
@@ -56,7 +56,9 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
             const rename = document.getElementById("FileRename") ;
             if (rename && !rename.classList.contains("hidden"))
                 rename.classList.add("hidden")
-            setoperand(null)
+            console.log(e.target.id)
+            if(e.target.id === "Desktop")
+                setoperand(null)
     })
         winref.current.addEventListener("contextmenu", (e) => HandleContext( e,  setContextMenu))
 
@@ -72,8 +74,8 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
     console.log("Operand", operand )
     console.log("clipboard", clipboard)
     return (
-        <div ref={winref} id="Desktop" className="w-full h-full overflow-hidden  flex items-center">
-            <div className="w-full h-full overflow-hidden">
+        <div ref={winref}  className="w-full h-full overflow-hidden  flex items-center">
+            <div id="Desktop" className="w-full h-full overflow-hidden">
 
             {
                 Memory && Memory[0].length ? Memory[0].map((state: ProgramState) => <Windows  state={state}/>) : null
