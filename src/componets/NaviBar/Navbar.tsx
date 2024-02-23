@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import MemProviderContext from "../../Context/MemContext";
-import { ProgramState } from "../../types/ProgramState";
+import { ExecutionState, ProgramState } from "../../types/ProgramState";
 import { getIcon } from "../Window/Files/file";
 import normstart from "../../assets/buttunxp1.png"
 const Clock = () => {
@@ -14,8 +14,19 @@ const Clock = () => {
 	return <p className={`text-white font-tahoma text-xl select-none`}>{time}</p>;
 }
 const Tab = ({state}: {state : ProgramState}) => {
+    const Mem = useContext(MemProviderContext)
+
+    const maximize = () => 
+    {
+        if (Mem &&state.state === ExecutionState.reduced)
+            Mem[1]((st:ProgramState[]) => {
+                let index =  st.findIndex((prog) => prog.proccess === state.proccess)
+                st[index].state = ExecutionState.opened
+                return st.slice()
+            } )
+    }
     return (
-        <div className="h-[95%] min-w-8 w-52 bg-openTab border-[1px] border-XpBar rounded flex flex-row items-center justify-around cursor-pointer hover:bg-black  hover:bg-opacity-10" >
+        <div onClick={() => maximize()} className="h-[95%] min-w-8 w-52 bg-openTab border-[1px] border-XpBar rounded flex flex-row items-center justify-around cursor-pointer hover:bg-black  hover:bg-opacity-10" >
               
             <img className="h-[90%]" src={getIcon(state.file.icon)} alt="" />
             <h1 className=" w-36 font-tahoma text-white font-medium truncate cursor-pointer">

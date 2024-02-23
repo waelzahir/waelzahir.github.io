@@ -4,6 +4,7 @@ import { file, state } from "../../../types/ProgramType";
 import { contextx, contexty } from "../Window";
 
 var x1 = 0, y1 = 0, x2 = 0, y2 = 0
+
 export class FileHandler {
     menu : HTMLDivElement 
     element: HTMLDivElement;
@@ -135,10 +136,12 @@ export class FileHandler {
             x:0,
             y: 0
         }
-        return {
-           file: this.file,
-           state: ExecutionState.opened,
-           screen : screen
+        highestid.exec++
+                return {
+        proccess : highestid.exec ,
+        file: this.file,
+        state: ExecutionState.opened,
+        screen : screen
         }
     }
     removerLisners() {

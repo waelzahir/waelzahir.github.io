@@ -3,6 +3,7 @@ import MemProviderContext from "../../../Context/MemContext";
 import { ExecutionState, ProgramState, screen } from "../../../types/ProgramState";
 import { file } from "../../../types/ProgramType";
 import { moveFile, recFindIndex, removeFileRecord } from "../../../utils/Recursivefordel";
+import { highestid } from "../../../App";
 
 const execfile = (file:file)  : ProgramState =>
 {
@@ -12,7 +13,9 @@ const execfile = (file:file)  : ProgramState =>
         x:0,
         y: 0,
     }
+    highestid.exec++
     return {
+        proccess:highestid.exec,
        file: file,
        state: ExecutionState.opened,
        screen : screen

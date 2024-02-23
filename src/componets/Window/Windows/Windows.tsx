@@ -1,19 +1,67 @@
-import { useEffect, useRef } from "react"
-import { ProgramState } from "../../../types/ProgramState"
+import { useContext, useEffect, useRef } from "react"
+import { ExecutionState, ProgramState } from "../../../types/ProgramState"
 import { highestid } from "../../../App"
 import Exit from "../../../assets/Exit.png"
 import Maximize from "../../../assets/Maximize.png"
 import Minimize from "../../../assets/Minimize.png"
 import { getIcon } from "../Files/file"
+import MemProviderContext from "../../../Context/MemContext"
 
 
-const movewindow =  (e:any, windo:HTMLDivElement | null, bar : HTMLDivElement | null) => {
+const  minimizeWin  = (e:any, state: ProgramState, Memory : any) =>{
+    e.preventDefault()
+    Memory[1]((st:ProgramState[]) => {
+        let index =  st.findIndex((prog) => prog.proccess === state.proccess)
+        st[index].state = ExecutionState.reduced
+        return st.slice()
+    } )
+}
+const  MaximizeWin  = (e:any, state: ProgramState, refwin : HTMLDivElement | null) =>{
+    e.preventDefault()
+    const win = document.getElementById("Desktop")
+    if (!win || !refwin)
+        return 
+    if (
+        win.offsetHeight === refwin.offsetHeight && 
+        win.offsetLeft === refwin.offsetLeft &&
+        win.offsetTop === refwin.offsetTop &&
+        win.offsetWidth === refwin.offsetWidth 
+    )
+    {
+        refwin.style.top = state.screen.y + "px" 
+        refwin.style.left = state.screen.x + "px"
+        refwin.style.width = state.screen.width + "px"
+        refwin.style.height = state.screen.height + "px"
+    }
+    else{
+        refwin.style.top = win.offsetTop+"px"
+        refwin.style.left =  win.offsetLeft + "px"
+        refwin.style.width = win.offsetWidth + "px"
+        refwin.style.height = win.offsetHeight + "px"
+    }
+   
+}
+const  closewin  = (e:any, state: ProgramState, Memory : any) =>{
+    e.preventDefault()
+    Memory[1]((st:ProgramState[]) => {
+        let newstate =  st.filter((prog) => prog.proccess !== state.proccess)
+        return newstate.slice()
+    } )
+
+}
+
+
+const movewindow =  (e:any, windo:HTMLDivElement | null, bar : HTMLDivElement | null, state: ProgramState , Memory :any) => {
     var x1 = e.clientX, y1 = e.clientY, x2 = 0, y2 = 0;
-
+    let drag = false
+    
     if (!windo || !bar)
         return 
+    windo.style.zIndex = highestid.zindex.toString()
+    highestid.zindex++
         const move = (e:any) =>
         { 
+            drag = true
             x2 =  x1 - e.clientX
             y2 = y1 - e.clientY 
             y1 =  e.clientY
@@ -31,6 +79,14 @@ const movewindow =  (e:any, windo:HTMLDivElement | null, bar : HTMLDivElement | 
             console.log("stop")
             window.onmousemove = null
             window.onmouseup = null
+          
+            state.screen.y = (windo.offsetTop -  y2)
+            state.screen.x = (windo.offsetLeft - x2)
+            Memory[1]((st: ProgramState []) => {
+            const index = st.findIndex(p => p.proccess = state.proccess)
+                st[index].screen = state.screen
+                return st.slice()
+            })
         }
         window.onmousemove = move
         window.onmouseup = stop
@@ -39,9 +95,10 @@ const Windows = ({state}:{state :ProgramState}) =>
 {
     const winref = useRef<HTMLDivElement>(null)
     const barref = useRef<HTMLDivElement>(null)
+    const Memory = useContext(MemProviderContext)
 
     useEffect(() => {
-            barref.current?.addEventListener("mousedown", (e) => movewindow(e, winref.current , barref.current))
+            barref.current?.addEventListener("mousedown", (e) => movewindow(e, winref.current , barref.current, state, Memory))
             if (!winref.current)
                 return 
             state.screen.x = ((window.innerWidth / 2) - 250 )
@@ -52,11 +109,12 @@ const Windows = ({state}:{state :ProgramState}) =>
             winref.current.style.height = state.screen.height.toString() + "px"
             winref.current.style.zIndex = highestid.zindex.toString()
             highestid.zindex++
-            console.log(winref.current.style, state.screen)
+           
 
-    })
+    },[])
+
     return (
-        <div ref={winref}  className={` absolute h-4  rounded border-[1px] border-xpBarborder flex flex-col`}>
+        <div key={state.proccess} ref={winref}  className={`${state.state === ExecutionState.reduced? "hidden": ""} absolute h-4  rounded border-[1px] border-xpBarborder flex flex-col`}>
             <div ref={barref} id="progBar" className=" w-full h-10 bg-XpBar rounded-t-md flex flex-row items-center justify-between">
                 <div className="w-full flex justify-center items-center ">
                 <div className=" w-[90%] flex flex-row items-center gap-4">
@@ -69,9 +127,9 @@ const Windows = ({state}:{state :ProgramState}) =>
                     </div>
                 </div>
                 <div className="w-40  flex flex-row items-center justify-around">
-                    <img className="h-8" src={Minimize} alt="" />
-                    <img className="h-8" src={Maximize} alt="" />
-                    <img className="h-8" src={Exit} alt="" />
+                    <img onClick={(e) => minimizeWin( e, state, Memory)} className="h-8 hover:opacity-80" src={Minimize} alt="" />
+                    <img onClick={(e) => MaximizeWin( e, state, winref.current)} className="h-8 hover:opacity-80" src={Maximize} alt="" />
+                    <img  onClick={(e) => closewin( e, state, Memory)} className="h-8 hover:opacity-80" src={Exit} alt="" />
                 </div>
             </div>
             <div className="w-full h-12 bg-contextMenu">

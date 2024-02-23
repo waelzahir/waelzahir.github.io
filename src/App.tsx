@@ -9,15 +9,16 @@ import MemProviderContext from "./Context/MemContext";
 type highes = {
   id:number
   zindex:number,
-  elem :null | HTMLDivElement
+  exec  :number
 }
-export var highestid :highes = { id :0, zindex: 100, elem :null} 
+export var highestid :highes = { id :0, zindex: 100, exec: 0} 
 
 function App() {
   const Memory = useState<ProgramState []>(new Array)
   const [FileSystem, SetFileSystem] = useState<file []>(new Array())
+  
   useEffect( () => {
-    
+  
     if (localStorage.getItem("State"))
     {
       const oldstate = localStorage.getItem("State")
@@ -30,6 +31,7 @@ function App() {
       Desktop.map((file:file) => localStorage.setItem(file.id.toString(), JSON.stringify(file)))
       highestid.id = Math.max(...Desktop.map(obj => obj.id));
       highestid.id++;
+      
       localStorage.setItem("first", "no")
     }
     else

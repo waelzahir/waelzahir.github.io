@@ -15,7 +15,7 @@ export enum ExecutionState
 }
 
 export type ProgramState = {
-
+    proccess: number
     file: file,
     screen : screen,
     state : ExecutionState
