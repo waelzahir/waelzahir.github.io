@@ -32,6 +32,7 @@ const  MaximizeWin  = (e:any, state: ProgramState, refwin : HTMLDivElement | nul
         refwin.style.left = state.screen.x + "px"
         refwin.style.width = state.screen.width + "px"
         refwin.style.height = state.screen.height + "px"
+        console.log(state.screen)
     }
     else{
         refwin.style.top = win.offsetTop+"px"
@@ -76,17 +77,19 @@ const movewindow =  (e:any, windo:HTMLDivElement | null, bar : HTMLDivElement | 
         {
             e.preventDefault()
 
-            console.log("stop")
             window.onmousemove = null
             window.onmouseup = null
-          
-            state.screen.y = (windo.offsetTop -  y2)
-            state.screen.x = (windo.offsetLeft - x2)
-            Memory[1]((st: ProgramState []) => {
-            const index = st.findIndex(p => p.proccess = state.proccess)
-                st[index].screen = state.screen
-                return st.slice()
-            })
+            if (drag)
+            {
+                state.screen.y = (windo.offsetTop -  y2)
+                state.screen.x = (windo.offsetLeft - x2)
+                Memory[1]((st: ProgramState []) => {
+                    const index = st.findIndex(p => p.proccess === state.proccess)
+                    st[index].screen = state.screen
+                    return st.slice()
+                })
+            }
+            drag = false
         }
         window.onmousemove = move
         window.onmouseup = stop
@@ -109,7 +112,13 @@ const Windows = ({state}:{state :ProgramState}) =>
             winref.current.style.height = state.screen.height.toString() + "px"
             winref.current.style.zIndex = highestid.zindex.toString()
             highestid.zindex++
-           
+            if (Memory)
+            Memory[1]((st: ProgramState []) => {
+            const index = st.findIndex(p => p.proccess === state.proccess)
+                st[index].screen = state.screen
+                return st.slice()
+            })
+            console.log("opened", state.screen)
 
     },[])
 
