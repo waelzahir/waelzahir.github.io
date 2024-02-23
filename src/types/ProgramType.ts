@@ -25,7 +25,6 @@ export type file = {
     level:number
     icon:icon,
     windowState :state,
-    visibilityindex: number
     name: string,
     type: filetype,
     description: string

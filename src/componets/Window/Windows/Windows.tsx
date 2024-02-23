@@ -104,8 +104,10 @@ const Windows = ({state}:{state :ProgramState}) =>
             barref.current?.addEventListener("mousedown", (e) => movewindow(e, winref.current , barref.current, state, Memory))
             if (!winref.current)
                 return 
-            state.screen.x = ((window.innerWidth / 2) - 250 )
-            state.screen.y = ((window.innerHeight / 2) - 250 )
+            state.screen.x = (window.innerWidth / 4 )
+            state.screen.y = (window.innerHeight / 4 )
+            state.screen.width = (window.innerWidth / 2)
+            state.screen.height = (window.innerHeight / 2)
             winref.current.style.top = state.screen.y.toString() +"px"
             winref.current.style.left = state.screen.x.toString() +"px"
             winref.current.style.width = state.screen.width.toString() + "px"
@@ -123,7 +125,7 @@ const Windows = ({state}:{state :ProgramState}) =>
     },[])
 
     return (
-        <div key={state.proccess} ref={winref}  className={`${state.state === ExecutionState.reduced? "hidden": ""} absolute h-4  rounded border-[1px] border-xpBarborder flex flex-col`}>
+        <div key={state.proccess} ref={winref}  className={`${state.state === ExecutionState.reduced? "hidden": ""} absolute h-4  rounded border-[1px] border-xpBarborder flex flex-col `}>
             <div ref={barref} id="progBar" className=" w-full h-10 bg-XpBar rounded-t-md flex flex-row items-center justify-between">
                 <div className="w-full flex justify-center items-center ">
                 <div className=" w-[90%] flex flex-row items-center gap-4">
