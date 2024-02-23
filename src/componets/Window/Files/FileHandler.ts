@@ -3,6 +3,7 @@ import { ExecutionState, ProgramState, screen } from "../../../types/ProgramStat
 import { file, state } from "../../../types/ProgramType";
 import { contextx, contexty } from "../Window";
 
+var x1 = 0, y1 = 0, x2 = 0, y2 = 0
 export class FileHandler {
     menu : HTMLDivElement 
     element: HTMLDivElement;
@@ -30,18 +31,27 @@ export class FileHandler {
     dragMouseDown(e:any) {
         e.preventDefault()
         e.stopPropagation()
-
-        console.log("moudedown" , e.target.classList)
+        
+        console.log("moudedown")
         window.onmousemove = this.movemouse.bind(this)
         window.onmouseup = this.mouseup.bind(this)
     }
     movemouse(e:any)
     {
+        if (!x1 && !y1)
+        {
+                y1 =  e.clientY
+                x1 = e.clientX
+        }
+        x2 =  x1 - e.clientX
+        y2 = y1 - e.clientY 
+        y1 =  e.clientY
+        x1 = e.clientX
         e.preventDefault();
         console.log("mouve")
         console.log(e.clientX, e.clientY)
-        this.element.style.top = (e.clientY) + "px";
-        this.element.style.left = (e.clientX) + "px";
+        this.element.style.top = (this.element.offsetTop - y2) + "px";
+        this.element.style.left = (this.element.offsetLeft - x2) + "px";
         this.drag = true
     
     }
@@ -56,6 +66,8 @@ export class FileHandler {
             this.handleclick()
         console.log(this.drag)
         this.drag = false
+        y1 =  0
+        x1 = 0
     }
   
     
