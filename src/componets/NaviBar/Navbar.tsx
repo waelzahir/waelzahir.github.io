@@ -18,10 +18,10 @@ const Tab = ({state}: {state : ProgramState}) => {
 
     const maximize = () => 
     {
-        if (Mem &&state.state === ExecutionState.reduced)
+        if (Mem )
             Mem[1]((st:ProgramState[]) => {
                 let index =  st.findIndex((prog) => prog.proccess === state.proccess)
-                st[index].state = ExecutionState.opened
+                st[index].state =  st[index].state === ExecutionState.opened ? ExecutionState.reduced : ExecutionState.opened
                 return st.slice()
             } )
     }

@@ -6,6 +6,8 @@ import Maximize from "../../../assets/Maximize.png"
 import Minimize from "../../../assets/Minimize.png"
 import { getIcon } from "../Files/file"
 import MemProviderContext from "../../../Context/MemContext"
+import { filetype } from "../../../types/ProgramType"
+import { FolderContent } from "./Executors/Folder"
 
 
 const  minimizeWin  = (e:any, state: ProgramState, Memory : any) =>{
@@ -105,9 +107,9 @@ const Windows = ({state}:{state :ProgramState}) =>
             if (!winref.current)
                 return 
             state.screen.x = (window.innerWidth / 4 )
-            state.screen.y = (window.innerHeight / 4 )
+            state.screen.y = (window.innerHeight / 6 )
             state.screen.width = (window.innerWidth / 2)
-            state.screen.height = (window.innerHeight / 2)
+            state.screen.height = (window.innerHeight / 3 *2  )
             winref.current.style.top = state.screen.y.toString() +"px"
             winref.current.style.left = state.screen.x.toString() +"px"
             winref.current.style.width = state.screen.width.toString() + "px"
@@ -143,9 +145,7 @@ const Windows = ({state}:{state :ProgramState}) =>
                     <img  onClick={(e) => closewin( e, state, Memory)} className="h-8 hover:opacity-80" src={Exit} alt="" />
                 </div>
             </div>
-            <div className="w-full h-12 bg-contextMenu">
-                    <Toolbar state={state}/>
-            </div>
+            <Toolbar state={state}/>
             <div className="h-[1px] w-full bg-Contextborder"></div>
             <div className="w-full  flex-1 bg-contextMenu overflow-hidden">
                 <Execute state={state}/>
@@ -154,15 +154,50 @@ const Windows = ({state}:{state :ProgramState}) =>
     )
 }
 const Toolbar = ({state}:{state : ProgramState}) => {
-    return (
-        <div>
+    let item;
+    switch (state.file.type)
+    {
+        case filetype.Folder:
+            item = null
+            break ;
+        case filetype.Text:
+            item = null
+            break ;
 
-        </div>
+        case filetype.Project:
+            item = null
+            break ;
+
+        default:
+                item = null
+    }
+    return (
+        item
     )
+    
 }
 const Execute = ({state}:{state : ProgramState}) =>{
+    let item;
+    switch (state.file.type)
+    {
+        case filetype.Folder:
+            item = <FolderContent state={state}/>
+            break ;
+        case filetype.Text:
+            item = <></>
+            break ;
+        case filetype.Trash:
+                item = <FolderContent state={state}/>
+                break ;
+        case filetype.Project:
+            item = <></>
+            break ;
+
+        default:
+                item = null
+    }
     return (
-        <div></div>
+        item
     )
 }
 export default Windows

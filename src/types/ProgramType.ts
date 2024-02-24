@@ -1,6 +1,5 @@
 export enum filetype {
     Folder = "folder",
-    Exec = "exec",
     Project = "Project",
     Text= "Text",
     Trash= "Trash"
@@ -13,7 +12,6 @@ export enum icon  {
     Trash
 }
 export type state ={
-    opened: boolean,
     top:number,
     left:number
     bottom:number,
@@ -21,13 +19,11 @@ export type state ={
 }
 export type file = {
     id:number
-    parent:number,
-    level:number
+    path: string []
     icon:icon,
     windowState :state,
     name: string,
     type: filetype,
     description: string
     content:any
-    
 }

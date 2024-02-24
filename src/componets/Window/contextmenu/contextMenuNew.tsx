@@ -7,16 +7,15 @@ import { contextx, contexty } from "../Window"
 
 const newFolder = (setters:any) => {
     const file: file = {
-        parent:0,
-        level:0,
+      
 
         id:highestid.id,
+        path : new Array(),
         name: "new Folder",
         content: new Array(),
         description: "empty Folder",
         icon: icon.Folder,
         type: filetype.Folder,
-        visibilityindex: -1,
         windowState: statedef
     }
     file.windowState.left = contextx
@@ -30,14 +29,12 @@ const newFile = (setters:any) =>
 {
     const text: file = {
         id:highestid.id,
-        parent:0,
-        level:0,
+        path : new Array(),
         name: "untitled text",
         content: "",
         description: "untitled text",
         icon: icon.Text,
         type: filetype.Text,
-        visibilityindex: -1,
         windowState: statedef
     }
     text.windowState.left = contextx

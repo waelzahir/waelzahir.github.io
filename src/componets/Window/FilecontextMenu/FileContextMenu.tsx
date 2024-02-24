@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import MemProviderContext from "../../../Context/MemContext";
 import { ExecutionState, ProgramState, screen } from "../../../types/ProgramState";
 import { file } from "../../../types/ProgramType";
-import { moveFile, recFindIndex, removeFileRecord } from "../../../utils/Recursivefordel";
+import {  moveToTrash, removeFileRecord } from "../../../utils/Recursivefordel";
 import { highestid } from "../../../App";
 
 const execfile = (file:file)  : ProgramState =>
@@ -62,13 +62,9 @@ const DeleteFile = (e:MouseEvent, setClipboard :any, SetFileSystem:any ,operand 
     setClipboard((file:file) => file && file.id == operand.id ? null : file)
     SetFileSystem((files: file []) => {
         let newstructor :file [] = files.slice()
-        const indexes : number[] = new Array()
-        const exist = recFindIndex(newstructor, operand, 0, indexes) 
-        if (exist)
-        {
-            newstructor = removeFileRecord(newstructor, indexes)
-            newstructor = moveFile(newstructor , -1, operand)
-        }
+      
+        newstructor = removeFileRecord(newstructor, operand ,0)
+        newstructor = moveToTrash(newstructor , -1, operand)
         return newstructor
     })        
     setoperand(null)

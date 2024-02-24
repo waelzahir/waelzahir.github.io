@@ -32,10 +32,13 @@ export class FileHandler {
     dragMouseDown(e:any) {
         e.preventDefault()
         e.stopPropagation()
-        
-        console.log("moudedown")
-        window.onmousemove = this.movemouse.bind(this)
-        window.onmouseup = this.mouseup.bind(this)
+        console.log(e.button)
+        if (e.button !== 2)
+        {   
+            console.log("moudedown")
+            window.onmousemove = this.movemouse.bind(this)
+            window.onmouseup = this.mouseup.bind(this)
+        }
     }
     movemouse(e:any)
     {
@@ -112,6 +115,7 @@ export class FileHandler {
  
     handlecontext(e:any)
     {
+        console.log("context")
         this.menuset(false)
         e.stopPropagation()
         e.preventDefault()
@@ -125,7 +129,7 @@ export class FileHandler {
         this.menu.style.left = `${e.clientX +  this.menu.offsetWidth < desktop?.offsetWidth ? e.clientX :  desktop?.offsetWidth -  this.menu.offsetWidth}px`
         this.menu.style.top = `${e.clientY +  this.menu.offsetHeight < desktop?.offsetHeight ? e.clientY :  desktop?.offsetHeight -  this.menu.offsetHeight}px`
         this.menu.classList.remove("hidden")
-        this.setoperand(this.file )
+        this.setoperand(this.file)
        
     }
     getinitState() : ProgramState
