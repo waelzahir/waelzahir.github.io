@@ -6,6 +6,7 @@ import { file } from "./types/ProgramType";
 import { Desktop } from "./Metadata/projects";
 import { ProgramState } from "./types/ProgramState";
 import MemProviderContext from "./Context/MemContext";
+import FileSystemContext from "./Context/fileSystem";
 type highes = {
   id:number
   zindex:number,
@@ -14,8 +15,8 @@ type highes = {
 export var highestid :highes = { id :0, zindex: 100, exec: 0} 
 
 function App() {
-  const Memory = useState<ProgramState []>(new Array)
-  const [FileSystem, SetFileSystem] = useState<file []>(new Array())
+  const Memory = useState<ProgramState []>(new Array())
+  const [FileSystem, SetFileSystem] = useState<Map <number , file>>(new Map)
   
   useEffect( () => {
   
@@ -25,31 +26,34 @@ function App() {
       if (oldstate && oldstate.length)
         Memory[1](JSON.parse(oldstate))
     }
-    if (!localStorage.getItem("first"))
+    if (!localStorage.getItem("INIT"))
     {
-      SetFileSystem(Desktop)
-      Desktop.map((file:file) => localStorage.setItem(file.id.toString(), JSON.stringify(file)))
-      highestid.id = Math.max(...Desktop.map(obj => obj.id));
-      highestid.id++;
-      
-      localStorage.setItem("first", "no")
+      Desktop.map((F:file)=> {
+          FileSystem.set(F.id, F)
+          localStorage.setItem(F.id.toString(), JSON.stringify(F))
+          highestid.id =  highestid.id > F.id ?highestid.id : F.id ;
+      })
+      localStorage.setItem("INIT","fsddf")
     }
     else
     {
-      const objects : file[] = []
+      console.log("from storage")
       Object.keys(localStorage).map((key:string)=> {
         let file: string | null = "";
         if (Number.isInteger(+key))
-          file = localStorage.getItem(key)
-        if ( typeof file === "string" && file.length)
-          objects.push(JSON.parse(file))
-        return ""
+         {
+            file = localStorage.getItem(key)
+            console.log("storage", file)
+            if ( typeof file === "string" && file.length)
+              {
+                FileSystem.set(+key, JSON.parse(file))
+                highestid.id =  highestid.id > +key ?highestid.id :+key ;
+              }
+         }
       })
-      SetFileSystem(objects)
-      highestid.id = Math.max(...objects.map(obj => obj.id));
       highestid.id++;
-
     }
+    SetFileSystem(new Map(FileSystem))
     
   }, [])
 

@@ -1,29 +1,89 @@
 import { file } from "../types/ProgramType";
 
+export const getFilesfromID = (files: number[],filesystem :Map<number, file>) : file[] =>{
+    console.log(files, "file found", filesystem)
+    if (files === undefined)
+        return []
+    const retu: file[] = []
+    files.map((id:number)=> {
+        const f = filesystem.get(id)
+        if (f === undefined)
+            return 
+        retu.push(f);
+    })
+    return retu
+}
 
-
-export const removeFileRecord = (file: file[], target: file, level:number )=>
+export const removeFileRecord = (src: file, target: file, level:number )=>
 {
-   if ( !target.path.length || target.path.length - 1 === level )
-   {
-        if (!level)
-            localStorage.removeItem(target.id.toString())
-        file = file.filter((f: file) => f.id !==  target.id)
-        return file
-   }
-   else
-   {
-        let index = file.findIndex((f:file) => f.name === target.path[level])
 
-       file[index].content = removeFileRecord(file[index].content , target, level + 1);
-   }
-   return file
 }
 
 
 export const moveToTrash = (files: file [] , id: number , target: file ) => {
-    const index = files.findIndex((file: file) => file.id === id)
-    files[index].content.push(target);
-    localStorage.setItem(id.toString(), JSON.stringify(files[index]))
-    return files
+
+}
+
+export const RecoverFromTrash = (filesystem :Map<number, file>, recoverd : number[]) =>
+{
+    const trash =  filesystem.get(1)
+    if (trash === undefined)
+        return filesystem
+    trash.content = []
+    filesystem.set(1, trash);
+    localStorage.setItem("1", JSON.stringify( trash));
+    recoverd.map((id: number) =>{
+        const fil = filesystem.get(id)
+        if (fil === undefined)
+            return; 
+        const dest = filesystem.get(fil.Parent)
+        if (dest === undefined)
+            return; 
+        dest.content.push(fil.id)
+        filesystem.set(dest.id, dest);
+        localStorage.setItem(dest.id.toString(), JSON.stringify( dest));
+
+    })
+    return filesystem
+}
+
+export const RemovePermanatly  = (filesystem :Map<number, file>, recoverd : number[])   =>
+{
+    const trash =  filesystem.get(1)
+    if (trash === undefined)
+        return filesystem
+    trash.content = []
+    filesystem.set(1, trash);
+    localStorage.setItem("1", JSON.stringify(trash));
+    recoverd.map((id: number) =>{
+        const fil = filesystem.get(id)
+        if (fil === undefined)
+            return; 
+        filesystem.delete(id)
+        localStorage.removeItem(id.toString());
+    })
+    return filesystem
+}
+
+export const  GetFilePath = (filesystem :Map<number, file>,   file: number): string => {
+    let path :string[] = [];
+    let currid = file;
+    let fi;
+    while(true)
+    {
+        fi = filesystem.get(currid)
+        if (fi === undefined)
+        {
+            path.push("<brokenlink>")
+            break
+        }
+        else if (fi.Parent === 0)
+        {
+            path.push(fi.name)
+            break;
+        }
+        currid = fi.Parent
+    }
+    return "/" + path.reverse().join("/")
+
 }

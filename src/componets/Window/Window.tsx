@@ -13,6 +13,8 @@ import RenameFile from "./FilecontextMenu/RenameFile"
 import MemProviderContext from "../../Context/MemContext"
 import { ProgramState } from "../../types/ProgramState"
 import Windows from "./Windows/Windows"
+import FileSystemContext from "../../Context/fileSystem"
+import { getFilesfromID } from "../../utils/Recursivefordel"
 export var contextx = 0
 export var contexty = 0
 
@@ -34,7 +36,7 @@ const HandleContext = ( e:any, settcoxtmenu:any) =>
         if (rename && !rename.classList.contains("hidden"))
             rename.classList.add("hidden")
 }
-const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSystem:any}) =>
+const Window  = ({FileSystem, SetFileSystem} : {FileSystem:Map<number, file>, SetFileSystem:any}) =>
 {
     const Memory = useContext(MemProviderContext)
     
@@ -70,17 +72,15 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
                 winref.current.removeEventListener("contextmenu", (e) => HandleContext(e,  setContextMenu))        
         }
     },[])
-      
-    console.log("Operand", operand )
-    console.log("clipboard", clipboard)
     return (
+        <FileSystemContext.Provider value={[FileSystem, SetFileSystem]}>
         <div ref={winref}  className="w-full h-full overflow-hidden  flex items-center">
             <div id="Desktop" className="w-full h-full overflow-hidden">
-
             {
                 Memory && Memory[0].length ? Memory[0].map((state: ProgramState) => <Windows  state={state}/>) : null
             }
-            {FileSystem.map((element: file) => (
+            {
+                getFilesfromID(FileSystem.get(0)?.content , FileSystem).map((element: file) => (
                 <ProgramIcon menu={setContextMenu} key={element.id} entries={element} operand={operand} setoperand={setoperand} size={size} />
                 ))}
             {
@@ -95,6 +95,7 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:file [], SetFileSyste
             <RenameFile SetFileSystem={SetFileSystem} operand={operand} setoperand={setoperand} />
             </div>
         </div>
+        </FileSystemContext.Provider>
     )
 }
 

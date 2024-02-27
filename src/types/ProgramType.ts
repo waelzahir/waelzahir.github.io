@@ -5,6 +5,7 @@ export enum filetype {
     Trash= "Trash"
 }
 export enum icon  {
+    Desktop,
     Folder,
     Explorer,
     Internet,
@@ -19,8 +20,8 @@ export type state ={
 }
 export type file = {
     id:number
-    path: string []
     icon:icon,
+    Parent: number
     windowState :state,
     name: string,
     type: filetype,

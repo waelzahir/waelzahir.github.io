@@ -10,7 +10,7 @@ const newFolder = (setters:any) => {
       
 
         id:highestid.id,
-        path : new Array(),
+        Parent: 0,
         name: "new Folder",
         content: new Array(),
         description: "empty Folder",
@@ -21,7 +21,15 @@ const newFolder = (setters:any) => {
     file.windowState.left = contextx
     file.windowState.top= contexty
     localStorage.setItem(file.id.toString(), JSON.stringify(file))
-    setters.SetFileSystem((fileSystem: file[]) => {fileSystem.push(file);return fileSystem.slice()})
+    setters.SetFileSystem((fileSystem: Map<number, file>) => {
+        const dest = fileSystem.get(file.Parent)
+        if (dest === undefined)
+            return fileSystem
+        dest.content.push(file.id)
+        localStorage.setItem(dest.id.toString(), JSON.stringify(dest))
+        fileSystem.set(file.id, file);
+        return new Map(fileSystem)
+    })
     highestid.id++;
     setters.ContextMenu(false)
 }
@@ -29,7 +37,7 @@ const newFile = (setters:any) =>
 {
     const text: file = {
         id:highestid.id,
-        path : new Array(),
+        Parent: 0,
         name: "untitled text",
         content: "",
         description: "untitled text",
@@ -40,7 +48,15 @@ const newFile = (setters:any) =>
     text.windowState.left = contextx
     text.windowState.top= contexty
     localStorage.setItem(text.id.toString(), JSON.stringify(text))
-    setters.SetFileSystem((fileSystem: file[]) => {fileSystem.push(text);return fileSystem.slice()})
+    setters.SetFileSystem((fileSystem: Map<number, file>) => {
+        const dest = fileSystem.get(text.Parent)
+        if (dest === undefined)
+            return fileSystem
+        dest.content.push(text.id)
+        localStorage.setItem(dest.id.toString(), JSON.stringify(dest))
+        fileSystem.set(text.id, text);
+        return new Map(fileSystem)
+    })
     setters.ContextMenu(false)
     highestid.id++
 }
