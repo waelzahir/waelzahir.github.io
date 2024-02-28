@@ -51,8 +51,9 @@ function App() {
               }
          }
       })
-      highestid.id++;
     }
+    highestid.id++;
+
     SetFileSystem(new Map(FileSystem))
     
   }, [])
