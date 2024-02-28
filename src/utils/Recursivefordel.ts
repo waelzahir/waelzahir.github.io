@@ -1,4 +1,4 @@
-import { file } from "../types/ProgramType";
+import { file, filetype } from "../types/ProgramType";
 
 export const getFilesfromID = (files: number[],filesystem :Map<number, file>) : file[] =>{
     console.log(files, "file found", filesystem)
@@ -46,16 +46,30 @@ export const RecoverFromTrash = (filesystem :Map<number, file>, recoverd : numbe
     })
     return filesystem
 }
+const recursivedelete =(Filesystem :Map<number, file>,all:number[], fill:number[]) =>{
+    for (let i = 0 ; i < all.length ; i++)
+    {
+        const f = Filesystem.get(all[i])
+        if (f === undefined)
+            continue
+        if (f.type===filetype.Folder )
+            recursivedelete(Filesystem, f.content,fill)
+        fill.push(f.id)
+    }
 
-export const RemovePermanatly  = (filesystem :Map<number, file>, recoverd : number[])   =>
+}
+export const RemovePermanatly  = (filesystem :Map<number, file>)   =>
 {
     const trash =  filesystem.get(1)
     if (trash === undefined)
         return filesystem
+    let allids:number [] =[] 
+    recursivedelete(filesystem , trash.content,allids)
+    allids =  Array.from(new Set(allids));
     trash.content = []
     filesystem.set(1, trash);
     localStorage.setItem("1", JSON.stringify(trash));
-    recoverd.map((id: number) =>{
+    allids.map((id: number) =>{
         const fil = filesystem.get(id)
         if (fil === undefined)
             return; 

@@ -56,8 +56,7 @@ const TrashTools= ({state}:{state:ProgramState})=>{
         let trash = files.get(1)
         if (trash === undefined)
             return files
-        const recoverd = trash.content
-        files = RemovePermanatly(files, recoverd)
+        files = RemovePermanatly(files)
         return new Map(files)
     })
     }
