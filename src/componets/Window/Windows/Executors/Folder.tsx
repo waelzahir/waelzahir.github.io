@@ -22,7 +22,7 @@ export const FolderContent= ({ clipboard, setClipboard, state}:{clipboard: file 
         <div className="h-full w-full flex flex-row">
             <div id="Tools" className="h-full w-60 bg-[#718de1] flex justify-center items-center">
             <div className=" w-56 h-[80%]">
-                <FolderTools clicked={clicked} clipboard={clipboard} setClipboard={setClipboard} history={history}  index={index}/>
+                <FolderTools  setClicked={setClicked} clicked={clicked} clipboard={clipboard} setClipboard={setClipboard} history={history}  index={index}/>
             </div>
             </div>
             <div className="flex flex-col h-full flex-1 gap-2 overflow-y-scroll items-center">
@@ -98,13 +98,14 @@ const CreateNewFile = (e:any ,folder: number, setFile: any, what:string) =>
     })
     console.log("setting file")
 }
-const CutFile = (e:any , fileid:number, setClipboard:any, filesystem:Map<number, file>) =>{
+const CutFile = (e:any , fileid:number, setClipboard:any, filesystem:Map<number, file>, setClicked:any) =>{
     if(fileid === undefined || fileid < 1)
         return
     const file = filesystem.get(fileid)
     if (file === undefined)
         return;
     setClipboard(file)
+    setClicked(0)
     }
 const PasteFile = (e:any, folder:number , setClipboard:any, clipboard:file|null, filesystem:any) =>{
     if (!clipboard || folder===undefined)
@@ -126,7 +127,26 @@ const PasteFile = (e:any, folder:number , setClipboard:any, clipboard:file|null,
     filesystem[1](new Map(filesystem[0]))
     setClipboard(null)
 }
-  const FolderTools= ({clicked, clipboard , setClipboard,  history , index} : {clicked:number, clipboard: file | null , setClipboard :any ,history : number[],  index:number })=>{
+const DeleteFile = (e:any,fileid :number ,FileSys :any, setClicked:any) =>{
+    if (fileid === undefined || fileid < 1)
+        return
+    const trash :file|undefined= FileSys[0].get(1)
+    const file :file|undefined = FileSys[0].get(fileid)
+    if (trash === undefined|| file === undefined)
+        return
+    const parent:file|undefined = FileSys[0].get(file.Parent)
+    if (!parent)
+        return ;
+    trash.content.push(fileid)
+    parent.content = parent.content.filter((id:number) => id != fileid)
+    FileSys[0].set(trash.id, trash)
+    FileSys[0].set(parent.id, parent)
+    localStorage.setItem(trash.id.toString(), JSON.stringify(trash))
+    localStorage.setItem(trash.id.toString(), JSON.stringify(trash))
+    FileSys[1](new Map(FileSys[0]))
+    setClicked(0)
+}
+  const FolderTools= ({ setClicked, clicked, clipboard , setClipboard,  history , index} : {setClicked:any ,clicked:number, clipboard: file | null , setClipboard :any ,history : number[],  index:number })=>{
     const FileSystem = useContext(FileSystemContext)
     if (!FileSystem)
         return null;
@@ -150,10 +170,10 @@ const PasteFile = (e:any, folder:number , setClipboard:any, clipboard:file|null,
                 <h1 onClick={(e:any) => {}} className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
                     Rename
                 </h1>
-                <h1 onClick={(e:any) => {}} className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
+                <h1 onClick={(e:any) => DeleteFile(e,clicked,FileSystem, setClicked)} className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
                     Delete
                 </h1>
-                <h1 onClick={(e:any) => CutFile(e,clicked,setClipboard,  FileSystem[0])}className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
+                <h1 onClick={(e:any) => CutFile(e,clicked,setClipboard,  FileSystem[0], setClicked)} className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
                     Cut
                 </h1>
             </div>
