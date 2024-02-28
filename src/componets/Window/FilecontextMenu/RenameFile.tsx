@@ -44,10 +44,9 @@ const   RenameFile =  ({SetFileSystem,  operand, setoperand}:{ SetFileSystem: an
         file.name = sname
         setname("")
         localStorage.setItem(file.id.toString() , JSON.stringify(file))
-        SetFileSystem((files: file[]) => {
-            const newStr = files.filter((f:file) => f.id != file.id)
-            newStr.push(file)
-            return newStr
+        SetFileSystem((files :Map<number, file>) => {
+             files.set(file.id, file)
+            return new Map(files)
         })
         document.getElementById("FileRename")?.classList.add("hidden")
         setoperand(null)

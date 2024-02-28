@@ -1,28 +1,21 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ProgramState } from "../../../../types/ProgramState";
-import { file, filetype } from "../../../../types/ProgramType";
+import { file, filetype, icon } from "../../../../types/ProgramType";
 import { getIcon } from "../../Files/file";
 import FileSystemContext from "../../../../Context/fileSystem";
-import {  GetFilePath, RecoverFromTrash, RemovePermanatly } from "../../../../utils/Recursivefordel";
+import {  GetFilePath } from "../../../../utils/Recursivefordel";
+import { highestid } from "../../../../App";
+import { statedef } from "../../../../Metadata/projects";
 
 export const FolderContent= ({state}:{state:ProgramState})=>{
-    let leftPannel;
-    switch (state.file.type)
-    {
-        case filetype.Trash:
-            leftPannel = <TrashTools state={state}/>
-            break ;
-        case filetype.Folder:
-                leftPannel = <FolderTools state={state}/>
-                break ;
-        default:
-            leftPannel = null
-    }
+    const [history, setHistory] = useState([state.file.id])
+    const [index, setIndex] = useState(0)
+
     return (
         <div className="h-full w-full flex flex-row">
             <div id="Tools" className="h-full w-60 bg-[#718de1] flex justify-center items-center">
             <div className=" w-56 h-[80%]">
-                {leftPannel}
+                <FolderTools history={history} setHistory={setHistory} index={index}/>
             </div>
             </div>
             <div className="flex flex-col h-full flex-1 gap-2 overflow-y-scroll items-center">
@@ -58,52 +51,63 @@ export const FolderContent= ({state}:{state:ProgramState})=>{
 
 }
 
-  const FolderTools= ({state}:{state:ProgramState})=>{
-    return (
-        <div className="h-full w-56 ">
-            for folder
-        </div>
-    )
-}
-  const TrashTools= ({state}:{state:ProgramState})=>{
-    const FileSystem  = useContext(FileSystemContext)
-    const emptyTrash = ()=>
-    {
-        if (!FileSystem)
-            return ;
-        FileSystem[1]((files : Map<number, file>) => {
-        let trash = files.get(1)
-        if (trash === undefined)
-            return files
-        const recoverd = trash.content
-        files = RemovePermanatly(files, recoverd)
+const CreateNewFile = (e:any ,folder: number, setFile: any, what:string) =>
+{
+    console.log("setting file")
+
+    const TEXT : file = {
+        id:highestid.id, 
+        Parent: folder,
+        name: "untitled text",
+        content: "",
+        description: "untitled text",
+        icon: icon.Text,
+        type: filetype.Text,
+        windowState: statedef
+    }
+    const Folder : file = {
+        id:highestid.id, 
+        Parent: folder,
+        name: "New Folder",
+        content: [],
+        description: "New Folder",
+        icon: icon.Folder,
+        type: filetype.Folder,
+        windowState: statedef
+    }
+    let nn : file = what === "f" ? Folder : TEXT
+    highestid.id++;
+    setFile((files :Map<number, file>) => {
+       const parent = files.get(folder)
+       console.log(parent)
+       if (parent === undefined)
+        return files
+        parent.content.push(nn.id)
+        files.set(parent.id, parent)
+        files.set(nn.id, nn)
+        localStorage.setItem(nn.id.toString(), JSON.stringify(nn))
+        localStorage.setItem(parent.id.toString(), JSON.stringify(parent))
         return new Map(files)
     })
-    }
-    const RecoverFiles  = ()=>{
-        if (!FileSystem)
-            return ;
-        FileSystem[1]((files : Map<number, file>) => {
-            let trash = files.get(1)
-            if (trash === undefined)
-                return files
-            const recoverd = trash.content
-            files = RecoverFromTrash(files, recoverd)
-            return new Map(files)
-        })
-    }
+    console.log("setting file")
+}
+  const FolderTools= ({ history, setHistory , index} : {history : number[], setHistory:any, index:number })=>{
+    const FileSystem = useContext(FileSystemContext)
+    if (!FileSystem)
+        return null;
+
     return (
         <div className="rounded bg-[#d8dff9] h-20 flex flex-col justify-around items-center font-tahoma text-[#456389]">
-           <h1 onClick={() => emptyTrash()} className="w-40 cursor-pointer hover:text-[#93b0d0]">
-                Empty Trash
-           </h1>
-           <h1 onClick={() => RecoverFiles()} className="w-40 cursor-pointer hover:text-[#93b0d0]">
-                Recover Files
-           </h1>
-        </div>
+        <h1 onClick={(e:any) => CreateNewFile(e, history[index],  FileSystem[1], "t")} className="w-40 cursor-pointer hover:text-[#93b0d0]">
+             New File
+        </h1>
+        <h1 onClick={(e:any) => CreateNewFile(e, history[index],  FileSystem[1], "f")}  className="w-40 cursor-pointer hover:text-[#93b0d0]">
+            New Folder
+        </h1>
+     </div>
     )
-
 }
+  
 
 const FileData = ({FileId} : {FileId : number}) =>
 {

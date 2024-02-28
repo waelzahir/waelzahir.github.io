@@ -8,6 +8,7 @@ import { getIcon } from "../Files/file"
 import MemProviderContext from "../../../Context/MemContext"
 import { filetype } from "../../../types/ProgramType"
 import { FolderContent } from "./Executors/Folder"
+import TrashExecutor from "./Executors/Trash"
 
 
 const  minimizeWin  = (e:any, state: ProgramState, Memory : any) =>{
@@ -187,7 +188,7 @@ const Execute = ({state}:{state : ProgramState}) =>{
             item = <></>
             break ;
         case filetype.Trash:
-                item = <FolderContent state={state}/>
+                item = <TrashExecutor state={state}/>
                 break ;
         case filetype.Project:
             item = <></>
