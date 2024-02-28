@@ -7,6 +7,7 @@ import { Desktop } from "./Metadata/projects";
 import { ProgramState } from "./types/ProgramState";
 import MemProviderContext from "./Context/MemContext";
 import FileSystemContext from "./Context/fileSystem";
+import StartMenu from "./componets/StartMenu";
 type highes = {
   id:number
   zindex:number,
@@ -67,6 +68,7 @@ function App() {
       <MemProviderContext.Provider value={Memory}>
         <Window FileSystem={FileSystem} SetFileSystem={SetFileSystem} />
         <NaviBar />
+        <StartMenu/>
       </MemProviderContext.Provider>
     </div>
   )

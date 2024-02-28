@@ -61,6 +61,11 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:Map<number, file>, Se
             console.log(e.target.id)
             if(e.target.id === "Desktop")
                 setoperand(null)
+
+            const startmenu = document.getElementById("startmenu")
+            if (startmenu && !startmenu.classList.contains("hidden"))
+                startmenu.classList.add("hidden")
+
     })
         winref.current.addEventListener("contextmenu", (e) => HandleContext( e,  setContextMenu))
 

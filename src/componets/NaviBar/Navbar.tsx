@@ -3,6 +3,7 @@ import MemProviderContext from "../../Context/MemContext";
 import { ExecutionState, ProgramState } from "../../types/ProgramState";
 import { getIcon } from "../Window/Files/file";
 import normstart from "../../assets/buttunxp1.png"
+import { highestid } from "../../App";
 const Clock = () => {
 	const [time, setTime] = useState(new Date().toLocaleTimeString());
 	useEffect(() => {
@@ -18,6 +19,9 @@ const Tab = ({state}: {state : ProgramState}) => {
 
     const maximize = () => 
     {
+        const startmenu = document.getElementById("startmenu")
+            if (startmenu && !startmenu.classList.contains("hidden"))
+                startmenu.classList.add("hidden")
         if (Mem )
             Mem[1]((st:ProgramState[]) => {
                 let index =  st.findIndex((prog) => prog.proccess === state.proccess)
@@ -35,6 +39,20 @@ const Tab = ({state}: {state : ProgramState}) => {
         </div>
     )
 }
+const ShowStart = () =>
+{
+    const menu = document.getElementById("startmenu")
+    if (!menu)
+        return 
+    if (menu.classList.contains("hidden"))
+        {
+            menu.classList.remove("hidden")
+            menu.style.zIndex = highestid.zindex.toString()
+            highestid.zindex++
+        }
+        else
+            menu.classList.add("hidden")
+}
 const NaviBar = () =>
 {
  
@@ -43,7 +61,7 @@ const NaviBar = () =>
     return (
         <div  id="navibar" className="h-12 w-full flex flex-row justify-between items-center bg-XpBar border-t-4 border-xpBarborder ">
             <div  id="Start" className="h-full   w-44  flex  items-center justify-centerbg-green-700 rounded-r-[15px] cursor-pointer" >
-                <img className="h-12  hover:opacity-80 " src={normstart} alt="" />
+                <img onClick={(e) => ShowStart()} className="h-12  hover:opacity-80 " src={normstart} alt="" />
             </div>
             <div className="mx-6 h-full w-full flex flex-row items-center gap-x-2 overflow-x-scroll">
                 
