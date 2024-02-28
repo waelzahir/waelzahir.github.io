@@ -7,7 +7,7 @@ import {  GetFilePath } from "../../../../utils/Recursivefordel";
 import { highestid } from "../../../../App";
 import { statedef } from "../../../../Metadata/projects";
 
-export const FolderContent= ({state}:{state:ProgramState})=>{
+export const FolderContent= ({ clipboard, setClipboard, state}:{clipboard: file |null,setClipboard:any, state:ProgramState})=>{
     const [history, setHistory] = useState([state.file.id])
     const [index, setIndex] = useState(0)
 
@@ -15,7 +15,7 @@ export const FolderContent= ({state}:{state:ProgramState})=>{
         <div className="h-full w-full flex flex-row">
             <div id="Tools" className="h-full w-60 bg-[#718de1] flex justify-center items-center">
             <div className=" w-56 h-[80%]">
-                <FolderTools history={history} setHistory={setHistory} index={index}/>
+                <FolderTools clipboard={clipboard} setClipboard={setClipboard} history={history} setHistory={setHistory} index={index}/>
             </div>
             </div>
             <div className="flex flex-col h-full flex-1 gap-2 overflow-y-scroll items-center">
@@ -91,19 +91,57 @@ const CreateNewFile = (e:any ,folder: number, setFile: any, what:string) =>
     })
     console.log("setting file")
 }
-  const FolderTools= ({ history, setHistory , index} : {history : number[], setHistory:any, index:number })=>{
+const PasteFile = (e:any, folder:number , setClipboard:any, clipboard:file|null, filesystem:any) =>{
+    if (!clipboard || folder===undefined)
+        return
+
+    const src:file = filesystem[0].get(clipboard.Parent)
+    const dst:file = filesystem[0].get(folder)
+    if (src === undefined || dst === undefined)
+        return ;
+    src.content = src.content.filter((num: number) => num != clipboard.id)
+    dst.content.push(clipboard.id)
+    clipboard.Parent = folder
+    localStorage.setItem(src.id.toString(), JSON.stringify(src))
+    localStorage.setItem(dst.id.toString(), JSON.stringify(dst))
+    localStorage.setItem(clipboard.id.toString(), JSON.stringify(clipboard))
+    filesystem[0].set((src.id, src))
+    filesystem[0].set((dst.id, dst))
+    filesystem[0].set((clipboard.id, clipboard))
+    filesystem[1](new Map(filesystem[0]))
+    setClipboard(null)
+}
+  const FolderTools= ({ clipboard , setClipboard,  history, setHistory , index} : { clipboard: file | null , setClipboard :any ,history : number[], setHistory:any, index:number })=>{
     const FileSystem = useContext(FileSystemContext)
     if (!FileSystem)
         return null;
+ 
 
     return (
-        <div className="rounded bg-[#d8dff9] h-20 flex flex-col justify-around items-center font-tahoma text-[#456389]">
-        <h1 onClick={(e:any) => CreateNewFile(e, history[index],  FileSystem[1], "t")} className="w-40 cursor-pointer hover:text-[#93b0d0]">
-             New File
-        </h1>
-        <h1 onClick={(e:any) => CreateNewFile(e, history[index],  FileSystem[1], "f")}  className="w-40 cursor-pointer hover:text-[#93b0d0]">
-            New Folder
-        </h1>
+        <div className="h-[70%] w-full  flex flex-col justify-evenly">
+            <div className="rounded bg-[#d8dff9] h-32 flex flex-col justify-around items-center font-tahoma text-[#456389]">
+                <h1 onClick={(e:any) => CreateNewFile(e, history[index],  FileSystem[1], "t")} className="w-40 cursor-pointer hover:text-[#93b0d0]">
+                    New File
+                </h1>
+                <h1 onClick={(e:any) => CreateNewFile(e, history[index],  FileSystem[1], "f")}  className="w-40 cursor-pointer hover:text-[#93b0d0]">
+                    New Folder
+                </h1>
+                <h1 onClick={(e:any) => PasteFile(e, history[index], setClipboard, clipboard, FileSystem) } className={` ${clipboard ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
+                    Paste
+                </h1>
+            </div>
+            <div className="rounded bg-[#d8dff9] h-32  flex flex-col justify-around items-center font-tahoma text-[#456389]">
+                <h1 onClick={(e:any) => {}} className="w-40 cursor-pointer hover:text-[#93b0d0]">
+                    Rename
+                </h1>
+                <h1 onClick={(e:any) => {}} className="w-40 cursor-pointer hover:text-[#93b0d0]">
+                    Delete
+                </h1>
+                <h1 onClick={(e:any) => {}} className="w-40 cursor-pointer hover:text-[#93b0d0]">
+                    Cut
+                </h1>
+            </div>
+           
      </div>
     )
 }

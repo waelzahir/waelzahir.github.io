@@ -6,7 +6,7 @@ import Maximize from "../../../assets/Maximize.png"
 import Minimize from "../../../assets/Minimize.png"
 import { getIcon } from "../Files/file"
 import MemProviderContext from "../../../Context/MemContext"
-import { filetype } from "../../../types/ProgramType"
+import { file, filetype } from "../../../types/ProgramType"
 import { FolderContent } from "./Executors/Folder"
 import TrashExecutor from "./Executors/Trash"
 
@@ -97,7 +97,7 @@ const movewindow =  (e:any, windo:HTMLDivElement | null, bar : HTMLDivElement | 
         window.onmousemove = move
         window.onmouseup = stop
 }
-const Windows = ({state}:{state :ProgramState}) =>
+const Windows = ({ clipboard, setClipboard, state}:{clipboard:file |null, setClipboard: any, state :ProgramState}) =>
 {
     const winref = useRef<HTMLDivElement>(null)
     const barref = useRef<HTMLDivElement>(null)
@@ -149,7 +149,7 @@ const Windows = ({state}:{state :ProgramState}) =>
             <Toolbar state={state}/>
             <div className="h-[1px] w-full bg-Contextborder"></div>
             <div className="w-full  flex-1 bg-contextMenu overflow-hidden">
-                <Execute state={state}/>
+                <Execute clipboard={clipboard} setClipboard={setClipboard} state={state}/>
             </div>
         </div>
     )
@@ -177,13 +177,13 @@ const Toolbar = ({state}:{state : ProgramState}) => {
     )
     
 }
-const Execute = ({state}:{state : ProgramState}) =>{
+const Execute = ({state,setClipboard, clipboard}:{state : ProgramState, setClipboard:any, clipboard:file|null}) =>{
     let item;
     switch (state.file.type)
     {
         case filetype.Folder:
-            item = <FolderContent state={state}/>
-            break ;
+            item = <FolderContent clipboard={clipboard} setClipboard={setClipboard} state={state}/>
+            break ; 
         case filetype.Text:
             item = <></>
             break ;
