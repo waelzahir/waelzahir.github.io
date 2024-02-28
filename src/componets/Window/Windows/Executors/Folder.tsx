@@ -8,18 +8,25 @@ import { highestid } from "../../../../App";
 import { statedef } from "../../../../Metadata/projects";
 
 export const FolderContent= ({ clipboard, setClipboard, state}:{clipboard: file |null,setClipboard:any, state:ProgramState})=>{
-    const [history, setHistory] = useState([state.file.id])
+    const [history, setHistory] = useState(new Array(1).fill(state.file.id))
     const [index, setIndex] = useState(0)
-
+    const [clicked, setClicked] = useState(0)
+    const Filesystem = useContext(FileSystemContext)
+    if (!Filesystem)
+    return null
+    let file:file | undefined= Filesystem[0].get(history[index])
+    if (file === undefined)
+        return null
+    console.log("history is", history, "index is", index)
     return (
         <div className="h-full w-full flex flex-row">
             <div id="Tools" className="h-full w-60 bg-[#718de1] flex justify-center items-center">
             <div className=" w-56 h-[80%]">
-                <FolderTools clipboard={clipboard} setClipboard={setClipboard} history={history} setHistory={setHistory} index={index}/>
+                <FolderTools clipboard={clipboard} setClipboard={setClipboard} history={history}  index={index}/>
             </div>
             </div>
             <div className="flex flex-col h-full flex-1 gap-2 overflow-y-scroll items-center">
-                <div className="h-11 w-[90%] flex flex-row justify-between items-center sticky top-0 bg-contextMenu">
+                <div className="h-11 w-[90%] flex flex-row justify-between items-center sticky top-0 bg-contextMenu border-b-2">
 
                     <div className="h-9 flex justify-center items-center">
                         <h1>
@@ -43,7 +50,7 @@ export const FolderContent= ({ clipboard, setClipboard, state}:{clipboard: file 
                     </div>
                 </div>
                 {
-                    state.file.content.map((file :number) =>  <FileData FileId={file}/>) 
+                    file.content.map((file :number) =>  <FileData key={file} setHistory={setHistory} setindex={setIndex} clicked={clicked} setClicked={setClicked}  FileId={file}/>) 
                 }
             </div>
         </div>
@@ -111,7 +118,7 @@ const PasteFile = (e:any, folder:number , setClipboard:any, clipboard:file|null,
     filesystem[1](new Map(filesystem[0]))
     setClipboard(null)
 }
-  const FolderTools= ({ clipboard , setClipboard,  history, setHistory , index} : { clipboard: file | null , setClipboard :any ,history : number[], setHistory:any, index:number })=>{
+  const FolderTools= ({ clipboard , setClipboard,  history , index} : { clipboard: file | null , setClipboard :any ,history : number[],  index:number })=>{
     const FileSystem = useContext(FileSystemContext)
     if (!FileSystem)
         return null;
@@ -146,8 +153,27 @@ const PasteFile = (e:any, folder:number , setClipboard:any, clipboard:file|null,
     )
 }
   
+const handleClick = (clicked : number, FileId:number , setClicked:any ,setindex:any, setHistory:any)=>{
+  
 
-const FileData = ({FileId} : {FileId : number}) =>
+    if (clicked !== FileId)
+    {
+        setClicked(FileId)
+        return
+    }
+    setClicked(0)
+    setindex((ind:number) => {
+        setHistory((prev: number[]) => {
+        console.log(prev)
+        const nhist =  prev.slice(0, ind+1)
+        nhist.push(FileId)
+        return nhist
+        })
+        ind++
+        return ind
+    })
+}
+const FileData = ({ setindex, setHistory, clicked,setClicked ,FileId} : {setindex:any, setHistory:any, clicked: number , setClicked:any, FileId : number}) =>
 {
     const fileSystem = useContext(FileSystemContext)
     if (!fileSystem)
@@ -159,7 +185,7 @@ const FileData = ({FileId} : {FileId : number}) =>
         return null
 
     return (
-        <div className=" flex flex-row h-10 justify-between w-[90%]">
+        <div onClick={() => handleClick(clicked, FileId, setClicked, setindex, setHistory)} className={`${clicked === FileId ? "bg-ContextSelection" : ""} flex flex-row h-10 justify-between w-[90%] cursor-pointer`}>
             <div className="h-9 flex justify-center items-center">
                 <img  className="h-8" src={getIcon(FileData.icon)} alt="" />
             </div>
