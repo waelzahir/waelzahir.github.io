@@ -69,6 +69,7 @@ export const  GetFilePath = (filesystem :Map<number, file>,   file: number): str
     let path :string[] = [];
     let currid = file;
     let fi;
+    console.log(filesystem, file , "path")
     while(true)
     {
         fi = filesystem.get(currid)

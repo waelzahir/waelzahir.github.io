@@ -50,7 +50,7 @@ export const FolderContent= ({state}:{state:ProgramState})=>{
                     </div>
                 </div>
                 {
-                    state.file.content.map((file :file) =>  <FileData FileData={file}/>) 
+                    state.file.content.map((file :number) =>  <FileData FileId={file}/>) 
                 }
             </div>
         </div>
@@ -105,10 +105,17 @@ export const FolderContent= ({state}:{state:ProgramState})=>{
 
 }
 
-const FileData = ({FileData} : {FileData : file}) =>
+const FileData = ({FileId} : {FileId : number}) =>
 {
     const fileSystem = useContext(FileSystemContext)
-    
+    if (!fileSystem)
+        return null
+
+
+    let FileData = fileSystem[0].get(FileId)  ;
+    if (FileData == undefined)
+        return null
+
     return (
         <div className=" flex flex-row h-10 justify-between w-[90%]">
             <div className="h-9 flex justify-center items-center">
