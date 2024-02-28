@@ -22,7 +22,7 @@ export const FolderContent= ({ clipboard, setClipboard, state}:{clipboard: file 
         <div className="h-full w-full flex flex-row">
             <div id="Tools" className="h-full w-60 bg-[#718de1] flex justify-center items-center">
             <div className=" w-56 h-[80%]">
-                <FolderTools clipboard={clipboard} setClipboard={setClipboard} history={history}  index={index}/>
+                <FolderTools clicked={clicked} clipboard={clipboard} setClipboard={setClipboard} history={history}  index={index}/>
             </div>
             </div>
             <div className="flex flex-col h-full flex-1 gap-2 overflow-y-scroll items-center">
@@ -98,6 +98,14 @@ const CreateNewFile = (e:any ,folder: number, setFile: any, what:string) =>
     })
     console.log("setting file")
 }
+const CutFile = (e:any , fileid:number, setClipboard:any, filesystem:Map<number, file>) =>{
+    if(fileid === undefined || fileid < 1)
+        return
+    const file = filesystem.get(fileid)
+    if (file === undefined)
+        return;
+    setClipboard(file)
+    }
 const PasteFile = (e:any, folder:number , setClipboard:any, clipboard:file|null, filesystem:any) =>{
     if (!clipboard || folder===undefined)
         return
@@ -118,7 +126,7 @@ const PasteFile = (e:any, folder:number , setClipboard:any, clipboard:file|null,
     filesystem[1](new Map(filesystem[0]))
     setClipboard(null)
 }
-  const FolderTools= ({ clipboard , setClipboard,  history , index} : { clipboard: file | null , setClipboard :any ,history : number[],  index:number })=>{
+  const FolderTools= ({clicked, clipboard , setClipboard,  history , index} : {clicked:number, clipboard: file | null , setClipboard :any ,history : number[],  index:number })=>{
     const FileSystem = useContext(FileSystemContext)
     if (!FileSystem)
         return null;
@@ -137,17 +145,19 @@ const PasteFile = (e:any, folder:number , setClipboard:any, clipboard:file|null,
                     Paste
                 </h1>
             </div>
+           
             <div className="rounded bg-[#d8dff9] h-32  flex flex-col justify-around items-center font-tahoma text-[#456389]">
-                <h1 onClick={(e:any) => {}} className="w-40 cursor-pointer hover:text-[#93b0d0]">
+                <h1 onClick={(e:any) => {}} className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
                     Rename
                 </h1>
-                <h1 onClick={(e:any) => {}} className="w-40 cursor-pointer hover:text-[#93b0d0]">
+                <h1 onClick={(e:any) => {}} className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
                     Delete
                 </h1>
-                <h1 onClick={(e:any) => {}} className="w-40 cursor-pointer hover:text-[#93b0d0]">
+                <h1 onClick={(e:any) => CutFile(e,clicked,setClipboard,  FileSystem[0])}className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
                     Cut
                 </h1>
             </div>
+           
            
      </div>
     )
