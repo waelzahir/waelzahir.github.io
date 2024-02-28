@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProgramState } from "../../../../types/ProgramState";
 import { file, filetype, icon } from "../../../../types/ProgramType";
 import { getIcon } from "../../Files/file";
@@ -167,9 +167,12 @@ const DeleteFile = (e:any,fileid :number ,FileSys :any, setClicked:any) =>{
             </div>
            
             <div className="rounded bg-[#d8dff9] h-32  flex flex-col justify-around items-center font-tahoma text-[#456389]">
-                <h1 onClick={(e:any) => {}} className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
-                    Rename
-                </h1>
+                <div className="flex flex-row  w-40 justify-between">
+                    <h1  className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"}   `}>
+                        Rename
+                    </h1>
+                    <RenameFile id={clicked} setClicked={setClicked}/>
+                </div>
                 <h1 onClick={(e:any) => DeleteFile(e,clicked,FileSystem, setClicked)} className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
                     Delete
                 </h1>
@@ -177,8 +180,6 @@ const DeleteFile = (e:any,fileid :number ,FileSys :any, setClicked:any) =>{
                     Cut
                 </h1>
             </div>
-           
-           
      </div>
     )
 }
@@ -234,6 +235,39 @@ const FileData = ({ setindex, setHistory, clicked,setClicked ,FileId} : {setinde
                     {FileData.type}
                 </h1>
             </div>
+        </div>
+    )
+}
+const   RenameFile =  ({id, setClicked}: {id:number,setClicked:any}) =>  {
+    const FileSys = useContext(FileSystemContext)
+    const [name, setname] = useState("dst.name")
+
+    useEffect(() => {
+        if (!FileSys || id < 1)
+            return  ;
+        const dst = FileSys[0].get(id)
+        if (dst === undefined)
+            return 
+        setname(dst.name)
+    }, [id])
+    if (!FileSys || id < 1)
+        return  null;
+    const dst = FileSys[0].get(id)
+    if (dst === undefined)
+        return null
+    const newName = (e:any) =>
+    {
+        if (e.which != 13)
+            return ;
+        dst.name = name
+        FileSys[0].set(dst.id, dst)
+        localStorage.setItem(dst.id.toString(), JSON.stringify(dst))
+        setClicked(0)
+        setname("")
+    }
+    return (
+        <div  className="">
+            <input onKeyDown={(e)=> newName(e)} onChange={(e) => setname(e.target.value)} className="w-20 border-2 font-tahoma font-bold" value={name} type="text" />
         </div>
     )
 }
