@@ -58,7 +58,7 @@ export const FolderContent= ({ clipboard, setClipboard, state}:{clipboard: file 
 
 }
 
-const CreateNewFile = (e:any ,folder: number, setFile: any, what:string) =>
+const CreateNewFile = (folder: number, setFile: any, what:string) =>
 {
     console.log("setting file")
 
@@ -98,7 +98,7 @@ const CreateNewFile = (e:any ,folder: number, setFile: any, what:string) =>
     })
     console.log("setting file")
 }
-const CutFile = (e:any , fileid:number, setClipboard:any, filesystem:Map<number, file>, setClicked:any) =>{
+const CutFile = (fileid:number, setClipboard:any, filesystem:Map<number, file>, setClicked:any) =>{
     if(fileid === undefined || fileid < 1)
         return
     const file = filesystem.get(fileid)
@@ -107,7 +107,7 @@ const CutFile = (e:any , fileid:number, setClipboard:any, filesystem:Map<number,
     setClipboard(file)
     setClicked(0)
     }
-const PasteFile = (e:any, folder:number , setClipboard:any, clipboard:file|null, filesystem:any) =>{
+const PasteFile = (folder:number , setClipboard:any, clipboard:file|null, filesystem:any) =>{
     if (!clipboard || folder===undefined)
         return
 
@@ -127,7 +127,7 @@ const PasteFile = (e:any, folder:number , setClipboard:any, clipboard:file|null,
     filesystem[1](new Map(filesystem[0]))
     setClipboard(null)
 }
-const DeleteFile = (e:any,fileid :number ,FileSys :any, setClicked:any) =>{
+const DeleteFile = (fileid :number ,FileSys :any, setClicked:any) =>{
     if (fileid === undefined || fileid < 1)
         return
     const trash :file|undefined= FileSys[0].get(1)
@@ -155,13 +155,13 @@ const DeleteFile = (e:any,fileid :number ,FileSys :any, setClicked:any) =>{
     return (
         <div className="h-[70%] w-full  flex flex-col justify-evenly">
             <div className="rounded bg-[#d8dff9] h-32 flex flex-col justify-around items-center font-tahoma text-[#456389]">
-                <h1 onClick={(e:any) => CreateNewFile(e, history[index],  FileSystem[1], "t")} className="w-40 cursor-pointer hover:text-[#93b0d0]">
+                <h1 onClick={() => CreateNewFile( history[index],  FileSystem[1], "t")} className="w-40 cursor-pointer hover:text-[#93b0d0]">
                     New File
                 </h1>
-                <h1 onClick={(e:any) => CreateNewFile(e, history[index],  FileSystem[1], "f")}  className="w-40 cursor-pointer hover:text-[#93b0d0]">
+                <h1 onClick={() => CreateNewFile( history[index],  FileSystem[1], "f")}  className="w-40 cursor-pointer hover:text-[#93b0d0]">
                     New Folder
                 </h1>
-                <h1 onClick={(e:any) => PasteFile(e, history[index], setClipboard, clipboard, FileSystem) } className={` ${clipboard ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
+                <h1 onClick={() => PasteFile( history[index], setClipboard, clipboard, FileSystem) } className={` ${clipboard ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
                     Paste
                 </h1>
             </div>
@@ -173,10 +173,10 @@ const DeleteFile = (e:any,fileid :number ,FileSys :any, setClicked:any) =>{
                     </h1>
                     <RenameFile id={clicked} setClicked={setClicked}/>
                 </div>
-                <h1 onClick={(e:any) => DeleteFile(e,clicked,FileSystem, setClicked)} className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
+                <h1 onClick={() => DeleteFile(clicked,FileSystem, setClicked)} className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
                     Delete
                 </h1>
-                <h1 onClick={(e:any) => CutFile(e,clicked,setClipboard,  FileSystem[0], setClicked)} className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
+                <h1 onClick={() => CutFile(clicked,setClipboard,  FileSystem[0], setClicked)} className={` ${clicked > 0 ?"cursor-pointer hover:text-[#93b0d0]": "text-gray-500"} w-40  `}>
                     Cut
                 </h1>
             </div>

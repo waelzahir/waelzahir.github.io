@@ -61,7 +61,7 @@ const NaviBar = () =>
     return (
         <div  id="navibar" className="h-12 w-full flex flex-row justify-between items-center bg-XpBar border-t-4 border-xpBarborder ">
             <div  id="Start" className="h-full   w-44  flex  items-center justify-centerbg-green-700 rounded-r-[15px] cursor-pointer" >
-                <img onClick={(e) => ShowStart()} className="h-12  hover:opacity-80 " src={normstart} alt="" />
+                <img onClick={() => ShowStart()} className="h-12  hover:opacity-80 " src={normstart} alt="" />
             </div>
             <div className="mx-6 h-full w-full flex flex-row items-center gap-x-2 overflow-x-scroll">
                 

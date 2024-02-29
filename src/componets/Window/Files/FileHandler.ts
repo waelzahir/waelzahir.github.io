@@ -1,7 +1,6 @@
 import { highestid } from "../../../App";
 import { ExecutionState, ProgramState, screen } from "../../../types/ProgramState";
-import { file, state } from "../../../types/ProgramType";
-import { contextx, contexty } from "../Window";
+import { file } from "../../../types/ProgramType";
 
 var x1 = 0, y1 = 0, x2 = 0, y2 = 0
 

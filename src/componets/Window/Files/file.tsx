@@ -6,7 +6,7 @@ import text from "../../../assets/text.png"
 import Trash from "../../../assets/trash.png"
 import fullTrash from "../../../assets/TrashFull.png"
 
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { FileHandler } from "./FileHandler";
 import MemProviderContext from "../../../Context/MemContext";
 

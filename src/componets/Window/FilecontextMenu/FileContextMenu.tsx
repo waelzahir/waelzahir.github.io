@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext,  } from "react"
 import MemProviderContext from "../../../Context/MemContext";
 import { ExecutionState, ProgramState, screen } from "../../../types/ProgramState";
 import { file } from "../../../types/ProgramType";
-import {  moveToTrash, removeFileRecord } from "../../../utils/Recursivefordel";
 import { highestid } from "../../../App";
 
 const execfile = (file:file)  : ProgramState =>
@@ -129,7 +128,7 @@ const FileContextMenu =({setClipboard, SetFileSystem, operand,setoperand}:{setCl
                         Rename
                     </h1>
                 </div>
-                <div onClick={(e:any) =>{} } id="Prop" className="w-full  items-center Properties hover:bg-ContextSelection">
+                <div onClick={() =>{} } id="Prop" className="w-full  items-center Properties hover:bg-ContextSelection">
                     <h1>
                         Properties
                     </h1>
