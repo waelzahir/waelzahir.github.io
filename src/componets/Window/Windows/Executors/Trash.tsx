@@ -11,7 +11,7 @@ const TrashExecutor  = ({state}:{ state: ProgramState}) =>
         <div className="h-full w-full flex flex-row">
         <div id="Tools" className="h-full w-60 bg-[#718de1] flex justify-center items-center">
         <div className=" w-56 h-[80%]">
-            <TrashTools  state={state}/>
+            <TrashTools />
         </div>
         </div>
         <div className="flex flex-col h-full flex-1 gap-2 overflow-y-scroll items-center">
@@ -46,7 +46,7 @@ const TrashExecutor  = ({state}:{ state: ProgramState}) =>
 
     )
 }
-const TrashTools= ({state}:{state:ProgramState})=>{
+const TrashTools= ()=>{
     const FileSystem  = useContext(FileSystemContext)
     const emptyTrash = ()=>
     {

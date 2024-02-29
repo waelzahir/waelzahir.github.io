@@ -14,15 +14,15 @@ export const getFilesfromID = (files: number[],filesystem :Map<number, file>) : 
     return retu
 }
 
-export const removeFileRecord = (src: file, target: file, level:number )=>
-{
+// export const removeFileRecord = (src: file, target: file, level:number )=>
+// {
 
-}
+// }
 
 
-export const moveToTrash = (files: file [] , id: number , target: file ) => {
+// export const moveToTrash = (files: file [] , id: number , target: file ) => {
 
-}
+// }
 
 export const RecoverFromTrash = (filesystem :Map<number, file>, recoverd : number[]) =>
 {

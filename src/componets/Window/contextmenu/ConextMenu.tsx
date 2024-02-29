@@ -7,7 +7,6 @@ const ContextMenu = () => {
 
         const desktop = document.getElementById("Desktop");
         const ContextMenu = document.getElementById("ContextMenu");
-        const menu = document.getElementById("filecontex") ;
 
         if (!ContextMenu || !desktop )
             return ;
