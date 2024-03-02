@@ -91,11 +91,10 @@ export const  GetFilePath = (filesystem :Map<number, file>,   file: number): str
             path.push("<brokenlink>")
             break
         }
-        else if (fi.Parent === 0)
-        {
-            path.push(fi.name)
+        path.push(fi.name)
+        if (fi.Parent === 0)
             break;
-        }
+
         currid = fi.Parent
     }
     return "/" + path.reverse().join("/")

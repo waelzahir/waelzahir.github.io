@@ -7,6 +7,22 @@ import {  GetFilePath } from "../../../../utils/Recursivefordel";
 import { highestid } from "../../../../App";
 import { statedef } from "../../../../Metadata/projects";
 
+
+const  Toolbar  =({history, index, setindex, Filesystem}:{history:number[], index:number, setindex :any, Filesystem: Map <number, file>})=>{
+    console.log("rerender ?? "+ index, history[index])
+    return (
+
+        <div className="h-24">
+            <div className=" h-14 bg-white">
+
+            </div>
+            <div className="w-full flex flex-row">
+                <h1>Adress</h1>
+                <h1>{GetFilePath(Filesystem, history[index])}</h1>
+            </div>
+        </div>
+        )
+}
 export const FolderContent= ({ clipboard, setClipboard, state}:{clipboard: file |null,setClipboard:any, state:ProgramState})=>{
     const [history, setHistory] = useState(new Array(1).fill(state.file.id))
     const [index, setIndex] = useState(0)
@@ -19,6 +35,8 @@ export const FolderContent= ({ clipboard, setClipboard, state}:{clipboard: file 
         return null
     console.log("history is", history, "index is", index)
     return (
+        <div className=" w-full h-full flex-col ">
+            <Toolbar history={history}  index={index} setindex={setIndex} Filesystem={Filesystem[0]}/>
         <div className="h-full w-full flex flex-row">
             <div id="Tools" className="h-full w-60 bg-[#718de1] flex justify-center items-center">
             <div className=" w-56 h-[80%]">
@@ -53,6 +71,7 @@ export const FolderContent= ({ clipboard, setClipboard, state}:{clipboard: file 
                     file.content.map((file :number) =>  <FileData key={file} setHistory={setHistory} setindex={setIndex} clicked={clicked} setClicked={setClicked}  FileId={file}/>) 
                 }
             </div>
+        </div>
         </div>
     )
 

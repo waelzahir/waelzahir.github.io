@@ -146,7 +146,6 @@ const Windows = ({ clipboard, setClipboard, state}:{clipboard:file |null, setCli
                     <img  onClick={(e) => closewin( e, state, Memory)} className="h-8 hover:opacity-80" src={Exit} alt="" />
                 </div>
             </div>
-            <Toolbar state={state}/>
             <div className="h-[1px] w-full bg-Contextborder"></div>
             <div className="w-full  flex-1 bg-contextMenu overflow-hidden">
                 <Execute clipboard={clipboard} setClipboard={setClipboard} state={state}/>
@@ -154,29 +153,7 @@ const Windows = ({ clipboard, setClipboard, state}:{clipboard:file |null, setCli
         </div>
     )
 }
-const Toolbar = ({state}:{state : ProgramState}) => {
-    let item;
-    switch (state.file.type)
-    {
-        case filetype.Folder:
-            item = null
-            break ;
-        case filetype.Text:
-            item = null
-            break ;
 
-        case filetype.Project:
-            item = null
-            break ;
-
-        default:
-                item = null
-    }
-    return (
-        item
-    )
-    
-}
 const Execute = ({state,setClipboard, clipboard}:{state : ProgramState, setClipboard:any, clipboard:file|null}) =>{
     let item;
     switch (state.file.type)
