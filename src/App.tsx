@@ -37,13 +37,11 @@ function App() {
     }
     else
     {
-      console.log("from storage")
       Object.keys(localStorage).map((key:string)=> {
         let file: string | null = "";
         if (Number.isInteger(+key))
          {
             file = localStorage.getItem(key)
-            console.log("storage", file)
             if ( typeof file === "string" && file.length)
               {
                 FileSystem.set(+key, JSON.parse(file))

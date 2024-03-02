@@ -6,20 +6,30 @@ import FileSystemContext from "../../../../Context/fileSystem";
 import {  GetFilePath } from "../../../../utils/Recursivefordel";
 import { highestid } from "../../../../App";
 import { statedef } from "../../../../Metadata/projects";
+import Back from "../../../../assets/Back.png"
+import Forward from "../../../../assets/Forward.png"
+
 
 
 const  Toolbar  =({history, index, setindex, Filesystem}:{history:number[], index:number, setindex :any, Filesystem: Map <number, file>})=>{
     console.log("rerender ?? "+ index, history[index])
     return (
 
-        <div className="h-24">
-            <div className=" h-14 bg-white">
+        <div className="h-20 w-full flex flex-row items-center bg-[#eeecdd] gap-x-7 font-tahoma font-bold">
+                <div className=" h-full flex flex-row items-center gap-x-2 ml-2">
+                    <img onClick={() => setindex(index  > 0 ? index - 1 : index)} className={`h-10 ${index > 0 ? "hover:opacity-80 cursor-pointer": "grayscale"}`} src={Back} alt="" />
+                    <h1>
+                        Back
+                    </h1>
+                </div>
+                <div>
+                    <img onClick={() => setindex(index< history.length -1 ? index + 1 : index)} className={`h-10 ${index < history.length -1 ? "hover:opacity-80 cursor-pointer": "grayscale"}`} src={Forward} alt="" />
+                </div>
+                <h1 className="text-sm text-gray-500">Adress</h1>
+                <div className="border-2 h-10 w-[60%] flex items-center bg-white">
 
-            </div>
-            <div className="w-full flex flex-row">
-                <h1>Adress</h1>
-                <h1>{GetFilePath(Filesystem, history[index])}</h1>
-            </div>
+                    <h1>{GetFilePath(Filesystem, history[index])}</h1>
+                </div>
         </div>
         )
 }
@@ -79,7 +89,6 @@ export const FolderContent= ({ clipboard, setClipboard, state}:{clipboard: file 
 
 const CreateNewFile = (folder: number, setFile: any, what:string) =>
 {
-    console.log("setting file")
 
     const TEXT : file = {
         id:highestid.id, 
@@ -214,8 +223,7 @@ const handleClick = (clicked : number, FileId:number , setClicked:any ,setindex:
     setClicked(0)
     setindex((ind:number) => {
         setHistory((prev: number[]) => {
-        console.log(prev)
-        const nhist =  prev.slice(0, ind+1)
+        const nhist =  prev.slice(0, ind)
         nhist.push(FileId)
         return nhist
         })

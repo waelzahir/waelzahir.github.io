@@ -58,7 +58,6 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:Map<number, file>, Se
             const rename = document.getElementById("FileRename") ;
             if (rename && !rename.classList.contains("hidden"))
                 rename.classList.add("hidden")
-            console.log(e.target.id)
             if(e.target.id === "Desktop")
                 setoperand(null)
 

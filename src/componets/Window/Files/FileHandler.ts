@@ -31,10 +31,8 @@ export class FileHandler {
     dragMouseDown(e:any) {
         e.preventDefault()
         e.stopPropagation()
-        console.log(e.button)
         if (e.button !== 2)
         {   
-            console.log("moudedown")
             window.onmousemove = this.movemouse.bind(this)
             window.onmouseup = this.mouseup.bind(this)
         }
@@ -51,8 +49,6 @@ export class FileHandler {
         y1 =  e.clientY
         x1 = e.clientX
         e.preventDefault();
-        console.log("mouve")
-        console.log(e.clientX, e.clientY)
         this.element.style.top = (this.element.offsetTop - y2) + "px";
         this.element.style.left = (this.element.offsetLeft - x2) + "px";
         this.drag = true
@@ -62,12 +58,10 @@ export class FileHandler {
         e.preventDefault();
         e.stopPropagation()
 
-        console.log("mouse up")
         window.onmousemove = null 
         window.onmouseup = null
         if (this.drag == false)
             this.handleclick()
-        console.log(this.drag)
         this.drag = false
         y1 = 0
         x1 = 0
@@ -90,7 +84,6 @@ export class FileHandler {
     handleclick()
     {
         this.menuset(false)
-        console.log("click inclick")
         const rename = document.getElementById("FileRename") ;
             if (rename && !rename.classList.contains("hidden"))
                 rename.classList.add("hidden")
@@ -98,23 +91,18 @@ export class FileHandler {
                 this.menu.classList.add("hidden")
         
         this.setoperand((f:file | null) => {
-            console.log("operand is" , f)
             if (f && f.id === this.file.id)
             {
-                console.log(null, "nulled")
                 this.MemAccess[1]((state: ProgramState []) => {state.push(this.getinitState()) ; return state.slice()})
-                console.log(this.MemAccess[0], "memory")
 
                 return null
             }
-            console.log(this.file, "passed")
             return this.file
             })
     }
  
     handlecontext(e:any)
     {
-        console.log("context")
         this.menuset(false)
         e.stopPropagation()
         e.preventDefault()

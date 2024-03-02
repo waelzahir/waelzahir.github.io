@@ -35,7 +35,6 @@ const  MaximizeWin  = (e:any, state: ProgramState, refwin : HTMLDivElement | nul
         refwin.style.left = state.screen.x + "px"
         refwin.style.width = state.screen.width + "px"
         refwin.style.height = state.screen.height + "px"
-        console.log(state.screen)
     }
     else{
         refwin.style.top = win.offsetTop+"px"
@@ -71,7 +70,6 @@ const movewindow =  (e:any, windo:HTMLDivElement | null, bar : HTMLDivElement | 
             y1 =  e.clientY
             x1 = e.clientX
             e.preventDefault()
-            console.log("move")
 
             windo.style.top = (windo.offsetTop -  y2) + "px";
             windo.style.left = (windo.offsetLeft - x2) + "px";
@@ -123,7 +121,6 @@ const Windows = ({ clipboard, setClipboard, state}:{clipboard:file |null, setCli
                 st[index].screen = state.screen
                 return st.slice()
             })
-            console.log("opened", state.screen)
 
     },[])
 

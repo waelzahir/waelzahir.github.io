@@ -46,7 +46,6 @@ const ProgramIcon = ({menu, entries, size,operand, setoperand }: {menu:any, entr
         }, []);
     const icon =  entries.id === -1 && entries.content.length ? fullTrash :getIcon(entries.icon);
     const fited = size === 1 ? 56 : size === 2 ? 70 : 90;
-        console.log(entries.content.length , "trash lenght")
     return (
         <div ref={refer}  className={`${operand && operand.id === entries.id ? "bg-ContextSelection" : "hover:bg-blue-200"} absolute overflow-hidden w-20 h-20 flex flex-col justify-around items-center   rounded z-50`} style={{ height: `${80 + size * 10}px` }}>
             <div  className="w-full   flex justify-center items-center">
