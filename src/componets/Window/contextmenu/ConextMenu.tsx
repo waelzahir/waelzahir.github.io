@@ -1,8 +1,14 @@
-import { useEffect,  } from "react";
+import { useContext, useEffect,  } from "react";
 
 import { contextx, contexty } from "../Window";
+import { file } from "../../../types/ProgramType";
+import FileSystemContext from "../../../Context/fileSystem";
+import { PasteFile } from "../Windows/Executors/Folder";
 
-const ContextMenu = () => {  
+
+const ContextMenu = ({clipboard, setClip}:{setClip:any, clipboard:file|null}) => {  
+    const FileSystem = useContext(FileSystemContext)
+
     useEffect(() =>{
 
         const desktop = document.getElementById("Desktop");
@@ -53,7 +59,7 @@ const ContextMenu = () => {
                 </div>
                 <div className="h-1 w-[95%]  border-t-2 border-Contextborder"></div>
                 <div className="w-full flex flex-col justify-around h-16">
-                    <h1 className="pl-4  text-gray-500">Paste</h1>
+                    <h1 onClick={() =>PasteFile(0, setClip, clipboard,FileSystem)} className={`${clipboard ? " hover:bg-ContextSelection" : " text-gray-500"} pl-4 `}>Paste</h1>
                     <h1 className="pl-4  text-gray-500">Terminal</h1>
                 </div>
                 <div className="h-1 w-[95%]  border-t-2 border-Contextborder"></div>

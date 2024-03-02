@@ -3,7 +3,7 @@ import { ProgramState } from "../../../../types/ProgramState";
 import { file, filetype, icon } from "../../../../types/ProgramType";
 import { getIcon } from "../../Files/file";
 import FileSystemContext from "../../../../Context/fileSystem";
-import {  GetFilePath } from "../../../../utils/Recursivefordel";
+import {  GetFilePath, itschild } from "../../../../utils/Recursivefordel";
 import { highestid } from "../../../../App";
 import { statedef } from "../../../../Metadata/projects";
 import Back from "../../../../assets/Back.png"
@@ -129,11 +129,17 @@ const CutFile = (fileid:number, setClipboard:any, filesystem:Map<number, file>, 
     setClipboard(file)
     setClicked(0)
     }
-const PasteFile = (folder:number , setClipboard:any, clipboard:file|null, filesystem:any) =>{
+export const PasteFile = (folder:number , setClipboard:any, clipboard:file|null, filesystem:any) =>{
     if (!clipboard || folder===undefined)
         return
-
+    if ( itschild(folder, clipboard.id, filesystem[0]))
+        {
+            console.log("denied")
+            return ;
+        }
     const src:file = filesystem[0].get(clipboard.Parent)
+    console.log("file fsdfsdfsd")
+
     const dst:file = filesystem[0].get(folder)
     if (src === undefined || dst === undefined)
         return ;
@@ -147,6 +153,7 @@ const PasteFile = (folder:number , setClipboard:any, clipboard:file|null, filesy
     filesystem[0].set((dst.id, dst))
     filesystem[0].set((clipboard.id, clipboard))
     filesystem[1](new Map(filesystem[0]))
+    console.log("file pasted")
     setClipboard(null)
 }
 const DeleteFile = (fileid :number ,FileSys :any, setClicked:any) =>{
@@ -247,7 +254,7 @@ const FileData = ({ setindex, setHistory, clicked,setClicked ,FileId} : {setinde
             </div>
             <div className="flex justify-center items-center">
                 <h1>
-                    {fileSystem ? GetFilePath(fileSystem[0], FileData.id) : ""}
+                    {/* {fileSystem ? GetFilePath(fileSystem[0], FileData.id) : ""} */}
                 </h1>
             </div>
             <div className="flex justify-center items-center">

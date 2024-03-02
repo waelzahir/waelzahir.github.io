@@ -100,3 +100,23 @@ export const  GetFilePath = (filesystem :Map<number, file>,   file: number): str
     return "/" + path.reverse().join("/")
 
 }
+
+export const itschild = (folder: number, file:number, filesystem :Map<number, file>) : boolean => {
+
+    if (folder === file)
+        return true
+    let parent = folder;
+    let f: file | undefined;
+    while(parent !== 0)
+    {
+        f = filesystem.get(parent)
+        if (f === undefined)
+            return false;
+        if (f.Parent === file)
+            return true
+        parent = f.Parent
+    }
+
+
+    return false
+}

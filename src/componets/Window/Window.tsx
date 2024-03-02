@@ -91,7 +91,7 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:Map<number, file>, Se
                 contextMenu ? <>
                     <ContextMenuNewMenu   setters={{ContextMenu: setContextMenu, SetFileSystem:SetFileSystem}}/>
                     <ContextMenuViewMenu  setter={setsize}/>
-                    <ContextMenu  />
+                    <ContextMenu  clipboard={clipboard} setClip={setClipboard}/>
                 </>
                 :null
             }
