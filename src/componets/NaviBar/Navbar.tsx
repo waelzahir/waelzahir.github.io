@@ -65,7 +65,7 @@ const NaviBar = () =>
             </div>
             <div className="mx-6 h-full w-full flex flex-row items-center gap-x-2 overflow-x-scroll">
                 
-                {Memory && Array.isArray(Memory[0]) ? Memory[0].map((state:ProgramState) => <Tab state={state}/>) : null}
+                {Memory && Array.isArray(Memory[0]) ? Memory[0].map((state:ProgramState) => <Tab key={state.proccess} state={state}/>) : null}
             </div>
             <div id="tastkbarclock" className="h-full w-44 flex justify-around items-center  bg-[#47b2ea] ">
             

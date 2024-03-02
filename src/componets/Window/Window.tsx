@@ -81,7 +81,7 @@ const Window  = ({FileSystem, SetFileSystem} : {FileSystem:Map<number, file>, Se
         <div ref={winref}  className="w-full h-full overflow-hidden  flex items-center">
             <div id="Desktop" className="w-full h-full overflow-hidden">
             {
-                Memory && Memory[0].length ? Memory[0].map((state: ProgramState) => <Windows  clipboard={clipboard} setClipboard={setClipboard} state={state}/>) : null
+                Memory && Memory[0].length ? Memory[0].map((state: ProgramState) => <Windows key={state.proccess} clipboard={clipboard} setClipboard={setClipboard} state={state}/>) : null
             }
             {
                 getFilesfromID(FileSystem.get(0)?.content , FileSystem).map((element: file) => (

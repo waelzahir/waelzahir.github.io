@@ -55,12 +55,6 @@ export const FolderContent= ({ clipboard, setClipboard, state}:{clipboard: file 
             </div>
             <div className="flex flex-col h-full flex-1 gap-2 overflow-y-scroll items-center">
                 <div className="h-11 w-[90%] flex flex-row justify-between items-center sticky top-0 bg-contextMenu border-b-2">
-
-                    <div className="h-9 flex justify-center items-center">
-                        <h1>
-                            Icon
-                        </h1>
-                    </div>
                     <div className="flex justify-center items-center">
                         <h1>
                             Name
@@ -181,7 +175,7 @@ const DeleteFile = (fileid :number ,FileSys :any, setClicked:any) =>{
  
 
     return (
-        <div className="h-[70%] w-full  flex flex-col justify-evenly">
+        <div className="h-[70%] w-full  flex flex-col gap-y-4">
             <div className="rounded bg-[#d8dff9] h-32 flex flex-col justify-around items-center font-tahoma text-[#456389]">
                 <h1 onClick={() => CreateNewFile( history[index],  FileSystem[1], "t")} className="w-40 cursor-pointer hover:text-[#93b0d0]">
                     New File
@@ -244,10 +238,9 @@ const FileData = ({ setindex, setHistory, clicked,setClicked ,FileId} : {setinde
 
     return (
         <div onClick={() => handleClick(clicked, FileId, setClicked, setindex, setHistory)} className={`${clicked === FileId ? "bg-ContextSelection" : ""} flex flex-row h-10 justify-between w-[90%] cursor-pointer`}>
-            <div className="h-9 flex justify-center items-center">
-                <img  className="h-8" src={getIcon(FileData.icon)} alt="" />
-            </div>
+          
             <div className="flex justify-center items-center">
+                <img  className="h-8" src={getIcon(FileData.icon)} alt="" />
                 <h1>
                     {FileData.name}
                 </h1>
@@ -294,7 +287,7 @@ const   RenameFile =  ({id, setClicked}: {id:number,setClicked:any}) =>  {
     }
     return (
         <div  className="">
-            <input onKeyDown={(e)=> newName(e)} onChange={(e) => setname(e.target.value)} className="w-20 border-2 font-tahoma font-bold" value={name} type="text" />
+            <input onKeyDown={(e)=> newName(e)} onChange={(e) => setname(e.target.value)} className="w-20 border-2 font-tahoma font-bold text-sm" value={name} type="text" />
         </div>
     )
 }
