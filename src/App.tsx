@@ -10,6 +10,8 @@ import StartMenu from "./componets/StartMenu";
 import FileSystemContext from "./Context/fileSystem";
 import { GlobalMetadata, InitState, defaultState } from "./types/GlobalMetadata";
 import WelcomePage from "./componets/InitScreen";
+import EnvirementContext from "./Context/EnvirementContext";
+import { useStartSystem } from "./hooks/useStartSystem";
 
 export var highestid :GlobalMetadata = { id :0, zindex: 100, exec: 0} 
 
@@ -18,14 +20,16 @@ function App() {
   const FileSystem = useState<Map <number , file>>(new Map)
   const initState =  useState<InitState>(defaultState)
 
-  
-cd 
-
+  useStartSystem(FileSystem[1], initState[1]);
+  // if (initState[0].user === -1)
+  //     return <WelcomePage InitState={initState}/>
   return ( 
       <MemProviderContext.Provider value={Memory}>
-        <FileSystemContext.Provider value={FileSystem}>
-          <SystemStart />
-        </FileSystemContext.Provider>
+        <EnvirementContext.Provider value={initState}>
+          <FileSystemContext.Provider value={FileSystem}>
+            <SystemStart />
+          </FileSystemContext.Provider>
+        </EnvirementContext.Provider>
       </MemProviderContext.Provider>
   )
 }
@@ -34,8 +38,8 @@ const SystemStart = () => {
   return (
     <div className=" h-screen w-full flex flex-col overflow-hidden">
       <Window />
-      <NaviBar />
       <StartMenu/>
+      <NaviBar />
     </div>
   )
 }

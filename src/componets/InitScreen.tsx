@@ -50,16 +50,7 @@ const WelcomePage  = (props:any) =>{
             <div className="w-full flex-1 bg-[#12387f] flex flex-row items-center justify-center">
                 <div className=" text-white h-[30%] w-[40%] flex flex-col items-center justify-around">
                     <h1 className="font-egoist text-2xl font-bold">Welcome To My Portfolio</h1>
-                            {
-                                !props.InitState[0].persistant ?
-                        <div className="flex flex-row  justify-around items-center  h-20 w-[90%] ">
-                            <h1 className="font-tahoma font-semibold">Do you want to make the changes persistent for your next visit?</h1>
-                                <div onClick={() => updatePersistance(props.InitState[1], true)} className="border-2 border-[#638ed3] w-10 h-10 rounded flex justify-center items-center hover:bg-blue-950  hover:opacity-95 cursor-pointer">
-                                    <h1   className=" font-egoist font-extrabold  align-middle">Yes</h1>                            
-                                </div>
-                        </div>
-                                : null
-                            }
+                       
                 </div>
                 <div className="w-[2px] h-[50%] bg-[#638ed3]"></div>
                 <div className=" w-[20%] h-[50] ml-9 ">
@@ -69,8 +60,17 @@ const WelcomePage  = (props:any) =>{
                           </div>
                 </div>
             </div>
-            <div className="h-24 w-full bg-[#638ed3]">
-
+            <div className="h-24 w-full bg-[#638ed3] flex items-center">
+            {
+                !props.InitState[0].persistant ?
+                <div className="flex flex-row  items-center  h-20 w-full ">
+                    <h1 className="font-tahoma font-semibold ml-9 ">Do you want to make the changes persistent for your next visit?</h1>
+                        <div onClick={() => updatePersistance(props.InitState[1], true)} className=" ml-9 border-2 border-[#12387f] w-10 h-10 rounded flex justify-center items-center hover:bg-blue-950  hover:opacity-95 cursor-pointer">
+                                <h1   className="font-tahoma font-semibold  ">Yes</h1>                            
+                        </div>
+                </div>
+                : null
+            }
             </div>
         </div>
     )

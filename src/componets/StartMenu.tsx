@@ -1,18 +1,24 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { highestid } from "../App"
 
 const StartMenu =() =>{
     const ref = useRef<HTMLDivElement>(null)
+    const [resize, setresize ] = useState(false);
     useEffect(() =>{
         const startbutton = document.getElementById("Start")
         if (!ref.current || !startbutton)
             return 
-        ref.current.style.top = (startbutton.getBoundingClientRect().top - 705) + "px" 
+        ref.current.style.top = (startbutton.getBoundingClientRect().top - (window.innerHeight / 3 *2 )- 5) + "px" 
         ref.current.style.left = "0px" 
-        ref.current.style.width =   "500px" 
-        ref.current.style.height = "700px" 
+        ref.current.style.width =   window.innerWidth / 4 + "px"
+        ref.current.style.height = window.innerHeight / 3 *2 + "px"
         ref.current.style.zIndex = highestid.zindex.toString()
-    }, [])
+        highestid.zindex++;
+        window.addEventListener("resize",() => setresize(!resize) )
+        return () =>{
+            window.removeEventListener("resize",() => setresize(!resize) )
+        }
+    }, [resize])
     return (
     <div id="startmenu" ref={ref} className="hidden absolute flex flex-col">
         <div id="identity" className=" bg-XpBar flex  justify-center items-center w-full">

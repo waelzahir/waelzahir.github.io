@@ -7,8 +7,9 @@ import Trash from "../../../assets/trash.png"
 import fullTrash from "../../../assets/TrashFull.png"
 
 import { useContext, useEffect, useRef } from "react";
-import { FileHandler } from "./FileHandler";
-import MemProviderContext from "../../../Context/MemContext";
+
+import FileSystemContext from "../../../Context/fileSystem";
+import EnvirementContext from "../../../Context/EnvirementContext";
 
 
 export const getIcon  = (ico: icon) => {
@@ -30,29 +31,22 @@ export const getIcon  = (ico: icon) => {
     }
 }
 
-const ProgramIcon = ({menu, entries, size,operand, setoperand }: {menu:any, entries: file, size: number,operand:file|null, setoperand: any }) => {
+const ProgramIcon = ({file}: {file: file}) => {
     const refer = useRef<HTMLDivElement>(null);
-    const Memory = useContext(MemProviderContext)
+    const Envirment = useContext(EnvirementContext)
     
-
-    useEffect(() => {
-        if (!refer.current)
-            return
-        const handler = new FileHandler(refer.current, entries, setoperand, menu, Memory )
-        return () =>
-        {
-            handler.removerLisners()
-        }
-        }, []);
-    const icon =  entries.id === -1 && entries.content.length ? fullTrash :getIcon(entries.icon);
-    const fited = size === 1 ? 56 : size === 2 ? 70 : 90;
+    if ( !Envirment)
+        return ;
+  
+    const icon = getIcon(file.icon)
+    const fitted = Envirment[0].iconsize === 1 ? 56 : Envirment[0].iconsize === 2 ? 70 : 90;
     return (
-        <div ref={refer}  className={`${operand && operand.id === entries.id ? "bg-ContextSelection" : "hover:bg-blue-200"} absolute overflow-hidden w-20 h-20 flex flex-col justify-around items-center   rounded z-50`} style={{ height: `${80 + size * 10}px` }}>
+        <div ref={refer}  className={`absolute overflow-hidden w-20 h-20 flex flex-col justify-around items-center   rounded z-50`} style={{ height: `${80 + Envirment[0].iconsize * 10}px` }}>
             <div  className="w-full   flex justify-center items-center">
-                <img style={{ height: `${fited}px` }} src={icon} alt={entries.name} />
+                <img style={{ height: `${fitted}px` }} src={icon} alt={file.name} />
             </div>
             <div >
-                <h1  className="text-start font-tahoma text-xs font-bold text-black truncate">{entries.name}</h1>
+                <h1  className="text-start font-tahoma text-xs font-bold text-black truncate">{file.name}</h1>
             </div>
         </div>
     );
