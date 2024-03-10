@@ -3,7 +3,7 @@ import MemProviderContext from "../../Context/MemContext"
 import FileSystemContext from "../../Context/fileSystem"
 import { ProgramState } from "../../types/ProgramState"
 import { file } from "../../types/ProgramType"
-import ProgramIcon from "./Files/file"
+import FileIcon from "./Files/file"
 
 const OpenWindows = (Memory :any) =>
 {
@@ -11,9 +11,9 @@ const OpenWindows = (Memory :any) =>
         <>salam</>
     } )
 }
-const WindowIcons= (FileSystem:Map<number, file>)=>
+const WindowIcons= (FileSystem:any)=>
 {
-    return Array.from(FileSystem.entries()).map(([key, value]) => <ProgramIcon key={key} file={value}/>)
+    return Array.from((FileSystem[0] as Map<number, file>).entries()).map(([key, value]) => <FileIcon key={key} file={value}/>)
 }
 const Window = () => {
     const Memory = useContext(MemProviderContext)
@@ -21,9 +21,9 @@ const Window = () => {
     if (!Memory || !FileSystem)
         return null;
     return (
-        <div id="Desktop" className="w-full flex-1">
+        <div id="Desktop" className="w-full h-full flex-1">
             {OpenWindows(Memory)}
-            {WindowIcons(FileSystem[0])}
+            {WindowIcons(FileSystem)}
         </div>
     )
 }
