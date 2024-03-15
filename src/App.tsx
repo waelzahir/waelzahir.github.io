@@ -1,20 +1,22 @@
 
 import {  useEffect, useState } from "react";
 import Window from "./componets/Window/Window";
-import { file } from "./types/ProgramType";
-import { Desktop } from "./Metadata/projects";
-import { ProgramState } from "./types/ProgramState";
 import MemProviderContext from "./Context/MemContext";
-import StartMenu from "./componets/StartMenu";
 import FileSystemContext from "./Context/fileSystem";
-import { GlobalMetadata, InitState, defaultState } from "./types/GlobalMetadata";
-import WelcomePage from "./componets/InitScreen";
 import EnvirementContext from "./Context/EnvirementContext";
 import { useStartSystem } from "./hooks/useStartSystem";
 import { useSetBackground } from "./hooks/Background";
 import Dock from "./componets/Dock";
+import { file } from "./types/file";
+import { Envirment } from "./types/Envirment";
+import { useGetProjects } from "./hooks/getProjects";
 
-export var highestid :GlobalMetadata = { id :0, zindex: 100, exec: 0} 
+const env :Envirment ={
+  Background:0,
+  process:0,
+  fileid:0
+}
+
 const Resize = (dock:any) =>{
     
     dock.style.top = (window.innerHeight - 70 ) + "px"
@@ -23,13 +25,15 @@ const Resize = (dock:any) =>{
 
 }
 function App() {
-  const Memory = useState<ProgramState []>(new Array())
+  const Memory = useState<any []>(new Array())
   const FileSystem = useState<Map <number , file>>(new Map)
-  const initState =  useState<InitState>(defaultState)
+  const Envirement =  useState<Envirment>(env)
 
 
-  useStartSystem(FileSystem[1], initState[1]);
-  useSetBackground(initState[0])
+  useStartSystem(FileSystem[1], Envirement[1]);
+  useSetBackground(Envirement[0])
+  useGetProjects(FileSystem[1], Envirement[1])
+  console.log(FileSystem[0])
   useEffect(() =>{
     const dock = document.getElementById("dock");
     if (!dock)
@@ -46,7 +50,7 @@ function App() {
   //     return <WelcomePage InitState={initState}/>
   return ( 
       <MemProviderContext.Provider value={Memory}>
-        <EnvirementContext.Provider value={initState}>
+        <EnvirementContext.Provider value={Envirement}>
           <FileSystemContext.Provider value={FileSystem}>
             <SystemStart />
           </FileSystemContext.Provider>
@@ -59,9 +63,7 @@ const SystemStart = () => {
   return (
     <div className=" h-screen w-full overflow-hidden">
       <div className="h-full w-full flex flex-col">
-
         <Window />
-        <StartMenu/>
         <Dock />
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { createContext, } from "react";
-import { InitState } from "../types/GlobalMetadata";
+import { Envirment } from "../types/Envirment";
 
 
-const EnvirementContext = createContext< [InitState, React.Dispatch<React.SetStateAction<InitState>>]| null>(null)
+const EnvirementContext = createContext< [Envirment, React.Dispatch<React.SetStateAction<Envirment>>]| null>(null)
 export default EnvirementContext

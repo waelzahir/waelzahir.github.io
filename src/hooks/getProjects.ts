@@ -1,7 +1,26 @@
 import { useEffect } from "react"
-import { ProjectType } from "../types/ProjectType"
+import { Progtype, file } from "../types/file"
+import { Envirment } from "../types/Envirment"
+import { CreateFile } from "../utils/createfile"
+import { GitProject } from "../types/gitProject"
 
-export const useGetProjects = (setterprojects: any, allprojects: Map<string, ProjectType>) => {
+const Filter = [
+    "42_minishell",
+    "cpp-modules",
+    "cub3d",
+    "ft_printf",
+    "GetNextLine",
+    "inception",
+    "IRC-Server",
+    "Java-intro",
+    "philosophers",
+    "Pipex",
+    "Python101",
+    "Transcendance",
+    "waelzahir.github.io"
+]
+
+export const useGetProjects = (setFileSystem: any, SetEnvirment:any) => {
     useEffect(() => {
         fetch("https://api.github.com/users/waelzahir/repos", {
             headers:{
@@ -11,12 +30,27 @@ export const useGetProjects = (setterprojects: any, allprojects: Map<string, Pro
         .then((data) => 
         {
             if(data)
-                data.map((element:any) => {
-        
-                    if (allprojects.has(element.name))
-                        allprojects.set(element.name, element)
-                })
-            setterprojects((p:boolean) => !p)    
+                {
+
+                    SetEnvirment((env:Envirment) : Envirment=>{
+                        let id = env.fileid;
+                        data.map((el:GitProject) =>{
+                            if (!Filter.includes(el.name))
+                                return ;
+                            const file = CreateFile(el.name, id ,Progtype.github, el);
+                            setFileSystem((files: Map <number, file>) => {
+                                files.set(id , file);
+                                id++;
+                                return new Map(files)
+                            })
+                        })
+                        return {
+                            Background:env.Background,
+                            fileid:id,
+                            process:env.process
+                        }
+                    })
+                }
         })
     }, [])
 
