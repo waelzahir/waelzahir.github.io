@@ -1,6 +1,8 @@
-import { useRef } from "react";
-import { file } from "../../../types/file";
+import { useContext, useRef, useState } from "react";
+import { Progtype, file } from "../../../types/file";
 import { GitProject } from "../../../types/gitProject";
+import Folder from "../../../assets/Folder.svg"
+import MemProviderContext from "../../../Context/MemContext";
 const GetSrc = (lang:string) =>
 {
     switch (lang){
@@ -24,13 +26,43 @@ const GetSrc = (lang:string) =>
             return "";
     }            
 }
-const FileIcon = ({file}: {file: file}) => {
-    const refer = useRef<HTMLDivElement>(null);
-    console.log("")
+const geticon = (type: Progtype) =>{
+    switch (type)
+    {
+        case Progtype.folder:
+            return Folder;
+        default :
+            return null
+    }
+}
+const handleClick  = (e : any, file:file  , operand :[file | null, React.Dispatch<React.SetStateAction<file | null>>], Memory:any) =>
+{
+    e.preventDefault();
+    e.stopPropagation()
+    if (operand[0] && operand[0].id == file.id)
+    {
+            // loadProgramTomemory();
+            operand[1](null)
+        return ;
+    }
+    operand[1](file)
+}
+const HandleContext  = (e:any) =>
+{
+    e.preventDefault();
+    e.stopPropagation();
+}
+const FileIcon = ({file, operand}: {file: file | undefined, operand :[file | null, React.Dispatch<React.SetStateAction<file | null>>]}) => {
+    const Memory = useContext(MemProviderContext)
+    if (file == undefined)
+    return null
+    const icon = file.type ===Progtype.github ? GetSrc((file.content as GitProject).language) : geticon(file.type)
+   
     return (
-        <div ref={refer} className="w-20 h-20 flex flex-col justify-center items-center">
-            <img className="w-10 h-10 flex justify-center items-center" src={GetSrc((file.content as GitProject).language)} />
-            <h1 className="w-full truncate">{file.name}</h1>
+        <div onClick={(e:any) => handleClick(e, file, operand, Memory)} onContextMenu={(e:any) =>HandleContext(e,)}  className={` ${ operand[0] && operand[0].id === file.id ? "bg-violet-600" : ""} w-20 h-20 flex flex-col items-center`} >
+            <img className="w-16 h-16" src={icon} />
+            <h1 className="w-full text-center">{file.name}</h1>
+         
         </div>
     );
 };

@@ -21,6 +21,9 @@ const Filter = [
 ]
 
 export const useGetProjects = (setFileSystem: any, SetEnvirment:any) => {
+    SetEnvirment[0].fileid++;
+    const desk = setFileSystem[0].get(0)
+    const Projects = CreateFile("My Projects", SetEnvirment[0].fileid, Progtype.folder, [], 0);
     useEffect(() => {
         fetch("https://api.github.com/users/waelzahir/repos", {
             headers:{
@@ -31,27 +34,29 @@ export const useGetProjects = (setFileSystem: any, SetEnvirment:any) => {
         {
             if(data)
                 {
-
-                    SetEnvirment((env:Envirment) : Envirment=>{
-                        let id = env.fileid;
-                        data.map((el:GitProject) =>{
-                            if (!Filter.includes(el.name))
+                    data.map((el:GitProject) =>{
+                        if (!Filter.includes(el.name))
                                 return ;
-                            const file = CreateFile(el.name, id ,Progtype.github, el);
-                            setFileSystem((files: Map <number, file>) => {
-                                files.set(id , file);
-                                id++;
-                                return new Map(files)
-                            })
-                        })
-                        return {
-                            Background:env.Background,
-                            fileid:id,
-                            process:env.process
-                        }
+                        SetEnvirment[0].fileid++;
+                        const file = CreateFile(el.name, SetEnvirment[0].fileid, Progtype.github, el, Projects.id);
+                        setFileSystem[0].set(SetEnvirment[0].fileid, file);
+                        Projects.content.push(file.id)    
                     })
+                    SetEnvirment[1](
+                        {
+                            fileid: SetEnvirment[0].fileid,
+                            process:SetEnvirment[0].process,
+                            Background:SetEnvirment[0].Background,
+                        }
+                    )
+                    setFileSystem[1](new Map(setFileSystem[0]))
                 }
-        })
+            })
+            setFileSystem[0].set(Projects.id, Projects);
+            desk.content.push(Projects.id);
+            setFileSystem[1](new Map(setFileSystem[0]))
+
+               
     }, [])
 
 }

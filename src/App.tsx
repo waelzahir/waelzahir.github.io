@@ -7,15 +7,18 @@ import EnvirementContext from "./Context/EnvirementContext";
 import { useStartSystem } from "./hooks/useStartSystem";
 import { useSetBackground } from "./hooks/Background";
 import Dock from "./componets/Dock";
-import { file } from "./types/file";
+import { Progtype, file } from "./types/file";
 import { Envirment } from "./types/Envirment";
 import { useGetProjects } from "./hooks/getProjects";
+import { CreateFile } from "./utils/createfile";
 
 const env :Envirment ={
   Background:0,
   process:0,
   fileid:0
 }
+
+const DefaultDesk  = new Map() .set(0, CreateFile("root", 0, Progtype.folder, [], -1))
 
 const Resize = (dock:any) =>{
     
@@ -24,16 +27,16 @@ const Resize = (dock:any) =>{
        
 
 }
+
 function App() {
   const Memory = useState<any []>(new Array())
-  const FileSystem = useState<Map <number , file>>(new Map)
+  const FileSystem = useState<Map <number , file>>(DefaultDesk)
   const Envirement =  useState<Envirment>(env)
 
 
   useStartSystem(FileSystem[1], Envirement[1]);
   useSetBackground(Envirement[0])
-  useGetProjects(FileSystem[1], Envirement[1])
-  console.log(FileSystem[0])
+  useGetProjects(FileSystem, Envirement)
   useEffect(() =>{
     const dock = document.getElementById("dock");
     if (!dock)
@@ -45,7 +48,7 @@ function App() {
       if (dock)
       window.removeEventListener("resize", () => Resize(dock))
     }
-  }, [Memory[0], FileSystem[0]])
+  }, [Memory[0]])
 // if (initState[0].user === -1)
   //     return <WelcomePage InitState={initState}/>
   return ( 
