@@ -25,10 +25,11 @@ const WindowIcons= (FileSystem:any, operand: [file | null, React.Dispatch<React.
     return null
 }
 
-const HandleContext  = (e:any) =>
+const HandleContext  = (e:any, operand:any) =>
 {
     e.preventDefault();
     e.stopPropagation();
+    operand[1](null)
     customEvent.invoke("WINDOWCONTEXT")
     const menu = document.getElementById("CONTEXTMENU")
     if (!menu)
@@ -39,8 +40,9 @@ const HandleContext  = (e:any) =>
     menu.style.top = e.clientY + "px"
 
 }
-const handleClick = () =>
+const handleClick = (operand:any) =>
 {
+    operand[1](null)
     const menu = document.getElementById("CONTEXTMENU")
     if (!menu)
         return ;
@@ -57,7 +59,7 @@ const Window = () => {
 
     console.log("memory", Memory[0])
     return (
-        <div id="Desktop" onClick={() => handleClick() } onContextMenu={(e:any) => HandleContext(e)} className="w-full h-full flex-1">
+        <div id="Desktop" onClick={() => handleClick(operand) } onContextMenu={(e:any) => HandleContext(e, operand)} className="w-full h-full flex-1">
             {Programs}
             {WindowIcons(FileSystem, operand)}
             <ContextMenu />

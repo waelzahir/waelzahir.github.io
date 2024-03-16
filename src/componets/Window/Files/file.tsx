@@ -59,10 +59,11 @@ const handleClick  = (e : any, file:file  , operand :[file | null, React.Dispatc
     operand[1](file)
 }
 
-const HandleContext  = (e:any) =>
+const HandleContext  = (e:any,  file:file  , operand :[file | null, React.Dispatch<React.SetStateAction<file | null>>]) =>
 {
     e.preventDefault();
     e.stopPropagation();
+    operand[1](file)
     customEvent.invoke("FILECONTEXT")
     const menu = document.getElementById("CONTEXTMENU")
     if (!menu)
@@ -80,7 +81,7 @@ const FileIcon = ({file, operand}: {file: file | undefined, operand :[file | nul
     const icon = file.type ===Progtype.github ? GetSrc((file.content as GitProject).language) : geticon(file.type)
    
     return (
-        <div onClick={(e:any) => handleClick(e, file, operand, Memory)} onContextMenu={(e:any) =>HandleContext(e,)}  className={` ${ operand[0] && operand[0].id === file.id ? "bg-violet-600" : ""} w-20 h-20 flex flex-col items-center absolute`} >
+        <div onClick={(e:any) => handleClick(e, file, operand, Memory)} onContextMenu={(e:any) =>HandleContext(e,file, operand)}  className={` ${ operand[0] && operand[0].id === file.id ? "bg-violet-600" : ""} w-20 h-20 flex flex-col items-center absolute`} >
             <img className="w-16 h-16" src={icon} />
             <h1 className="w-full text-center">{file.name}</h1>
          
