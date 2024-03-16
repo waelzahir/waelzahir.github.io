@@ -67,7 +67,6 @@ const SystemStart = () => {
     <div className=" h-screen w-full overflow-hidden">
       <div className="h-full w-full flex flex-col">
         <Window />
-        <Dock />
       </div>
     </div>
   )

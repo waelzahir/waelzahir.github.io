@@ -4,6 +4,9 @@ import FileSystemContext from "../../Context/fileSystem"
 
 import FileIcon from "./Files/file"
 import { file } from "../../types/file"
+import { ContextMenu } from "./ContextMenues"
+import Dock from "../Dock"
+import customEvent from "../../utils/CustomEventHandler"
 
 // const OpenWindows = (Memory :any) =>
 // {
@@ -19,6 +22,29 @@ const WindowIcons= (FileSystem:any, operand: [file | null, React.Dispatch<React.
 
     return null
 }
+
+const HandleContext  = (e:any) =>
+{
+    e.preventDefault();
+    e.stopPropagation();
+    customEvent.invoke("WINDOWCONTEXT")
+    const menu = document.getElementById("CONTEXTMENU")
+    if (!menu)
+        return ;
+    if (menu.classList.contains("hidden"))
+        menu.classList.remove("hidden")
+    menu.style.left = e.clientX + "px"
+    menu.style.top = e.clientY + "px"
+
+}
+const handleClick = () =>
+{
+    const menu = document.getElementById("CONTEXTMENU")
+    if (!menu)
+        return ;
+    if (!menu.classList.contains("hidden"))
+        menu.classList.add("hidden")
+}
 const Window = () => {
     const Memory = useContext(MemProviderContext)
     const FileSystem = useContext(FileSystemContext)
@@ -26,10 +52,12 @@ const Window = () => {
     if (!Memory || !FileSystem)
         return null;
     return (
-        <div id="Desktop" className="w-full h-full flex-1">
+        <div id="Desktop" onClick={() => handleClick() } onContextMenu={(e:any) => HandleContext(e)} className="w-full h-full flex-1">
             {/* {OpenWindows(Memory)} */}
             {WindowIcons(FileSystem, operand)}
-            
+            <ContextMenu />
+            <Dock />
+
         </div>
     )
 }
