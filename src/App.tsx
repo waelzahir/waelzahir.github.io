@@ -2,6 +2,7 @@
 import {  useEffect, useState } from "react";
 import Window from "./componets/Window/Window";
 import MemProviderContext from "./Context/MemContext";
+
 import FileSystemContext from "./Context/fileSystem";
 import EnvirementContext from "./Context/EnvirementContext";
 import { useStartSystem } from "./hooks/useStartSystem";
@@ -29,7 +30,7 @@ const Resize = (dock:any) =>{
 }
 
 function App() {
-  const Memory = useState<any []>(new Array())
+  const Memory = useState<Map <number , any>>(new Map)
   const FileSystem = useState<Map <number , file>>(DefaultDesk)
   const Envirement =  useState<Envirment>(env)
 

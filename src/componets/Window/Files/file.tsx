@@ -36,6 +36,10 @@ const geticon = (type: Progtype) =>{
             return null
     }
 }
+
+const getProgMem = ()=>{
+    return "haha"
+}
 const handleClick  = (e : any, file:file  , operand :[file | null, React.Dispatch<React.SetStateAction<file | null>>], Memory:any) =>
 {
     e.preventDefault();
@@ -47,12 +51,14 @@ const handleClick  = (e : any, file:file  , operand :[file | null, React.Dispatc
         menu.classList.add("hidden")
     if (operand[0] && operand[0].id == file.id)
     {
-            // loadProgramTomemory();
+            Memory[0].set(file.id, getProgMem())        
+            Memory[1](new Map(Memory[0]))
             operand[1](null)
         return ;
     }
     operand[1](file)
 }
+
 const HandleContext  = (e:any) =>
 {
     e.preventDefault();

@@ -8,12 +8,14 @@ import { ContextMenu } from "./ContextMenues"
 import Dock from "../Dock"
 import customEvent from "../../utils/CustomEventHandler"
 
-// const OpenWindows = (Memory :any) =>
-// {
-//     return Memory[0].map((exec: ProgramState) => {
-//         <>salam</>
-//     } )
-// }
+const OpenWindows = (Memory :Map<number, any>) =>
+{
+    const  Programs = Array.from(Memory).map(([, value]) => value)
+
+    return Programs.map((exec: any) => {
+        <>salam</>
+    } )
+}
 const WindowIcons= (FileSystem:any, operand: [file | null, React.Dispatch<React.SetStateAction<file | null>>])=>
 {
     const  root = (FileSystem[0] as Map<number, file>).get(0);
@@ -51,9 +53,12 @@ const Window = () => {
     const operand = useState<file | null>(null)
     if (!Memory || !FileSystem)
         return null;
+    const  Programs = Array.from(Memory[0]).map(([, value]) => <>salam</>)
+
+    console.log("memory", Memory[0])
     return (
         <div id="Desktop" onClick={() => handleClick() } onContextMenu={(e:any) => HandleContext(e)} className="w-full h-full flex-1">
-            {/* {OpenWindows(Memory)} */}
+            {Programs}
             {WindowIcons(FileSystem, operand)}
             <ContextMenu />
             <Dock />
