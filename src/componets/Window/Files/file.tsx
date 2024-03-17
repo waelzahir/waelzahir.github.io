@@ -8,7 +8,8 @@ import FileSystemContext from "../../../Context/fileSystem";
 import { LoadedProg, windowState } from "../../../types/Memory";
 import EnvirementContext from "../../../Context/EnvirementContext";
 import { Envirment } from "../../../types/Envirment";
-const GetSrc = (lang:string) =>
+
+export const GetSrc = (lang:string) =>
 {
     switch (lang){
         case "C":
@@ -31,7 +32,7 @@ const GetSrc = (lang:string) =>
             return "";
     }            
 }
-const geticon = (type: Progtype) =>{
+export const geticon = (type: Progtype) =>{
     switch (type)
     {
         case Progtype.folder:
