@@ -42,8 +42,8 @@ const Animation = () => {
             t+="."
         return (
         <div className="w-full h-screen bg-[#638ed3] flex justify-center items-center"> 
-            <h1 className="text-6xl font-tahoma text-white">
-                loading {t}
+            <h1 className="text-6xl font-egoist font-bold text-white">
+                Hello  {t}
             </h1> 
 
         </div>
