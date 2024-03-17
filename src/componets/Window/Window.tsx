@@ -48,7 +48,7 @@ const Window = () => {
     const operand = useState<file | null>(null)
     if (!Memory || !FileSystem)
         return null;
-    const  Programs = Array.from(Memory[0]).map(([, value]) => <OpenedApp  key={value.process} app={value} />)
+    const  Programs = Array.from(Memory[0]).map(([, value]) => <OpenedApp  key={value.process} app={value} operand={operand} />)
 
     console.log("memory", Memory[0])
     return (

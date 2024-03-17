@@ -2,6 +2,10 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { LoadedProg, windowState } from "../../types/Memory";
 import EnvirementContext from "../../Context/EnvirementContext";
 import { Envirment } from "../../types/Envirment";
+import FileSystemContext from "../../Context/fileSystem";
+import MemProviderContext from "../../Context/MemContext";
+import { Progtype, file } from "../../types/file";
+import { FolderComp } from "./OpenAppComp/FolderComp";
 type sizes = {
     left:number,
     top:number,
@@ -24,15 +28,32 @@ const getcurrentdimentions = ( ) : sizes =>{
         }
     )
 }
-export const OpenedApp = ({app}:{app : LoadedProg}) =>
+const GetProcessContent  = (filedada : file, operand:any)=>
+{
+    switch (filedada.type){
+        case Progtype.folder:
+            return <FolderComp ids={filedada.content} operand={operand}/>
+        case Progtype.text:
+            return <>text</>
+        case Progtype.github:
+            return <>github</>
+        default:
+                return null
+        }
+    
+}
+export const OpenedApp = ({app, operand}:{app : LoadedProg, operand: any}) =>
 {
     const ref  = useRef<HTMLDivElement>(null)
     const Env = useContext(EnvirementContext);
+    const Filesys = useContext(FileSystemContext)
+    const memory = useContext(MemProviderContext)
     const [dimentions, setdimentions] = useState<sizes>(def)
     
     useEffect(() =>{
         if (!ref.current|| !Env)
             return ;
+        window.addEventListener("resize", () =>setdimentions(getcurrentdimentions()))
         setdimentions(getcurrentdimentions())
         Env[0].zindex++
         ref.current.style.top = window.innerHeight / 6  + "px"
@@ -45,7 +66,10 @@ export const OpenedApp = ({app}:{app : LoadedProg}) =>
                 process:env.process,
                 zindex:env.zindex
             }
-        })  
+        }) 
+        return () =>{
+            window.removeEventListener("resize", () =>setdimentions(getcurrentdimentions()))
+        }
     },[])
     if (ref.current && app.windowState === windowState.minimized)
     {
@@ -54,10 +78,43 @@ export const OpenedApp = ({app}:{app : LoadedProg}) =>
         ref.current.style.width = dimentions.width  + "px"
         ref.current.style.height = dimentions.height  + "px"
     }
+    const filedata = Filesys ? Filesys[0].get(app.loadedFile) : null
+    if (!filedata || !memory || app.windowState === windowState.reduced)
+        return null
+
     return (
-        <div ref={ref} className="absolute h-96 w-96 bg-violet-900">
-            {app.loadedFile}
-            {app.process}
+        <div ref={ref} className="absolute h-96 w-96 bg-purple-500 rounded flex flex-col">
+            <div className="w-full h-11 bg-purple-800 rounded flex flex-row ">
+                <div className="flex-1 h-full flex justify-center items-center text-xl font-egoist font-bold">
+                    {filedata.name}
+                </div>
+                <div className="w-24 h-full flex flex-row justify-around items-center ">
+                        <div
+                        onClick={() =>{
+                            memory[1]((execs: Map<number, LoadedProg>) => {
+                                app.windowState = windowState.reduced
+                                execs.set(app.process, app)
+                                return new Map(execs)
+                            })
+                        }} 
+                        className="bg-green-600 w-4 h-4 hover:w-7 rounded-full cursor-pointer " >
+
+                        </div>
+                        <div className="bg-yellow-600 w-4 h-4 hover:w-7 rounded-full cursor-pointer">
+
+                        </div>
+                        <div 
+                        onClick={() =>{
+                            memory[1]((execs: Map<number, LoadedProg>) => {
+                                execs.delete(app.process)
+                                return new Map(execs)
+                            })
+                    }} 
+                        className="bg-red-600 w-4 h-4 hover:w-7 rounded-full cursor-pointer">
+                    </div>
+                </div>
+            </div>
+                {GetProcessContent(filedata, operand)}
         </div>
     )
 }

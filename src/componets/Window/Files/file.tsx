@@ -60,7 +60,7 @@ const handleClick  = (e : any, file:file  , operand :[file | null, React.Dispatc
         menu.classList.add("hidden")
     if (operand[0] && operand[0].id == file.id)
     {
-            Memory[0].set(file.id, getProgMem(file.id, enviro[0].process))   
+            Memory[0].set(enviro[0].process, getProgMem(file.id, enviro[0].process))   
             enviro[1]((env: Envirment) => {
                 let p = env.process + 1
                 return {
@@ -113,9 +113,9 @@ const FileIcon = ({file, operand}: {file: file | undefined, operand :[file | nul
     const icon = file.type ===Progtype.github ? GetSrc((file.content as GitProject).language) : geticon(file.type)
    
     return (
-        <div ref={elem} onClick={(e:any) => handleClick(e, file, operand, Memory, enviro)} onContextMenu={(e:any) =>HandleContext(e,file, operand)}  className={` ${ operand[0] && operand[0].id === file.id ? "bg-violet-600" : ""} w-20 h-30 flex flex-col items-center absolute ml-6 mt-6`} >
+        <div ref={elem} onClick={(e:any) => handleClick(e, file, operand, Memory, enviro)} onContextMenu={(e:any) =>HandleContext(e,file, operand)}  className={` ${ operand[0] && operand[0].id === file.id ? "bg-violet-600" : ""} w-20 h-32 flex flex-col items-center  ml-6 mt-6`} >
             <img className="w-16 h-16" src={icon} />
-            <h1 className="w-full text-center">{file.name}</h1>
+            <h1 className="w-full text-center flex-1 break-all	">{file.name}</h1>
          
         </div>
     );

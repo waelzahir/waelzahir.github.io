@@ -68,7 +68,7 @@ function App() {
 
 const SystemStart = () => {
   return (
-    <div className=" h-screen w-full overflow-hidden">
+    <div className=" h-screen w-full overflow-hidden select-none">
       <div className="h-full w-full flex flex-col">
         <Window />
       </div>
