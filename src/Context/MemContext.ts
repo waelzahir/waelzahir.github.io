@@ -1,6 +1,6 @@
 import { createContext, } from "react";
-import { ProgramState } from "../types/ProgramState";
+import { LoadedProg } from "../types/Memory";
 
 
-const MemProviderContext = createContext<[Map<number, ProgramState>, React.Dispatch<React.SetStateAction<Map<number, ProgramState>>>] | null>(null)
+const MemProviderContext = createContext<[Map<number, LoadedProg>, React.Dispatch<React.SetStateAction<Map<number, LoadedProg>>>] | null>(null)
 export default MemProviderContext

@@ -6,6 +6,7 @@ export const CreateFile = (name :string,id:number, type:Progtype, content:any, p
         name:name,
         parent: parent,
         id:id,
+        cordinates:null,
         content: content,
         type:type,
     }

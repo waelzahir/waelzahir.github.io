@@ -7,21 +7,14 @@ import { file } from "../../types/file"
 import { ContextMenu } from "./ContextMenues"
 import Dock from "../Dock"
 import customEvent from "../../utils/CustomEventHandler"
+import { OpenedApp } from "./OpenedApp"
 
-const OpenWindows = (Memory :Map<number, any>) =>
-{
-    const  Programs = Array.from(Memory).map(([, value]) => value)
 
-    return Programs.map((exec: any) => {
-        <>salam</>
-    } )
-}
 const WindowIcons= (FileSystem:any, operand: [file | null, React.Dispatch<React.SetStateAction<file | null>>])=>
 {
     const  root = (FileSystem[0] as Map<number, file>).get(0);
     if (root)
         return (root.content as number []).map((fid: number, key) => <FileIcon  operand={operand} key={key} file={(FileSystem[0] as Map<number, file>).get(fid)}/>)
-
     return null
 }
 
@@ -55,7 +48,7 @@ const Window = () => {
     const operand = useState<file | null>(null)
     if (!Memory || !FileSystem)
         return null;
-    const  Programs = Array.from(Memory[0]).map(([, value]) => <>salam</>)
+    const  Programs = Array.from(Memory[0]).map(([, value]) => <OpenedApp  key={value.process} app={value} />)
 
     console.log("memory", Memory[0])
     return (

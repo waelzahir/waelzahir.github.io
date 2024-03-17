@@ -12,14 +12,16 @@ import { Progtype, file } from "./types/file";
 import { Envirment } from "./types/Envirment";
 import { useGetProjects } from "./hooks/getProjects";
 import { CreateFile } from "./utils/createfile";
+import { LoadedProg } from "./types/Memory";
 
 const env :Envirment ={
+  zindex:0,
   Background:0,
   process:0,
   fileid:0
 }
 
-const DefaultDesk  = new Map() .set(0, CreateFile("root", 0, Progtype.folder, [], -1))
+const DefaultDesk  = new Map().set(0, CreateFile("root", 0, Progtype.folder, [], -1))
 
 const Resize = (dock:any) =>{
     
@@ -30,7 +32,7 @@ const Resize = (dock:any) =>{
 }
 
 function App() {
-  const Memory = useState<Map <number , any>>(new Map)
+  const Memory = useState<Map <number , LoadedProg>>(new Map)
   const FileSystem = useState<Map <number , file>>(DefaultDesk)
   const Envirement =  useState<Envirment>(env)
 
@@ -50,6 +52,7 @@ function App() {
       window.removeEventListener("resize", () => Resize(dock))
     }
   }, [Memory[0]])
+  console.log("envirment ",Envirement[0] )
 // if (initState[0].user === -1)
   //     return <WelcomePage InitState={initState}/>
   return ( 
