@@ -1,17 +1,32 @@
 
-import { InitState } from "../types/GlobalMetadata"
-import Pic from "../assets/Userpic.jpg"
+import Pic from "../assets/pawn.png"
 import { useEffect, useState } from "react"
+import { Envirment } from "../types/Envirment"
+
 const updatePersistance = (setter:any, val:boolean) =>
 {
 
-    setter((prev: InitState) => {
-        return {persistant: val, user : prev.user}
+    setter((prev: Envirment)  : Envirment => {
+        return {
+            Background: prev.Background,
+            fileid: prev.fileid,
+            zindex: prev.zindex,
+            process: prev.process,
+            persistant: val,
+            user : prev.user
+        }
     })
 }
 const login = (setter:any) => {
-    setter((prev: InitState) => {
-        return {persistant: prev.persistant, user : 0}
+    setter((prev: Envirment):Envirment => {
+        return {
+            Background: prev.Background,
+            fileid: prev.fileid,
+            zindex: prev.zindex,
+            process: prev.process,
+            persistant: prev.persistant,
+            user : 0
+        }
     })
 }
 const Animation = () => {
@@ -34,14 +49,17 @@ const Animation = () => {
         </div>
         )
 }
-const WelcomePage  = (props:any) =>{
+const WelcomePage  = ({Env} : {Env: [Envirment, React.Dispatch<React.SetStateAction<Envirment>>]}) =>{
     const [animate, setAnimation] = useState(false)
     
     if (animate)
     {
-        setTimeout(() => login(props.InitState[1]), 2000)
+        setTimeout(() => login(Env[1]), 2000)
         return <Animation />
-    }    
+    }
+    console.log("hro", Env[0])
+    if (!Env)
+        return ;
     return (
         <div className="w-full bg-black h-screen overflow-hidden flex flex-col">
             <div className="h-24 w-full bg-[#638ed3] flex items-center">
@@ -61,16 +79,16 @@ const WelcomePage  = (props:any) =>{
                 </div>
             </div>
             <div className="h-24 w-full bg-[#638ed3] flex items-center">
-            {
-                !props.InitState[0].persistant ?
+            {/* {
+                !Env[0].persistant ?
                 <div className="flex flex-row  items-center  h-20 w-full ">
                     <h1 className="font-tahoma font-semibold ml-9 ">Do you want to make the changes persistent for your next visit?</h1>
-                        <div onClick={() => updatePersistance(props.InitState[1], true)} className=" ml-9 border-2 border-[#12387f] w-10 h-10 rounded flex justify-center items-center hover:bg-blue-950  hover:opacity-95 cursor-pointer">
+                        <div onClick={() => updatePersistance(Env[1], true)} className=" ml-9 border-2 border-[#12387f] w-10 h-10 rounded flex justify-center items-center hover:bg-blue-950  hover:opacity-95 cursor-pointer">
                                 <h1   className="font-tahoma font-semibold  ">Yes</h1>                            
                         </div>
                 </div>
                 : null
-            }
+            } */}
             </div>
         </div>
     )

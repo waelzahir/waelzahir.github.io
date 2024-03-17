@@ -65,6 +65,8 @@ const handleClick  = (e : any, file:file  , operand :[file | null, React.Dispatc
             enviro[1]((env: Envirment) => {
                 let p = env.process + 1
                 return {
+                    persistant:env.persistant,
+                    user:env.user,
                     zindex:env.zindex,
                     Background:env.Background,
                     fileid:env.fileid,
@@ -78,20 +80,23 @@ const handleClick  = (e : any, file:file  , operand :[file | null, React.Dispatc
     operand[1](file)
 }
 
-const HandleContext  = (e:any,  file:file  , operand :[file | null, React.Dispatch<React.SetStateAction<file | null>>]) =>
+const HandleContext  = (e:any,  file:file  , operand :[file | null, React.Dispatch<React.SetStateAction<file | null>>] , enviro:[Envirment, React.Dispatch<React.SetStateAction<Envirment>>] | null) =>
 {
     e.preventDefault();
     e.stopPropagation();
+    
     operand[1](file)
     customEvent.invoke("FILECONTEXT")
     const menu = document.getElementById("CONTEXTMENU")
-    if (!menu)
+    if (!menu || !enviro)
         return ;
     if (menu.classList.contains("hidden"))
         menu.classList.remove("hidden")
     menu.style.left = e.clientX + "px"
     menu.style.top = e.clientY + "px"
-
+    enviro[0].zindex++
+    menu.style.zIndex = enviro[0].zindex + ""
+    enviro[1](enviro[0])
 }
 const FileIcon = ({file, operand}: {file: file | undefined, operand :[file | null, React.Dispatch<React.SetStateAction<file | null>>]}) => {
     const elem = useRef<HTMLDivElement>(null)
@@ -114,7 +119,7 @@ const FileIcon = ({file, operand}: {file: file | undefined, operand :[file | nul
     const icon = file.type ===Progtype.github ? GetSrc((file.content as GitProject).language) : geticon(file.type)
    
     return (
-        <div ref={elem} onClick={(e:any) => handleClick(e, file, operand, Memory, enviro)} onContextMenu={(e:any) =>HandleContext(e,file, operand)}  className={` ${ operand[0] && operand[0].id === file.id ? "bg-violet-600" : ""} w-20 h-32 flex flex-col items-center  ml-6 mt-6`} >
+        <div ref={elem} onClick={(e:any) => handleClick(e, file, operand, Memory, enviro)} onContextMenu={(e:any) =>HandleContext(e,file, operand,enviro)}  className={` ${ operand[0] && operand[0].id === file.id ? "bg-violet-600" : ""} w-20 h-32 flex flex-col items-center  ml-6 mt-6`} >
             <img className="w-16 h-16" src={icon} />
             <h1 className="w-full text-center flex-1 break-all	">{file.name}</h1>
          

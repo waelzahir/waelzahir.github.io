@@ -7,6 +7,14 @@ import { GetSrc, geticon } from "./Window/Files/file"
 import { GitProject } from "../types/gitProject"
 import { Progtype } from "../types/file"
 
+
+const Resize = (dock:any) =>{
+    
+    dock.style.top = (window.innerHeight - 105 ) + "px"
+    dock.style.left = ((window.innerWidth  / 2) - (dock.getBoundingClientRect().width / 2)) + "px"
+       
+
+}
 const DockElem = ({state} : {state : LoadedProg}) =>{
     const filesys = useContext(FileSystemContext)
     console.log("elem1")
@@ -31,8 +39,21 @@ const DockElem = ({state} : {state : LoadedProg}) =>{
 const Dock = ()=>
 {
     const Memory = useContext(MemProviderContext)
+    
     if (!Memory)
         return null    
+    useEffect(() =>{
+        const dock = document.getElementById("dock");
+        if (!dock)
+          return
+        dock.style.top = (window.innerHeight - 105 ) + "px"
+        dock.style.left = ((window.innerWidth  / 2) - (dock.getBoundingClientRect().width / 2)) + "px"   
+        window.addEventListener("resize", () => Resize(dock))
+        return () =>{
+          if (dock)
+          window.removeEventListener("resize", () => Resize(dock))
+        }
+    }, [Memory[0]])
     const  Programs = Array.from(Memory[0]).map(([, value]) => value)
 
     return (

@@ -61,6 +61,8 @@ export const OpenedApp = ({app, operand}:{app : LoadedProg, operand: any}) =>
         ref.current.style.zIndex = Env[0].zindex + ""
         Env[1]((env:Envirment) => {
             return {
+                persistant:env.persistant,
+                user:env.user,
                 Background:env.Background,
                 fileid:env.fileid,
                 process:env.process,

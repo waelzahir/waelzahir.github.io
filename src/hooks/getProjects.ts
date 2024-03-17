@@ -42,12 +42,19 @@ export const useGetProjects = (setFileSystem: any, SetEnvirment:any) => {
                         setFileSystem[0].set(SetEnvirment[0].fileid, file);
                         Projects.content.push(file.id)    
                     })
-                    SetEnvirment[1](
-                        {
-                            fileid: SetEnvirment[0].fileid,
-                            process:SetEnvirment[0].process,
-                            Background:SetEnvirment[0].Background,
-                        }
+                    SetEnvirment[1]((env:Envirment) : Envirment=>
+                    {
+                        return (
+                            {
+                                persistant:env.persistant,
+                                user:env.user,
+                                zindex: env.zindex,
+                                fileid: SetEnvirment[0].fileid,
+                                process:SetEnvirment[0].process,
+                                Background:SetEnvirment[0].Background,
+                            }
+                            )
+                    }
                     )
                     setFileSystem[1](new Map(setFileSystem[0]))
                 }
