@@ -25,7 +25,36 @@ export const GithubComponent = ({content} : {content :GitProject}) =>
                     </div>
                 </div>
            </div>
-           <div className="flex-1 h-full bg-white">
+           <div className="flex-1 h-full flex-col overflow-y-scroll">
+                    <div className="w-full h-32  flex flex-row items-center ">
+                        <h1 className="text-3xl font-egoist w-[50%]">
+                            #PROJECT NAME :
+                        </h1>
+                        <h1 className="text-xl font-bold">
+                            {content.name}
+                        </h1>
+                    </div>
+                    <div className="w-full h-32   flex flex-row items-center ">
+                        <h1 className="text-3xl font-egoist w-[50%]">
+                            #LINK:
+                        </h1>
+                        <a className="w-1/4 h-11 border-2 border-purple-800 flex justify-center items-center gap-x-2  hover:bg-purple-950 hover:opacity-90 cursor-pointer" href={content.html_url} target="_blank"> 
+                                <h1 className=" font-egoist font-bold">#github</h1>
+                                <img className="w-4" src={link} alt="" />
+                        </a>
+                    </div>
+                    <div className="w-full h-32  flex flex-col items-center justify-center">
+                        <h1 className="text-3xl font-egoist w-full">
+                            #DESCRIPTION:
+                        </h1>
+                    </div>
+                    <div className="w-full flex justify-center items-center">
+                        <div className=" w-[90%] font-tahoma ">
+                            {content.description}
+                            
+                        </div>
+
+                    </div>
 
            </div>
         </div>

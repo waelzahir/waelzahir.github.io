@@ -41,7 +41,7 @@ const Animation = () => {
         for (let i = 0; i < points; i++)
             t+="."
         return (
-        <div className="w-full h-screen bg-[#638ed3] flex justify-center items-center"> 
+        <div className="w-full h-screen bg-purple-800 flex justify-center items-center"> 
             <h1 className="text-6xl font-egoist font-bold text-white">
                 Hello  {t}
             </h1> 
@@ -61,24 +61,24 @@ const WelcomePage  = ({Env} : {Env: [Envirment, React.Dispatch<React.SetStateAct
     if (!Env)
         return ;
     return (
-        <div className="w-full bg-black h-screen overflow-hidden flex flex-col">
-            <div className="h-24 w-full bg-[#638ed3] flex items-center">
+        <div className="w-full bg-purple-800 h-screen overflow-hidden flex flex-col">
+            <div className="h-24 w-full  flex items-center">
                 <h1 className="font-tahoma font-semibold ml-9 text-white">Portfolio is still under Construction, but still you can try to navigate it </h1>
             </div>
-            <div className="w-full flex-1 bg-[#12387f] flex flex-row items-center justify-center">
+            <div className="w-full flex-1  flex flex-row items-center justify-center">
                 <div className=" text-white h-[30%] w-[40%] flex flex-col items-center justify-around">
                     <h1 className="font-egoist text-2xl font-bold">Welcome To My Portfolio</h1>
                        
                 </div>
-                <div className="w-[2px] h-[50%] bg-[#638ed3]"></div>
+                <div className="w-[2px] h-[50%] bg-purple-400"></div>
                 <div className=" w-[20%] h-[50] ml-9 ">
-                          <div onClick={() =>  setAnimation(true)} className="w-90 h-32 rounded  flex flex-row items-center bg-[#638ed3] hover:bg-blue-950 hover:opacity-90 cursor-pointer">
-                            <img className="h-28  border-[#12387f] ml-2 rounded border-[9px]" src={Pic} alt="" />
+                          <div onClick={() =>  setAnimation(true)} className="w-90 h-32 rounded  flex flex-row items-center  bg-purple-400 hover:bg-purple-950 hover:opacity-90 cursor-pointer">
+                            <img className="h-28  border-black ml-2 rounded border-[9px]" src={Pic} alt="" />
                             <h1 className=" ml-10 text-3xl font-bold font-egoist"> Guest</h1>
                           </div>
                 </div>
             </div>
-            <div className="h-24 w-full bg-[#638ed3] flex items-center">
+            <div className="h-24 w-full flex items-center">
             {/* {
                 !Env[0].persistant ?
                 <div className="flex flex-row  items-center  h-20 w-full ">

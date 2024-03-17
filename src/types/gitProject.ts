@@ -4,4 +4,5 @@ export type GitProject = {
     description:string
     url:string,
     topics:string[]
+    html_url:string
 }
