@@ -6,6 +6,8 @@ import FileSystemContext from "../../Context/fileSystem";
 import MemProviderContext from "../../Context/MemContext";
 import { Progtype, file } from "../../types/file";
 import { FolderComp } from "./OpenAppComp/FolderComp";
+import { GithubComponent } from "./OpenAppComp/GithubComponent";
+import { GitProject } from "../../types/gitProject";
 type sizes = {
     left:number,
     top:number,
@@ -36,7 +38,7 @@ const GetProcessContent  = (filedada : file, operand:any)=>
         case Progtype.text:
             return <>text</>
         case Progtype.github:
-            return <>github</>
+            return <GithubComponent content={filedada.content as GitProject}/>
         default:
                 return null
         }
