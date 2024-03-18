@@ -30,20 +30,11 @@ const login = (setter:any) => {
     })
 }
 const Animation = () => {
-        const [points , setpoints] = useState(0)
-        useEffect(() => {
-            const int = setInterval(() => setpoints((p: number) => p + 1), 500)
-            return () => {
-                clearInterval(int)
-            }
-        }, [])
-        let t = "";
-        for (let i = 0; i < points; i++)
-            t+="."
+
         return (
         <div className="w-full h-screen bg-purple-800 flex justify-center items-center"> 
             <h1 className="text-6xl font-egoist font-bold text-white">
-                Hello  {t}
+                Hello
             </h1> 
 
         </div>
