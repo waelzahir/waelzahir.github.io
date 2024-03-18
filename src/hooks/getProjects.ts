@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { Progtype, file } from "../types/file"
+import { Progtype} from "../types/file"
 import { Envirment } from "../types/Envirment"
 import { CreateFile } from "../utils/createfile"
 import { GitProject } from "../types/gitProject"

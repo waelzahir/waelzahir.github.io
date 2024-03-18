@@ -15,7 +15,7 @@ export const GithubComponent = ({content} : {content :GitProject}) =>
                             </h1>
                         <div className="flex flex-col gap-y-4 w-full h-full overflow-y-scroll">
                         {content.topics.map((topic: string) => 
-                            <a className="w-full h-11 border-2 border-purple-800 flex justify-center items-center gap-x-2" href={`https://www.google.com/search?q=${topic}`} target="_blank"> 
+                            <a className="w-full h-11 border-2 border-purple-800 flex justify-center items-center gap-x-2 hover:bg-purple-300 hover:opacity-90 cursor-pointer" href={`https://www.google.com/search?q=${topic}`} target="_blank"> 
                                 <h1 className=" font-egoist font-bold">{topic}</h1>
                                 <img className="w-4" src={link} alt="" />
                             </a>
@@ -38,7 +38,7 @@ export const GithubComponent = ({content} : {content :GitProject}) =>
                         <h1 className="text-3xl font-egoist w-[50%]">
                             #LINK:
                         </h1>
-                        <a className="w-1/4 h-11 border-2 border-purple-800 flex justify-center items-center gap-x-2  hover:bg-purple-950 hover:opacity-90 cursor-pointer" href={content.html_url} target="_blank"> 
+                        <a className="w-1/4 h-11 border-2 border-purple-800 flex justify-center items-center gap-x-2  hover:bg-purple-300 hover:opacity-90 cursor-pointer" href={content.html_url} target="_blank"> 
                                 <h1 className=" font-egoist font-bold">#github</h1>
                                 <img className="w-4" src={link} alt="" />
                         </a>

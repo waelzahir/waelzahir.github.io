@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Progtype, file } from "../../../types/file";
 import { GitProject } from "../../../types/gitProject";
 import Folder from "../../../assets/Folder.svg"
@@ -45,6 +45,7 @@ export const geticon = (type: Progtype) =>{
 const getProgMem = (fileid:number, process:number) : LoadedProg=>{
  
     return {
+        reduced:false,
         loadedFile:fileid,
         process:process,
         windowState: windowState.minimized 

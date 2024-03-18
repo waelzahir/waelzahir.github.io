@@ -1,7 +1,7 @@
-import { memo, useContext, useEffect, useRef, useState } from "react"
+import {  useContext, useEffect, useRef } from "react"
 import MemProviderContext from "../Context/MemContext"
-import Terminal from "../assets/xterm.svg"
-import { LoadedProg, windowState } from "../types/Memory"
+
+import { LoadedProg } from "../types/Memory"
 import FileSystemContext from "../Context/fileSystem"
 import { GetSrc, geticon } from "./Window/Files/file"
 import { GitProject } from "../types/gitProject"

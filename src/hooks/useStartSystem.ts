@@ -1,10 +1,10 @@
-import { useEffect } from "react"
+// import { useEffect } from "react"
 
 
-export const useStartSystem = (FileSystem:any, initstate:any) =>{
+// export const useStartSystem = (FileSystem:any, initstate:any) =>{
     
-    useEffect(() => {
+//     useEffect(() => {
         
     
-      },[])
-}
+//       },[])
+// }

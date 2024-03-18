@@ -1,11 +1,11 @@
 
-import {  useEffect, useState } from "react";
+import {   useState } from "react";
 import Window from "./componets/Window/Window";
 import MemProviderContext from "./Context/MemContext";
 
 import FileSystemContext from "./Context/fileSystem";
 import EnvirementContext from "./Context/EnvirementContext";
-import { useStartSystem } from "./hooks/useStartSystem";
+// import { useStartSystem } from "./hooks/useStartSystem";
 import { useSetBackground } from "./hooks/Background";
 import { Progtype, file } from "./types/file";
 import { Envirment } from "./types/Envirment";
@@ -33,7 +33,7 @@ function App() {
   const Envirement =  useState<Envirment>(env)
 
 
-  useStartSystem(FileSystem[1], Envirement[1]);
+  // useStartSystem(FileSystem[1], Envirement[1]);
   useSetBackground(Envirement[0])
   useGetProjects(FileSystem, Envirement)
   

@@ -1,22 +1,22 @@
 
 import Pic from "../assets/pawn.png"
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import { Envirment } from "../types/Envirment"
 
-const updatePersistance = (setter:any, val:boolean) =>
-{
+// const updatePersistance = (setter:any, val:boolean) =>
+// {
 
-    setter((prev: Envirment)  : Envirment => {
-        return {
-            Background: prev.Background,
-            fileid: prev.fileid,
-            zindex: prev.zindex,
-            process: prev.process,
-            persistant: val,
-            user : prev.user
-        }
-    })
-}
+//     setter((prev: Envirment)  : Envirment => {
+//         return {
+//             Background: prev.Background,
+//             fileid: prev.fileid,
+//             zindex: prev.zindex,
+//             process: prev.process,
+//             persistant: val,
+//             user : prev.user
+//         }
+//     })
+// }
 const login = (setter:any) => {
     setter((prev: Envirment):Envirment => {
         return {
