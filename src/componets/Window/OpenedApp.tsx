@@ -77,10 +77,17 @@ export const OpenedApp = ({app, operand}:{app : LoadedProg, operand: any}) =>
     },[])
     if (ref.current && app.windowState === windowState.minimized)
     {
-        ref.current.style.top = dimentions.top  + "px"
+        ref.current.style.top = dimentions.top   + "px"
         ref.current.style.left = dimentions.left   + "px"
         ref.current.style.width = dimentions.width  + "px"
         ref.current.style.height = dimentions.height  + "px"
+    }
+    if (ref.current && app.windowState === windowState.maximized)
+    {
+        ref.current.style.top = 0  + "px"
+        ref.current.style.left = 0  + "px"
+        ref.current.style.width = window.innerWidth + "px"
+        ref.current.style.height = window.innerHeight + "px"
     }
     const filedata = Filesys ? Filesys[0].get(app.loadedFile) : null
     if (!filedata || !memory || app.windowState === windowState.reduced)
@@ -104,7 +111,16 @@ export const OpenedApp = ({app, operand}:{app : LoadedProg, operand: any}) =>
                         className="bg-green-600 w-4 h-4 hover:w-7 rounded-full cursor-pointer " >
 
                         </div>
-                        <div className="bg-yellow-600 w-4 h-4 hover:w-7 rounded-full cursor-pointer">
+                        <div 
+                        onClick={() =>{
+                            memory[1]((execs: Map<number, LoadedProg>) => {
+                                
+                                app.windowState = app.windowState=== windowState.minimized? windowState.maximized : windowState.minimized
+                                execs.set(app.process, app)
+                                return new Map(execs)
+                            })
+                        }} 
+                        className="bg-yellow-600 w-4 h-4 hover:w-7 rounded-full cursor-pointer">
 
                         </div>
                         <div 

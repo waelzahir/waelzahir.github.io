@@ -1,7 +1,7 @@
 import { memo, useContext, useEffect, useRef, useState } from "react"
 import MemProviderContext from "../Context/MemContext"
 import Terminal from "../assets/xterm.svg"
-import { LoadedProg } from "../types/Memory"
+import { LoadedProg, windowState } from "../types/Memory"
 import FileSystemContext from "../Context/fileSystem"
 import { GetSrc, geticon } from "./Window/Files/file"
 import { GitProject } from "../types/gitProject"
@@ -17,13 +17,14 @@ const Resize = (dock:any) =>{
 }
 const DockElem = ({state} : {state : LoadedProg}) =>{
     const filesys = useContext(FileSystemContext)
+    const memory = useContext(MemProviderContext)
     console.log("elem1")
-    if (!filesys)
+    if (!filesys|| !memory)
         return null ; 
     const file = filesys[0].get(state.loadedFile)
     console.log("elem2")
 
-    if (!file)
+    if (!file )
         return null
         console.log("elem3")
 
@@ -31,7 +32,16 @@ const DockElem = ({state} : {state : LoadedProg}) =>{
 
     return (
         <div className="w-16 h-16 min-w-16 min-h-16 flex justify-center items-center">
-            <img  className="w-12 h-12" src={icon} alt="" />
+            <img
+             onClick={() =>{
+                memory[1]((execs: Map<number, LoadedProg>) => {
+                    if (state.windowState === windowState.reduced)
+                    state.windowState = windowState.minimized
+                    execs.set(state.process, state)
+                    return new Map(execs)
+                })
+            }}  
+            className="w-12 h-12" src={icon} alt="" />
         </div>
     )
 }
