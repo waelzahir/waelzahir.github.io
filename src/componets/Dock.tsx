@@ -35,8 +35,7 @@ const DockElem = ({state} : {state : LoadedProg}) =>{
             <img
              onClick={() =>{
                 memory[1]((execs: Map<number, LoadedProg>) => {
-                    if (state.windowState === windowState.reduced)
-                    state.windowState = windowState.minimized
+                        state.reduced = !state.reduced
                     execs.set(state.process, state)
                     return new Map(execs)
                 })

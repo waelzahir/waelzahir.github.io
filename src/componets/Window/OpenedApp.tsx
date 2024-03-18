@@ -58,8 +58,6 @@ export const OpenedApp = ({app, operand}:{app : LoadedProg, operand: any}) =>
         window.addEventListener("resize", () =>setdimentions(getcurrentdimentions()))
         setdimentions(getcurrentdimentions())
         Env[0].zindex++
-        ref.current.style.top = window.innerHeight / 6  + "px"
-        ref.current.style.left = window.innerWidth / 6  + "px"
         ref.current.style.zIndex = Env[0].zindex + ""
         Env[1]((env:Envirment) => {
             return {
@@ -82,7 +80,7 @@ export const OpenedApp = ({app, operand}:{app : LoadedProg, operand: any}) =>
         ref.current.style.width = dimentions.width  + "px"
         ref.current.style.height = dimentions.height  + "px"
     }
-    if (ref.current && app.windowState === windowState.maximized)
+    else if (ref.current && app.windowState === windowState.maximized)
     {
         ref.current.style.top = 0  + "px"
         ref.current.style.left = 0  + "px"
@@ -90,11 +88,11 @@ export const OpenedApp = ({app, operand}:{app : LoadedProg, operand: any}) =>
         ref.current.style.height = window.innerHeight + "px"
     }
     const filedata = Filesys ? Filesys[0].get(app.loadedFile) : null
-    if (!filedata || !memory || app.windowState === windowState.reduced)
+    if (!filedata || !memory )
         return null
 
     return (
-        <div ref={ref} className="absolute h-96 w-96 bg-purple-500 rounded flex flex-col">
+        <div ref={ref} className={` ${app.reduced ? "hidden" : ""} absolute  bg-purple-500 rounded flex flex-col`}>
             <div className="w-full h-11 bg-purple-800 rounded flex flex-row ">
                 <div className="flex-1 h-full flex justify-center items-center text-xl font-egoist font-bold">
                     {filedata.name}
@@ -103,7 +101,7 @@ export const OpenedApp = ({app, operand}:{app : LoadedProg, operand: any}) =>
                         <div
                         onClick={() =>{
                             memory[1]((execs: Map<number, LoadedProg>) => {
-                                app.windowState = windowState.reduced
+                                app.reduced = true
                                 execs.set(app.process, app)
                                 return new Map(execs)
                             })
