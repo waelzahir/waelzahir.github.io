@@ -95,7 +95,7 @@ export const OpenedApp = ({app, operand}:{app : LoadedProg, operand: any}) =>
         return null
 
     return (
-        <div ref={ref} className={` ${app.reduced ? "hidden" : ""} absolute  bg-purple-500 bg-opacity-[90%] border-purple-800  border-4 rounded flex flex-col`}>
+        <div ref={ref} className={` ${app.reduced ? "hidden" : ""} absolute  bg-purple-500 bg-opacity-[50%] backdrop-blur-lg	 border-purple-800  border-4 rounded flex flex-col`}>
             <div className="w-full h-11 bg-purple-800  flex flex-row ">
                 <div className="flex-1 h-full flex justify-center items-center  text-xl font-egoist font-bold">
                     {filedata.name}
