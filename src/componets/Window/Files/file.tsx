@@ -122,8 +122,8 @@ const FileIcon = ({file, operand}: {file: file | undefined, operand :[file | nul
     const icon = file.type ===Progtype.github ? GetSrc((file.content as GitProject).language) : geticon(file.type)
    
     return (
-        <div ref={elem} onClick={(e:any) => handleClick(e, file, operand, Memory, enviro)} onContextMenu={(e:any) =>HandleContext(e,file, operand,enviro)}  className={` ${ operand[0] && operand[0].id === file.id ? "bg-violet-600" : ""} w-20 h-32 flex flex-col items-center  ml-6 mt-6 cursor-pointer`} >
-            <img className="w-16 h-16" src={icon} />
+        <div ref={elem} onClick={(e:any) => handleClick(e, file, operand, Memory, enviro)} onContextMenu={(e:any) =>HandleContext(e,file, operand,enviro)}  className={` ${ operand[0] && operand[0].id === file.id ? "bg-violet-600" : ""} w-20  rounder bg-opacity-70 flex flex-col items-center  gap-2 ml-6 mt-6 cursor-pointer`} >
+            <img className="w-16 h-16 mt-2" src={icon} />
             <h1 className="w-full text-center flex-1 break-all	">{file.name}</h1>
          
         </div>

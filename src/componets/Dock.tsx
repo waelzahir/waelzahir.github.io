@@ -69,8 +69,10 @@ const Dock = ()=>
     return (
         <div ref={dref} id="dock"  className=" bg-green-950/30  h-24 backdrop-blur-sm absolute rounded-3xl  flex flex-row  max-w-screen-lg  ">
             {overflows ?
-                <div className="h-full w-10 bg-black">
+                <div className="ml-2 h-full w-10 flex justify-center items-center">
+                    <div className="arrow left">
 
+                    </div>
                 </div>:
                 null
             }
@@ -78,8 +80,10 @@ const Dock = ()=>
                 {Programs.map((state:any) => <DockElem key={state.proccess} state={state}/>)}
             </div>
             {overflows ?
-                <div className="h-full w-10 bg-black">
+                <div className="mr-2 h-full w-10 flex justify-center items-center">
+                    <div className="arrow right">
 
+                    </div>
                 </div>:
                 null
             }

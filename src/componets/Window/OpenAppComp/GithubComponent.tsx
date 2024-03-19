@@ -5,7 +5,7 @@ export const GithubComponent = ({content} : {content :GitProject}) =>
 {
     
     return(
-        <div className="w-full h-full flex flex-row overflow-hidden">
+        <div className="w-full h-full flex flex-row overflow-hidden   ">
            <div className=" h-full w-3/12 flex justify-center items-center ">
                 <div className="w-5/6 h-5/6  flex flex-col ">
                     
