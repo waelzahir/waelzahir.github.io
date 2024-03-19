@@ -3,6 +3,7 @@ import { Progtype} from "../types/file"
 import { Envirment } from "../types/Envirment"
 import { CreateFile } from "../utils/createfile"
 import { GitProject } from "../types/gitProject"
+import WhoAmI from "../types/AboutData"
 
 const Filter = [
     "42_minishell",
@@ -24,6 +25,9 @@ export const useGetProjects = (setFileSystem: any, SetEnvirment:any) => {
     SetEnvirment[0].fileid++;
     const desk = setFileSystem[0].get(0)
     const Projects = CreateFile("My Projects", SetEnvirment[0].fileid, Progtype.folder, [], 0);
+    SetEnvirment[0].fileid++;
+    const about = CreateFile("About Me", SetEnvirment[0].fileid, Progtype.about, null, 0);
+
     useEffect(() => {
         fetch("https://api.github.com/users/waelzahir/repos", {
             headers:{
@@ -40,7 +44,8 @@ export const useGetProjects = (setFileSystem: any, SetEnvirment:any) => {
                         SetEnvirment[0].fileid++;
                         const file = CreateFile(el.name, SetEnvirment[0].fileid, Progtype.github, el, Projects.id);
                         setFileSystem[0].set(SetEnvirment[0].fileid, file);
-                        Projects.content.push(file.id)    
+                        Projects.content.push(file.id)
+                        el.topics.map((t:string) => WhoAmI.topics.set(t,1)) 
                     })
                     SetEnvirment[1]((env:Envirment) : Envirment=>
                     {
@@ -59,11 +64,12 @@ export const useGetProjects = (setFileSystem: any, SetEnvirment:any) => {
                     setFileSystem[1](new Map(setFileSystem[0]))
                 }
             })
+            about.content = WhoAmI
             setFileSystem[0].set(Projects.id, Projects);
+            setFileSystem[0].set(about.id, about);
             desk.content.push(Projects.id);
+            desk.content.push(about.id);
             setFileSystem[1](new Map(setFileSystem[0]))
-
-               
     }, [])
 
 }

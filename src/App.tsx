@@ -37,7 +37,7 @@ function App() {
   useSetBackground(Envirement[0])
   useGetProjects(FileSystem, Envirement)
   
-  console.log("envirment ",Envirement[0] )
+  console.log("envirment ",Envirement[0] , FileSystem[0])
   
   if (Envirement[0].user === -1)
       return <WelcomePage Env={Envirement}/>

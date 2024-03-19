@@ -8,6 +8,7 @@ import { Progtype, file } from "../../types/file";
 import { FolderComp } from "./OpenAppComp/FolderComp";
 import { GithubComponent } from "./OpenAppComp/GithubComponent";
 import { GitProject } from "../../types/gitProject";
+import AboutComp from "./OpenAppComp/AboutComponent";
 type sizes = {
     left:number,
     top:number,
@@ -39,6 +40,8 @@ const GetProcessContent  = (filedada : file, operand:any)=>
             return <>text</>
         case Progtype.github:
             return <GithubComponent content={filedada.content as GitProject}/>
+        case Progtype.about:
+                return <AboutComp about={filedada.content}/>
         default:
                 return null
         }

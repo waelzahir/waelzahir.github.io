@@ -2,7 +2,8 @@ export  enum Progtype
 {
     text,
     folder,
-    github
+    github,
+    about
 }
 export type cord = {
     left : number,

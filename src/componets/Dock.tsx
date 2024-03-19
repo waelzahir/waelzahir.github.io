@@ -40,7 +40,7 @@ const DockElem = ({state} : {state : LoadedProg}) =>{
                     return new Map(execs)
                 })
             }}  
-            className="w-12 h-12" src={icon} alt="" />
+            className="w-12 h-12 hover:w-20 hover:h-20 cursor-pointer" src={icon} alt="" />
         </div>
     )
 }
@@ -67,7 +67,7 @@ const Dock = ()=>
     const overflows = dref.current?.getBoundingClientRect().width === 1024 ? true : false 
     
     return (
-        <div ref={dref} id="dock"  className=" bg-green-950/30 min-w-16 h-24 backdrop-blur-sm absolute rounded-3xl  flex flex-row  max-w-screen-lg  ">
+        <div ref={dref} id="dock"  className=" bg-green-950/30  h-24 backdrop-blur-sm absolute rounded-3xl  flex flex-row  max-w-screen-lg  ">
             {overflows ?
                 <div className="h-full w-10 bg-black">
 

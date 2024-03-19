@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef } from "react";
 import { Progtype, file } from "../../../types/file";
 import { GitProject } from "../../../types/gitProject";
 import Folder from "../../../assets/Folder.svg"
+import about from "../../../assets/AboutMe.svg"
 import MemProviderContext from "../../../Context/MemContext";
 import customEvent from "../../../utils/CustomEventHandler";
 import FileSystemContext from "../../../Context/fileSystem";
@@ -37,6 +38,8 @@ export const geticon = (type: Progtype) =>{
     {
         case Progtype.folder:
             return Folder;
+        case Progtype.about:
+                return about
         default :
             return null
     }
@@ -113,14 +116,13 @@ const FileIcon = ({file, operand}: {file: file | undefined, operand :[file | nul
             left: elem.current.getBoundingClientRect().left,
             top: elem.current.getBoundingClientRect().top,
         }
-        fileSystem[1]((files: Map<number, file>) => new Map(files.set(file.id, file)) )
-        
+        fileSystem[1]((files: Map<number, file>) => new Map(files.set(file.id, file)))
     }, [])
     console.log("StoreFIle Cords", file)
     const icon = file.type ===Progtype.github ? GetSrc((file.content as GitProject).language) : geticon(file.type)
    
     return (
-        <div ref={elem} onClick={(e:any) => handleClick(e, file, operand, Memory, enviro)} onContextMenu={(e:any) =>HandleContext(e,file, operand,enviro)}  className={` ${ operand[0] && operand[0].id === file.id ? "bg-violet-600" : ""} w-20 h-32 flex flex-col items-center  ml-6 mt-6`} >
+        <div ref={elem} onClick={(e:any) => handleClick(e, file, operand, Memory, enviro)} onContextMenu={(e:any) =>HandleContext(e,file, operand,enviro)}  className={` ${ operand[0] && operand[0].id === file.id ? "bg-violet-600" : ""} w-20 h-32 flex flex-col items-center  ml-6 mt-6 cursor-pointer`} >
             <img className="w-16 h-16" src={icon} />
             <h1 className="w-full text-center flex-1 break-all	">{file.name}</h1>
          
